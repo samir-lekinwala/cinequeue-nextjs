@@ -9,13 +9,13 @@ import SignIn from './components/SignIn'
 export default function Home() {
   const [user] = useAuthState(auth)
   console.log(user)
+  //   const usersRef = ref(db, 'users')
   // async function addToDatabase() {
   //   const newUserRef = push(ref(db, 'users'))
   //   await set(newUserRef, { email: email, password: password })
   // }
 
   // async function readFromDatabase() {
-  //   const usersRef = ref(db, 'users')
   //   const snapshot = await get(usersRef)
 
   //   if (snapshot.exists()) {
@@ -33,8 +33,6 @@ export default function Home() {
   // }, [])
 
   return (
-    <main>
-      <section>{user ? <ChatRoom /> : <SignIn />}</section>
-    </main>
+    <main>{/* <section>{user ? <ChatRoom /> : <SignIn />}</section> */}</main>
   )
 }

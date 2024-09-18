@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { collection, query, orderBy, limit } from 'firebase/firestore'
 import { db } from '../firebaseConfig'
 import Message from './Message'
@@ -22,19 +22,21 @@ const postConverter = {
 
 function Messages() {
   const messagesRef = collection(db, 'messages').withConverter(postConverter)
-  const q = query(messagesRef, orderBy('createdAt'), limit(2))
+  const q = query(messagesRef, orderBy('createdAt'))
+  const dummy = useRef()
 
   const [messages, loading, error] = useCollectionData(q)
   if (loading) return <p>Loading messages...</p>
   if (error) return <p>Error loading messages: {error.message}</p>
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 justify-center w-full">
       {messages.map((message) => (
         <div key={message.id}>
           <Message message={message} />
         </div>
       ))}
+      <div ref={dummy}> </div>
     </div>
   )
 }
