@@ -32,7 +32,6 @@ function Nav() {
   const navSignedOut = [
     { listItem: 'Movies', link: '/movies' },
     { listItem: 'TV Shows', link: '/tvshows' },
-    { listItem: 'Watchlist', link: '/watchlist' },
   ]
 
   return (
