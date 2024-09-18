@@ -14,22 +14,21 @@ import { collection, getDocs, getFirestore } from 'firebase/firestore'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyD_CqnsdVYrz-txqj8JISujYiTl1-GDGsg',
+  apiKey: process.env.NEXT_PUBLIC_APIKEY,
 
-  authDomain: 'cinequeue-e8c21.firebaseapp.com',
+  authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
 
-  databaseURL:
-    'https://cinequeue-e8c21-default-rtdb.asia-southeast1.firebasedatabase.app',
+  databaseURL: process.env.NEXT_PUBLIC_DATABASEURL,
 
-  projectId: 'cinequeue-e8c21',
+  projectId: process.env.NEXT_PUBLIC_PROJECTID,
 
-  storageBucket: 'cinequeue-e8c21.appspot.com',
+  storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
 
-  messagingSenderId: '462931202289',
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
 
-  appId: '1:462931202289:web:bedd9ef1fd1772783ed950',
+  appId: process.env.NEXT_PUBLIC_APPID,
 
-  measurementId: 'G-GH3YZG2KZQ',
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENTID,
 }
 
 // Initialize Firebase
