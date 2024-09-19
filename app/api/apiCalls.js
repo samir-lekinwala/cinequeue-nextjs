@@ -17,7 +17,7 @@ export async function getData(apiOptions) {
       `https://api.themoviedb.org/3/${apiOptions}`,
       options
     )
-
+    console.log('api was called')
     return await result.json()
 
     // console.log('result from getdata', data)
