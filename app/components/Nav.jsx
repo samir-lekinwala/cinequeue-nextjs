@@ -35,7 +35,7 @@ function Nav() {
   ]
 
   return (
-    <div className="bg-black">
+    <div className="pb-10">
       <nav className="flex justify-between px-5 h-[4rem] items-center max-w-[70%] mx-auto">
         <Logo classes={'text-white text-3xl'} />
         <ul className="flex gap-2 justify-end text-xl text-white">
