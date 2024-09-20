@@ -98,8 +98,14 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import Logo from './Logo'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../firebaseConfig'
+import signInWithGoogle from '../functions/signInWithGoogle'
+import handleSignOut from '../functions/handleSignOut'
 
 function Nav() {
+  const [user] = useAuthState(auth)
+
   const [open, setOpen] = React.useState(0)
   const [openAlert, setOpenAlert] = React.useState(true)
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
@@ -115,14 +121,28 @@ function Nav() {
     <div className="flex w-full justify-between items-center p-2 lg:px-10">
       <Logo classes={'text-2xl text-white font-poppins'} />
 
-      {isDrawerOpen ? (
-        <XMarkIcon className="h-8 w-8 stroke-2 p-4 top-0 right-0 z-20" />
-      ) : (
-        <CiMenuBurger
-          // color="black"
-          onClick={openDrawer}
-          className="h-[2rem] w-[2rem] text-white"
-        />
+      {isDrawerOpen ? null : (
+        <>
+          <div className="flex gap-4 items-center">
+            {!user ? (
+              <button
+                onClick={signInWithGoogle}
+                className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins"
+              >
+                Sign In
+              </button>
+            ) : null}
+
+            <CiMenuBurger
+              // color="black"
+              onClick={openDrawer}
+              className={`
+              h-[2rem] w-[2rem] text-white 
+                
+              `}
+            />
+          </div>
+        </>
       )}
 
       <Drawer
@@ -131,20 +151,24 @@ function Nav() {
         placement={'right'}
         className="bg-black bg-opacity-30 shadow-2xl"
       >
+        <div className="flex justify-end p-2 z-40">
+          <XMarkIcon
+            onClick={closeDrawer}
+            className="h-[2rem] w-[2rem] text-white "
+          />
+        </div>
         <Card
           color="transparent"
           shadow={false}
           className="h-[calc(100vh-2rem)] w-full p-4"
         >
           <div className="mb-2 flex items-center gap-4 p-4">
-            <img
+            {/* <img
               src="https://docs.material-tailwind.com/img/logo-ct-dark.png"
               alt="brand"
               className="h-8 w-8"
-            />
-            <Typography variant="h5" color="white">
-              Sidebar
-            </Typography>
+            /> */}
+            <Logo classes={'text-white text-2xl'} />
           </div>
           <div className="p-2">
             <Input
@@ -154,162 +178,132 @@ function Nav() {
             />
           </div>
           <List className="">
-            <Accordion
-              open={open === 1}
-              icon={
-                <ChevronDownIcon
-                  strokeWidth={2.5}
-                  className={`mx-auto h-4 w-4 transition-transform ${
-                    open === 1 ? 'rotate-180' : ''
-                  }`}
-                />
-              }
-            >
-              <ListItem className="p-0" selected={open === 1}>
-                <AccordionHeader
-                  onClick={() => handleOpen(1)}
-                  className="border-b-0 p-3"
-                >
-                  <ListItemPrefix>
-                    <PresentationChartBarIcon className="h-5 w-5" />
-                  </ListItemPrefix>
-                  <Typography color="white" className="mr-auto font-normal">
-                    Dashboard
-                  </Typography>
-                </AccordionHeader>
-              </ListItem>
-              <AccordionBody className="py-1">
-                <List className="p-0">
-                  <ListItem>
-                    <ListItemPrefix>
-                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Analytics
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Reporting
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Projects
-                  </ListItem>
-                </List>
-              </AccordionBody>
-            </Accordion>
-            <Accordion
-              open={open === 2}
-              icon={
-                <ChevronDownIcon
-                  strokeWidth={2.5}
-                  className={`mx-auto h-4 w-4 transition-transform ${
-                    open === 2 ? 'rotate-180' : ''
-                  }`}
-                />
-              }
-            >
-              <ListItem className="p-0" selected={open === 2}>
-                <AccordionHeader
-                  onClick={() => handleOpen(2)}
-                  className="border-b-0 p-3"
-                >
-                  <ListItemPrefix>
-                    <ShoppingBagIcon className="h-5 w-5" />
-                  </ListItemPrefix>
-                  <Typography color="white" className="mr-auto font-normal">
-                    E-Commerce
-                  </Typography>
-                </AccordionHeader>
-              </ListItem>
-              <AccordionBody className="py-1">
-                <List className="p-0">
-                  <ListItem>
-                    <ListItemPrefix>
-                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Orders
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Products
-                  </ListItem>
-                </List>
-              </AccordionBody>
-            </Accordion>
             <hr className="my-2 border-blue-gray-50" />
             <ListItem className="text-white">
               <ListItemPrefix>
                 <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
-              Inbox
+              Movies
               <ListItemSuffix>
-                <Chip
+                {/* <Chip
                   value="14"
                   size="sm"
                   variant="ghost"
                   color=""
                   className="bg-white rounded-full"
-                />
+                /> */}
               </ListItemSuffix>
             </ListItem>
             <ListItem className="text-white">
               <ListItemPrefix>
-                <UserCircleIcon className="h-5 w-5" />
+                <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
-              Profile
+              TV Shows
+              <ListItemSuffix>
+                {/* <Chip
+                  value="14"
+                  size="sm"
+                  variant="ghost"
+                  color=""
+                  className="bg-white rounded-full"
+                /> */}
+              </ListItemSuffix>
             </ListItem>
-            <ListItem className="text-white">
-              <ListItemPrefix>
-                <Cog6ToothIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Settings
-            </ListItem>
-            <ListItem className="text-white">
-              <ListItemPrefix>
-                <PowerIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Log Out
-            </ListItem>
+            {user ? (
+              <>
+                <ListItem className="text-white">
+                  <ListItemPrefix>
+                    <Cog6ToothIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Watch List
+                  <ListItemSuffix>
+                    <Chip
+                      value="14"
+                      size="sm"
+                      variant="ghost"
+                      color=""
+                      className="bg-white rounded-full"
+                    />
+                  </ListItemSuffix>
+                </ListItem>
+                <ListItem className="text-white">
+                  <ListItemPrefix>
+                    <Cog6ToothIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Seen List
+                  <ListItemSuffix>
+                    <Chip
+                      value="14"
+                      size="sm"
+                      variant="ghost"
+                      color=""
+                      className="bg-white rounded-full"
+                    />
+                  </ListItemSuffix>
+                </ListItem>
+                <ListItem className="text-white">
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Profile
+                </ListItem>
+
+                <ListItem onClick={handleSignOut} className="text-white">
+                  <ListItemPrefix>
+                    <PowerIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Sign Out
+                </ListItem>
+              </>
+            ) : (
+              <>
+                <ListItem onClick={signInWithGoogle} className="text-white">
+                  <ListItemPrefix>
+                    <PowerIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Sign In
+                </ListItem>
+                <Alert
+                  open={openAlert}
+                  className="mt-auto"
+                  onClose={() => setOpenAlert(false)}
+                >
+                  <CubeTransparentIcon className="mb-4 h-8 w-10" />
+                  <Typography variant="h6" className="mb-1">
+                    Sign in to access members only features
+                  </Typography>
+                  <Typography
+                    variant="small"
+                    className="font-normal opacity-80"
+                  >
+                    Sign in to save Movies and TV Shows to your Watch List and
+                    calculate the total time watched or needed to watch through
+                    all your content.
+                  </Typography>
+                  <div className="mt-4 flex gap-3">
+                    <Typography
+                      as="a"
+                      href="#"
+                      variant="small"
+                      className="font-medium opacity-80"
+                      onClick={() => setOpenAlert(false)}
+                    >
+                      Dismiss
+                    </Typography>
+                    <Typography
+                      onClick={signInWithGoogle}
+                      as="a"
+                      href="#"
+                      variant="small"
+                      className="font-medium"
+                    >
+                      Sign Up Now
+                    </Typography>
+                  </div>
+                </Alert>
+              </>
+            )}
           </List>
-          <Alert
-            open={openAlert}
-            className="mt-auto"
-            onClose={() => setOpenAlert(false)}
-          >
-            <CubeTransparentIcon className="mb-4 h-12 w-12" />
-            <Typography variant="h6" className="mb-1">
-              Upgrade to PRO
-            </Typography>
-            <Typography variant="small" className="font-normal opacity-80">
-              Upgrade to Material Tailwind PRO and get even more components,
-              plugins, advanced features and premium.
-            </Typography>
-            <div className="mt-4 flex gap-3">
-              <Typography
-                as="a"
-                href="#"
-                variant="small"
-                className="font-medium opacity-80"
-                onClick={() => setOpenAlert(false)}
-              >
-                Dismiss
-              </Typography>
-              <Typography
-                as="a"
-                href="#"
-                variant="small"
-                className="font-medium"
-              >
-                Upgrade Now
-              </Typography>
-            </div>
-          </Alert>
         </Card>
       </Drawer>
     </div>
