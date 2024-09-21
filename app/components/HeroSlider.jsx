@@ -119,7 +119,7 @@ function HeroSlider({ content }) {
                         ? `${singleContentData.runtime} minutes`
                         : 'Loading minutes...'}
                     </div>
-                    <div className="sm:text-lg text-base text-balance h-[15vh] sm:h-[300px] text-ellipsis overflow-auto">
+                    <div className="sm:text-lg text-base text-pretty h-[15vh] sm:h-[300px] text-ellipsis overflow-auto">
                       {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
                       {/* {reduceOverviewSize(item.overview)} */}
                       {item.overview}
