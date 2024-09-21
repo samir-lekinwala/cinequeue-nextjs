@@ -6,6 +6,7 @@ import ChatRoom from './components/ChatRoom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import SignIn from './components/SignIn'
 import Hero from './components/Hero'
+import MoviesCarousel from './components/MoviesCarousel'
 
 export default function Home() {
   const [user] = useAuthState(auth)
@@ -36,7 +37,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      {/* <section>{user ? <ChatRoom /> : <SignIn />}</section> */}
+      <MoviesCarousel />
     </main>
   )
 }

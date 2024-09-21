@@ -61,8 +61,8 @@ function HeroSlider({ content }) {
   }
 
   return (
-    <div className="w-full relative ">
-      <div className="absolute w-full flex justify-center items-center h-full">
+    <div className="w-full ">
+      <div className="absolute w-full flex justify-center items-center h-full ">
         <div className="absolute flex justify-between w-full px-10">
           <div
             onClick={handleLeftClick}
@@ -80,7 +80,7 @@ function HeroSlider({ content }) {
       </div>
 
       {/* Slider shows one slide at a time*/}
-      <div className="relative w-full h-[60vh]">
+      <div className="relative w-full h-[70vh]">
         {content.map((item, index) => (
           <div
             className={`${
@@ -90,7 +90,7 @@ function HeroSlider({ content }) {
           >
             <HeroSlide
               content={item}
-              classes={'w-full h-[60vh] object-cover'}
+              classes={'w-full h-[70vh] object-cover'}
             />
 
             {/* background gradient fade for both top and bottom */}
@@ -104,25 +104,26 @@ function HeroSlider({ content }) {
                 className="flex flex-col items-center sm:flex-row gap-6"
               >
                 <img
-                  className="w-[200px] sm:w-[250px]"
+                  className="w-[200px] sm:h-[400px] sm:w-auto "
                   alt={`${item.title} poster`}
                   src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
                 `}
                 ></img>
                 <div className="sm:w-[400px] h-1/2 sm:h-full px-2 relative flex flex-col">
-                  <div className="text-2xl sm:text-4xl ">
+                  <div className="text-2xl sm:text-4xl h-[100px] sm:h-auto z-40 text-center sm:text-pretty">
                     {/* If original language is not english 'title' in api call is used as opposed to original title */}
                     {item.title}
-                  </div>
-                  {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
-                  <div className="text-sm pb-2 text-zinc-400">
-                    {singleContentData && singleContentData.id == item.id
-                      ? `${singleContentData.runtime} minutes`
-                      : 'Loading minutes...'}
-                  </div>
-                  <div className="sm:text-lg text-base text-balance relative ">
-                    {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
-                    {reduceOverviewSize(item.overview)}
+                    <div className="text-sm pb-2 text-zinc-400">
+                      {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
+                      {singleContentData && singleContentData.id == item.id
+                        ? `${singleContentData.runtime} minutes`
+                        : 'Loading minutes...'}
+                    </div>
+                    <div className="sm:text-lg text-base text-balance h-[15vh] sm:h-[300px] text-ellipsis overflow-auto">
+                      {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
+                      {/* {reduceOverviewSize(item.overview)} */}
+                      {item.overview}
+                    </div>
                   </div>
                 </div>
               </div>
