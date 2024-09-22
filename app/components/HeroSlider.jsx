@@ -94,7 +94,7 @@ function HeroSlider({ content }) {
               <div
                 onMouseEnter={() => setSlideshowPaused(true)}
                 onMouseLeave={() => setSlideshowPaused(false)}
-                className="flex flex-col items-center sm:flex-row gap-6  mx-auto"
+                className="flex flex-col items-center sm:flex-row gap-6  mx-auto sm:mx-2"
               >
                 <img
                   className="w-[200px] sm:h-[400px] sm:w-auto "
