@@ -2,6 +2,7 @@ import React from 'react'
 
 function HeroSlide({ content, classes }) {
   // console.log('heroslide content', content)
+  console.log('title length test', content.title.length, content.title)
 
   return (
     <img

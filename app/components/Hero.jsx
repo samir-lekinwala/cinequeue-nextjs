@@ -17,9 +17,7 @@ function Hero() {
   console.log('testing1', heroData)
   return (
     <div className="w-full relative h-[80vh]">
-      <div>
-        <HeroSlider content={heroData} />
-      </div>
+      <HeroSlider content={heroData} />
     </div>
   )
 }
