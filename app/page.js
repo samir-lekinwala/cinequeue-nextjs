@@ -35,7 +35,7 @@ export default function Home() {
   // }, [])
 
   return (
-    <main>
+    <main className="flex flex-col gap-14">
       <Hero />
       <MoviesCarousel />
     </main>

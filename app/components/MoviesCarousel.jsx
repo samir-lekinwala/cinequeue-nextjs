@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { getData } from '../api/apiCalls'
+import Carousel from './Carousel'
+import GlideSlider from './GlideSlider'
+import OwlTest from './OwlTest'
 
 function MoviesCarousel() {
   const [moviesContent, setMoviesContent] = useState([])
@@ -22,7 +25,7 @@ function MoviesCarousel() {
     )
 
     const dataCollection = [
-      { type: 'In Cinemas', data: inCinemas },
+      { type: 'In Cinemas Now', data: inCinemas },
       { type: 'Popular', data: popular },
       { type: 'Less than 90 Minutes', data: lessThan90MinuteRuntime },
     ]
@@ -38,21 +41,19 @@ function MoviesCarousel() {
 
   console.log('movies content test', moviesContent)
   return (
-    <div className="text-green-500">
+    <div className="text-green-500 w-full">
+      {/* Checks if moviesContent exists/data has loaded */}
       {!moviesContent ? (
         <p>Movies loading...</p>
       ) : (
         moviesContent.map((type) => (
           <>
-            <p className="text-2xl" key={type.type}>
+            <p className="text-center text-2xl font-poppins text-gray-400">
               {type.type}
             </p>
-            {/* {console.log('type', type.data)} */}
-            {type.data.results.map((movie) => (
-              <p className="text-white" key={movie.id}>
-                {movie.title}
-              </p>
-            ))}
+            <OwlTest key={type} content={type} />
+            {/* <GlideSlider content={type} /> */}
+            {/* <Carousel data={type} /> */}
           </>
         ))
       )}

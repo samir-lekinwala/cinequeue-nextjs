@@ -65,20 +65,13 @@ function HeroSlider({ content }) {
   }
 
   return (
-    <div className="w-full ">
-      {/* Slider shows one slide at a time*/}
-      {/* {smallSize ? (
-        <SliderArrows
-          handleLeftClick={handleLeftClick}
-          handleRightClick={handleRightClick}
-        />
-      ) : null} */}
-      <div className="relative w-full h-[70vh]">
+    <div className="w-full h-full">
+      <div className="w-full h-[70vh] ">
         {content.map((item, index) => (
           <div
             className={`${
               currentSlide == index ? 'opacity-100 ' : 'opacity-0'
-            } absolute inset-0 transition-all ease-in-out duration-[700ms] `}
+            } absolute inset-0 transition-all ease-in-out duration-[700ms] h-fit`}
             key={item.id}
           >
             <HeroSlide
@@ -90,19 +83,19 @@ function HeroSlider({ content }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
             <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
 
-            <div className="h-[600px] text-white absolute inset-0 flex w-[100vw] justify-center items-center text-4xl">
+            <div className=" text-white absolute inset-0 h-[70vh] flex w-[100vw] justify-center items-center text-4xl">
               <div
                 onMouseEnter={() => setSlideshowPaused(true)}
                 onMouseLeave={() => setSlideshowPaused(false)}
-                className="flex flex-col items-center sm:flex-row gap-6  mx-auto sm:mx-2"
+                className="flex flex-col items-center justify-center sm:flex-row gap-6 h-[70vh] mx-auto sm:mx-2 "
               >
                 <img
-                  className="w-[200px] sm:h-[400px] sm:w-auto "
+                  className="w-[200px] object-scale-down min-h-0 md:w-[300px]"
                   alt={`${item.title} poster`}
                   src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
                 `}
                 ></img>
-                <div className="sm:w-[400px]  sm:h-full px-2 relative flex flex-col justify-center">
+                <div className="shrink sm:w-[400px] px-2 relative flex flex-col justify-center">
                   <div
                     className={`${
                       item.title.length > 20
@@ -118,7 +111,7 @@ function HeroSlider({ content }) {
                         ? `${singleContentData.runtime} minutes`
                         : 'Loading minutes...'}
                     </div>
-                    <div className="sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto">
+                    <div className="sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0">
                       {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
                       {/* {reduceOverviewSize(item.overview)} */}
                       {item.overview}
