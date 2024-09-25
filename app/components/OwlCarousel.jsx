@@ -4,15 +4,17 @@ import 'owl.carousel/dist/assets/owl.carousel.css'
 import 'owl.carousel/dist/assets/owl.theme.default.css'
 import 'owl.carousel'
 import SingleItemContent from './SingleItemContent'
+import Link from 'next/link'
 
-function OwlTest({ content }) {
+function OwlCarousel({ content }) {
   const data = content.data.results
+  console.log('owltest content', content)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       $(document).ready(function () {
         $('.owl-carousel').owlCarousel({
-          loop: true,
+          // loop: true,
           autoWidth: true,
           margin: 10,
           // nav: true,
@@ -39,11 +41,13 @@ function OwlTest({ content }) {
     <div className="owl-carousel">
       {data.map((item) => (
         <div className="item" key={item.id}>
-          <SingleItemContent content={item} />
+          <Link href={`/${content.contentType}/${item.id}`}>
+            <SingleItemContent content={item} />
+          </Link>
         </div>
       ))}
     </div>
   )
 }
 
-export default OwlTest
+export default OwlCarousel

@@ -20,9 +20,9 @@ function SingleItemContent({ content, classes }) {
 
   return (
     <div
-      className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
       onMouseEnter={hoverStateChangeTrue}
       onMouseLeave={hoverStateChangeFalse}
+      className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
     >
       {hoverState ? (
         <div className="w-[200px] h-[300px] p-2 overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">

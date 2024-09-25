@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getData } from '../api/apiCalls'
 import Carousel from './Carousel'
-import GlideSlider from './GlideSlider'
-import OwlTest from './OwlTest'
+import OwlCarousel from './OwlCarousel'
 
 function MoviesCarousel() {
   const [moviesContent, setMoviesContent] = useState([])
@@ -25,9 +24,13 @@ function MoviesCarousel() {
     )
 
     const dataCollection = [
-      { type: 'In Cinemas Now', data: inCinemas },
-      { type: 'Popular', data: popular },
-      { type: 'Less than 90 Minutes', data: lessThan90MinuteRuntime },
+      { contentType: 'movie', type: 'In Cinemas Now', data: inCinemas },
+      { contentType: 'movie', type: 'Popular', data: popular },
+      {
+        contentType: 'movie',
+        type: 'Less than 90 Minutes',
+        data: lessThan90MinuteRuntime,
+      },
     ]
     setMoviesContent(dataCollection)
 
@@ -51,9 +54,7 @@ function MoviesCarousel() {
             <p className="text-center text-2xl font-poppins text-gray-400">
               {type.type}
             </p>
-            <OwlTest key={type} content={type} />
-            {/* <GlideSlider content={type} /> */}
-            {/* <Carousel data={type} /> */}
+            <OwlCarousel key={type} content={type} />
           </>
         ))
       )}
