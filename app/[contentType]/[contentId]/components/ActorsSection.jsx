@@ -17,14 +17,14 @@ function ActorsSection({ actors }) {
   //based on if the index is less than 10 or more.
 
   return (
-    <div className="text-base flex flex-wrap gap-4 justify-center max-w-[70vw] mx-auto transition-all delay-500">
+    <div className="text-base flex flex-wrap gap-4 justify-center lg:max-w-[70vw] mx-auto transition-all delay-500">
       {actors.map((actor, index) => (
         <>
           <div
             className={`${
               index >= 10 && !moreCastButton
                 ? 'hidden'
-                : 'flex flex-col justify-center items-center '
+                : 'flex flex-col justify-center text-center items-center '
             }`}
             key={actor.id}
           >
