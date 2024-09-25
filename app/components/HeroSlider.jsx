@@ -1,11 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+import { useMediaQuery } from 'usehooks-ts'
 import React, { useEffect, useState } from 'react'
 import HeroSlide from './HeroSlide'
+import SliderArrows from './SliderArrows'
 import Link from 'next/link'
 import { getData } from '../api/apiCalls'
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from 'react-icons/ri'
 
 function HeroSlider({ content }) {
+  const smallSize = useMediaQuery('(min-width: 540px)')
+
   const [currentSlide, setCurrentSlide] = useState(0)
   const [singleContentData, setSingleContentData] = useState(null)
   const [slideshowPause, setSlideshowPaused] = useState(false)
@@ -61,69 +65,62 @@ function HeroSlider({ content }) {
   }
 
   return (
-    <div className="w-full relative ">
-      <div className="absolute w-full flex justify-center items-center h-full">
-        <div className="absolute flex justify-between w-full px-10">
-          <div
-            onClick={handleLeftClick}
-            className="text-2xl text-white w-[2rem] h-[2rem] z-10 hover:text-slate-600 transition-all duration-300"
-          >
-            <RiArrowLeftWideFill />
-          </div>
-          <div
-            onClick={handleRightClick}
-            className="text-2xl text-white w-[2rem] h-[2rem] z-10 hover:text-slate-600 transition-all duration-300"
-          >
-            <RiArrowRightWideFill />
-          </div>
-        </div>
-      </div>
-
-      {/* Slider shows one slide at a time*/}
-      <div className="relative w-full h-[60vh]">
+    <div className="w-full h-full">
+      <div className="w-full h-[70vh] ">
         {content.map((item, index) => (
           <div
             className={`${
-              currentSlide == index ? 'opacity-100' : 'opacity-0'
-            } absolute inset-0 transition-all ease-in-out duration-[700ms]`}
+              currentSlide == index ? 'opacity-100 ' : 'opacity-0'
+            } absolute inset-0 transition-all ease-in-out duration-[700ms] h-fit`}
             key={item.id}
           >
             <HeroSlide
               content={item}
-              classes={'w-full h-[60vh] object-cover'}
+              classes={'w-full h-[70vh] object-cover'}
             />
 
             {/* background gradient fade for both top and bottom */}
             <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
             <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
 
-            <div className="h-[600px] text-white absolute inset-0 flex justify-center w-full items-center text-4xl">
+            <div className=" text-white absolute inset-0 h-[70vh] flex w-[100vw] justify-center items-center text-4xl">
               <div
                 onMouseEnter={() => setSlideshowPaused(true)}
                 onMouseLeave={() => setSlideshowPaused(false)}
-                className="flex flex-col items-center sm:flex-row gap-6"
+                className="flex flex-col items-center justify-center sm:flex-row gap-6 h-[70vh] mx-auto sm:mx-2 "
               >
                 <img
-                  className="w-[200px] sm:w-[250px]"
+                  className="w-[200px] object-scale-down min-h-0 md:w-[300px]"
                   alt={`${item.title} poster`}
                   src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
                 `}
                 ></img>
-                <div className="sm:w-[400px] h-1/2 sm:h-full px-2 relative flex flex-col">
-                  <div className="text-2xl sm:text-4xl ">
+                <div className="shrink sm:w-[400px] px-2 relative flex flex-col justify-center">
+                  <div
+                    className={`${
+                      item.title.length > 20
+                        ? 'text-xl sm:text-2xl'
+                        : 'text-2xl sm:text-3xl md:text-4xl'
+                    } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
+                  >
                     {/* If original language is not english 'title' in api call is used as opposed to original title */}
                     {item.title}
+                    <div className="text-sm pb-2 text-zinc-400 w-fit mx-auto">
+                      {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
+                      {singleContentData && singleContentData.id == item.id
+                        ? `${singleContentData.runtime} minutes`
+                        : 'Loading minutes...'}
+                    </div>
+                    <div className="sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0">
+                      {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
+                      {/* {reduceOverviewSize(item.overview)} */}
+                      {item.overview}
+                    </div>
                   </div>
-                  {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
-                  <div className="text-sm pb-2 text-zinc-400">
-                    {singleContentData && singleContentData.id == item.id
-                      ? `${singleContentData.runtime} minutes`
-                      : 'Loading minutes...'}
-                  </div>
-                  <div className="sm:text-lg text-base text-balance relative ">
-                    {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
-                    {reduceOverviewSize(item.overview)}
-                  </div>
+                  <SliderArrows
+                    handleLeftClick={handleLeftClick}
+                    handleRightClick={handleRightClick}
+                  />
                 </div>
               </div>
             </div>

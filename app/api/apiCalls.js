@@ -21,5 +21,7 @@ export async function getData(apiOptions) {
     return await result.json()
 
     // console.log('result from getdata', data)
-  } catch (error) {}
+  } catch (error) {
+    console.error(error)
+  }
 }

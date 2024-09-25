@@ -16,10 +16,8 @@ function Hero() {
 
   console.log('testing1', heroData)
   return (
-    <div className="w-full relative">
-      <div>
-        <HeroSlider content={heroData} />
-      </div>
+    <div className="w-full relative h-[70vh]">
+      <HeroSlider content={heroData} />
     </div>
   )
 }

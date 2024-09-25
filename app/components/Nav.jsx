@@ -118,7 +118,7 @@ function Nav() {
   const closeDrawer = () => setIsDrawerOpen(false)
 
   return (
-    <div className="flex w-full justify-between items-center p-2 lg:px-10">
+    <div className="flex bg-black w-full justify-between items-center p-2 lg:px-10">
       <Logo classes={'text-2xl text-white font-poppins'} />
 
       {isDrawerOpen ? null : (
