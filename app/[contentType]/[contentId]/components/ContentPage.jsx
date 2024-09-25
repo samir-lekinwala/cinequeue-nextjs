@@ -59,8 +59,8 @@ function ContentPage({ type, contentId }) {
                   />
                 </div>
               </div>
-              <div className="text-white w-full relative top-10">
-                <PosterSection content={data} />
+              <div className="text-white w-full relative top-10 ">
+                <PosterSection type={type} content={data} />
 
                 <ActorsSection actors={credits} />
               </div>

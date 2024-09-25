@@ -1,6 +1,7 @@
 import React from 'react'
+import AddToLists from '../components/AddToLists'
 
-function PosterSection({ content }) {
+function PosterSection({ content, type }) {
   return (
     <div className="flex flex-col md:flex-row md:w-1/2 w-full items-center justify-center gap-6 mx-auto pb-4">
       <img
@@ -29,14 +30,7 @@ function PosterSection({ content }) {
             {content.overview}
           </div>
         </div>
-        <div className="flex justify-between items-end text-base">
-          <div>
-            <button className="">Add to Watch List</button>
-          </div>
-          <div>
-            <button>Add to Seen List</button>
-          </div>
-        </div>
+        <AddToLists type={type} content={content} />
       </div>
     </div>
   )
