@@ -12,3 +12,29 @@
 body {
   background-color: black;
 }
+
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-animation {
+  background: linear-gradient(45deg, #ff7e5f, #feb47b, #ff7e5f);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease-in-out infinite;
+}
+.animate-gradient-animation-close {
+  background: linear-gradient(45deg, #000, #ff7e5f, #000);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease-in-out infinite;
+}
+
+

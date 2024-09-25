@@ -1,16 +1,10 @@
-import React from 'react'
-import { getData } from '../../api/apiCalls'
+// import React,  from 'react'
+import ContentPage from './components/ContentPage'
 
 function page({ params }) {
-  async function getContentData() {
-    const result = await getData(`${params.contentType}/${params.contentId}`)
-
-    return result
-  }
-
   return (
-    <div className="text-white">
-      {params.contentType} {params.contentId}
+    <div>
+      <ContentPage type={params.contentType} contentId={params.contentId} />
     </div>
   )
 }
