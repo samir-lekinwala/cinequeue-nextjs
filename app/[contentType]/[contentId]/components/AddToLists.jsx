@@ -130,6 +130,10 @@ function AddToLists({ type, content }) {
     type: movieOrTvShow,
     contentId: content.id,
     runtime: content.runtime,
+    overview: content.overview,
+    release_date: content.release_date,
+    title: content.title,
+    poster_path: content.poster_path,
   }
 
   // console.log('addto list component', toDatabase)

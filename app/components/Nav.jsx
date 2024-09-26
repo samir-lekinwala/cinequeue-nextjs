@@ -214,21 +214,23 @@ function Nav() {
             </ListItem>
             {user ? (
               <>
-                <ListItem className="text-white">
-                  <ListItemPrefix>
-                    <Cog6ToothIcon className="h-5 w-5" />
-                  </ListItemPrefix>
-                  Watch List
-                  <ListItemSuffix>
-                    <Chip
-                      value="14"
-                      size="sm"
-                      variant="ghost"
-                      color=""
-                      className="bg-white rounded-full"
-                    />
-                  </ListItemSuffix>
-                </ListItem>
+                <Link href={'/watchlist'}>
+                  <ListItem className="text-white">
+                    <ListItemPrefix>
+                      <Cog6ToothIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Watch List
+                    <ListItemSuffix>
+                      <Chip
+                        value="14"
+                        size="sm"
+                        variant="ghost"
+                        color=""
+                        className="bg-white rounded-full"
+                      />
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
                 <ListItem className="text-white">
                   <ListItemPrefix>
                     <Cog6ToothIcon className="h-5 w-5" />
