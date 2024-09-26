@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import PostersSection from './PostersSection'
+import TotalWatchListTime from './TotalWatchListTime'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../../firebaseConfig'
 import { collection, getDocs, query, where } from 'firebase/firestore'
@@ -32,7 +33,10 @@ function WatchlistPage() {
   }, [user])
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center gap-4">
+      <div className="">
+        <TotalWatchListTime data={data} />
+      </div>
       <PostersSection data={data} />
     </div>
   )

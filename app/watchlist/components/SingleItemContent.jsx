@@ -58,7 +58,7 @@ function SingleItemContent({ content, classes }) {
           alt={`${content.title} poster`}
         />
       </div>
-      <div key={content.id} className="z-20">
+      <div className="z-20">
         {/* <Link href={`/${content.type}/${content.contentId}`}> */}
         <p className=" text-center font-poppins text-gray-400">
           {content.title}
