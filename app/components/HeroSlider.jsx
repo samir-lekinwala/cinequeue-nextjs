@@ -7,28 +7,28 @@ import Link from 'next/link'
 import { getData } from '../api/apiCalls'
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from 'react-icons/ri'
 
-function HeroSlider({ content }) {
+function HeroSlider({ content, type }) {
   const smallSize = useMediaQuery('(min-width: 540px)')
 
   const [currentSlide, setCurrentSlide] = useState(0)
   const [singleContentData, setSingleContentData] = useState(null)
   const [slideshowPause, setSlideshowPaused] = useState(false)
 
-  function reduceOverviewSize(overview) {
-    const overFortyWords = overview.split(' ').length > 40
-    let newOverview = []
-    if (overFortyWords) {
-      newOverview = overview.split(' ').slice(0, 40).join(' ')
-      return (
-        <>
-          {newOverview}
-          <Link href={'/'} className="text-zinc-400">
-            ...Read More
-          </Link>
-        </>
-      )
-    } else return overview
-  }
+  // function reduceOverviewSize(overview) {
+  //   const overFortyWords = overview.split(' ').length > 40
+  //   let newOverview = []
+  //   if (overFortyWords) {
+  //     newOverview = overview.split(' ').slice(0, 40).join(' ')
+  //     return (
+  //       <>
+  //         {newOverview}
+  //         <Link href={'/'} className="text-zinc-400">
+  //           ...Read More
+  //         </Link>
+  //       </>
+  //     )
+  //   } else return overview
+  // }
 
   useEffect(() => {
     if (!slideshowPause) {
@@ -70,7 +70,7 @@ function HeroSlider({ content }) {
         {content.map((item, index) => (
           <div
             className={`${
-              currentSlide == index ? 'opacity-100 ' : 'opacity-0'
+              currentSlide == index ? 'opacity-100 z-10' : 'opacity-0 z-0'
             } absolute inset-0 transition-all ease-in-out duration-[700ms] h-fit`}
             key={item.id}
           >
@@ -89,12 +89,14 @@ function HeroSlider({ content }) {
                 onMouseLeave={() => setSlideshowPaused(false)}
                 className="flex flex-col items-center justify-center sm:flex-row gap-6 h-[70vh] mx-auto sm:mx-2 "
               >
-                <img
-                  className="w-[200px] object-scale-down min-h-0 md:w-[300px]"
-                  alt={`${item.title} poster`}
-                  src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
+                <Link href={`/${type}/${item.id}`}>
+                  <img
+                    className="w-[200px] object-scale-down min-h-0 md:w-[300px]"
+                    alt={`${item.title} poster`}
+                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
                 `}
-                ></img>
+                  ></img>
+                </Link>
                 <div className="shrink sm:w-[400px] px-2 relative flex flex-col justify-center">
                   <div
                     className={`${
@@ -104,7 +106,7 @@ function HeroSlider({ content }) {
                     } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
                   >
                     {/* If original language is not english 'title' in api call is used as opposed to original title */}
-                    {item.title}
+                    <Link href={`/${type}/${item.id}`}>{item.title}</Link>
                     <div className="text-sm pb-2 text-zinc-400 w-fit mx-auto">
                       {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                       {singleContentData && singleContentData.id == item.id

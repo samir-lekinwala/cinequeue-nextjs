@@ -102,6 +102,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../firebaseConfig'
 import signInWithGoogle from '../functions/signInWithGoogle'
 import handleSignOut from '../functions/handleSignOut'
+import Link from 'next/link'
 
 function Nav() {
   const [user] = useAuthState(auth)
@@ -119,7 +120,9 @@ function Nav() {
 
   return (
     <div className="flex bg-black w-full justify-between items-center p-2 lg:px-10">
-      <Logo classes={'text-2xl text-white font-poppins'} />
+      <Link href={'/'}>
+        <Logo classes={'text-2xl text-white font-poppins'} />{' '}
+      </Link>
 
       {isDrawerOpen ? null : (
         <>

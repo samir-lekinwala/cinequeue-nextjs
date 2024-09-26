@@ -41,7 +41,7 @@ function OwlCarousel({ content }) {
     <div className="owl-carousel">
       {data.map((item) => (
         <div className="item" key={item.id}>
-          <Link href={`/${content.contentType}/${item.id}`}>
+          <Link href={`/${content.contentType}/${item.id}#trailer`}>
             <SingleItemContent content={item} />
           </Link>
         </div>
