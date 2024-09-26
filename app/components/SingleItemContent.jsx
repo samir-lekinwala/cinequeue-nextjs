@@ -6,11 +6,9 @@ function SingleItemContent({ content, classes }) {
 
   function hoverStateChangeTrue() {
     setHoverState(true)
-    console.log('hover state true', hoverState)
   }
   function hoverStateChangeFalse() {
     setHoverState(false)
-    console.log('hover state false', hoverState)
   }
 
   function getYearOfContent(item) {
