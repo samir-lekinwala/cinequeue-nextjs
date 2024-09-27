@@ -8,17 +8,15 @@ function SingleItemContent({ content, classes }) {
 
   function hoverStateChangeTrue() {
     setHoverState(true)
-    console.log('hover state true', hoverState)
   }
   function hoverStateChangeFalse() {
     setHoverState(false)
-    console.log('hover state false', hoverState)
   }
 
-  function getYearOfContent(item) {
-    const year = item.split('').splice(0, 4).join('')
-    return year
-  }
+  // function getYearOfContent(item) {
+  //   const year = item.split('').splice(0, 4).join('')
+  //   return year
+  // }
 
   const date = new Timestamp(
     content.createdAt.seconds,
@@ -65,7 +63,7 @@ function SingleItemContent({ content, classes }) {
         </p>
         {/* </Link> */}
         <p className=" text-center font-poppins text-gray-400 text-sm">
-          {getYearOfContent(content.release_date)}
+          {content.release_date}
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
           Added on {date}

@@ -46,7 +46,7 @@ function SingleItemContent({ content, classes }) {
           {content.title}
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
-          {getYearOfContent(content.release_date)}
+          {content.release_date}
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
           ⭐{content.vote_average}
