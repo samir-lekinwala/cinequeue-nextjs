@@ -35,11 +35,11 @@ function SingleItemContent({ content, classes }) {
     <div
       onMouseEnter={hoverStateChangeTrue}
       onMouseLeave={hoverStateChangeFalse}
-      className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
+      className={`flex flex-col w-[100px] sm:w-[200px] ${classes} overflow-hidden `}
     >
       {hoverState ? (
         <Link href={`/${content.type}/${content.contentId}`}>
-          <div className="w-[200px] h-[300px] p-2 overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
+          <div className="w-[100px] sm:w-[200px] h-[150px] sm:h-[300px] p-2 overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
             {content.overview}
           </div>
         </Link>

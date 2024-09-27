@@ -10,7 +10,7 @@ function PostersSection({ data }) {
   console.log(data)
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 flex-wrap justify-center">
       {data?.length > 0 ? (
         data.map((item) => (
           <div key={item.id}>
