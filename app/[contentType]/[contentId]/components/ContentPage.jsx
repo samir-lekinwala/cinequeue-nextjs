@@ -5,6 +5,7 @@ import Trailer from './Trailer'
 import PosterSection from './PosterSection'
 import ActorsSection from './ActorsSection'
 import HeroSlide from '../../../components/HeroSlide'
+import { Audio, FallingLines } from 'react-loader-spinner'
 
 function ContentPage({ type, contentId }) {
   const [data, setData] = useState()
@@ -67,7 +68,11 @@ function ContentPage({ type, contentId }) {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="flex justify-center items-center">
+          <FallingLines color="#ff7e5f" />
+        </div>
+      )}
     </>
   )
 }

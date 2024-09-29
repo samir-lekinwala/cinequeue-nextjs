@@ -5,10 +5,11 @@ import 'owl.carousel/dist/assets/owl.theme.default.css'
 import 'owl.carousel'
 import SingleItemContent from './SingleItemContent'
 import Link from 'next/link'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
-function OwlCarousel({ content }) {
+function OwlCarousel({ content, type }) {
   const data = content.data.results
-  console.log('owltest content', content)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -39,13 +40,17 @@ function OwlCarousel({ content }) {
 
   return (
     <div className="owl-carousel">
-      {data.map((item) => (
-        <div className="item" key={item.id}>
-          <Link href={`/${content.contentType}/${item.id}#trailer`}>
-            <SingleItemContent content={item} />
-          </Link>
-        </div>
-      ))}
+      {!data ? (
+        <Skeleton count={5} />
+      ) : (
+        data.map((item) => (
+          <div className="item" key={item.id}>
+            {/* <Link href={`/${content.contentType}/${item.id}#trailer`}> */}
+            <SingleItemContent content={item} type={type} />
+            {/* </Link> */}
+          </div>
+        ))
+      )}
     </div>
   )
 }

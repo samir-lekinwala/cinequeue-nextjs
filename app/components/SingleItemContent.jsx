@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from 'next/link'
 import React, { useState } from 'react'
 
-function SingleItemContent({ content, classes }) {
+function SingleItemContent({ content, classes, type }) {
   const [hoverState, setHoverState] = useState(false)
 
   function hoverStateChangeTrue() {
@@ -24,6 +25,14 @@ function SingleItemContent({ content, classes }) {
     >
       {hoverState ? (
         <div className="w-[200px] h-[300px] p-2 overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
+          <div>
+            {' '}
+            <Link href={`/${type}/${content.id}`}>
+              <button className="bg-white bg-opacity-10 text-white">
+                View More
+              </button>
+            </Link>
+          </div>
           {content.overview}
         </div>
       ) : null}

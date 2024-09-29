@@ -49,12 +49,17 @@ function MoviesCarousel() {
       {!moviesContent ? (
         <p>Movies loading...</p>
       ) : (
-        moviesContent.map((type) => (
+        moviesContent.map((carouselContent) => (
+          // console.log('type from before owlcarousel map', carouselContent),
           <>
             <p className="text-center text-2xl font-poppins text-gray-400">
-              {type.type}
+              {carouselContent.type}
             </p>
-            <OwlCarousel key={type} content={type} />
+            <OwlCarousel
+              key={carouselContent}
+              content={carouselContent}
+              type={carouselContent.contentType}
+            />
           </>
         ))
       )}

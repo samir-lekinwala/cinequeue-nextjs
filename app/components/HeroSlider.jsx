@@ -6,6 +6,7 @@ import SliderArrows from './SliderArrows'
 import Link from 'next/link'
 import { getData } from '../api/apiCalls'
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from 'react-icons/ri'
+import { FallingLines } from 'react-loader-spinner'
 
 function HeroSlider({ content, type }) {
   const smallSize = useMediaQuery('(min-width: 540px)')
@@ -65,71 +66,79 @@ function HeroSlider({ content, type }) {
   }
 
   return (
-    <div className="w-full h-full">
-      <div className="w-full h-[70vh] ">
-        {content.map((item, index) => (
-          <div
-            className={`${
-              currentSlide == index ? 'opacity-100 z-10' : 'opacity-0 z-0'
-            } absolute inset-0 transition-all ease-in-out duration-[700ms] h-fit`}
-            key={item.id}
-          >
-            <HeroSlide
-              content={item}
-              classes={'w-full h-[70vh] object-cover'}
-            />
-
-            {/* background gradient fade for both top and bottom */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
-            <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
-
-            <div className=" text-white absolute inset-0 h-[70vh] flex w-[100vw] justify-center items-center text-4xl">
+    <>
+      {!content ? (
+        <div className="flex justify-center items-center">
+          <FallingLines color="#ff7e5f" />
+        </div>
+      ) : (
+        <div className="w-full h-full">
+          <div className="w-full h-[70vh] ">
+            {content.map((item, index) => (
               <div
-                onMouseEnter={() => setSlideshowPaused(true)}
-                onMouseLeave={() => setSlideshowPaused(false)}
-                className="flex flex-col items-center justify-center sm:flex-row gap-6 h-[70vh] mx-auto sm:mx-2 "
+                className={`${
+                  currentSlide == index ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                } absolute inset-0 transition-all ease-in-out duration-[700ms] h-fit`}
+                key={item.id}
               >
-                <Link href={`/${type}/${item.id}`}>
-                  <img
-                    className="w-[200px] object-scale-down min-h-0 md:w-[300px]"
-                    alt={`${item.title} poster`}
-                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
-                `}
-                  ></img>
-                </Link>
-                <div className="shrink sm:w-[400px] px-2 relative flex flex-col justify-center">
+                <HeroSlide
+                  content={item}
+                  classes={'w-full h-[70vh] object-cover'}
+                />
+
+                {/* background gradient fade for both top and bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
+
+                <div className=" text-white absolute inset-0 h-[70vh] flex w-[100vw] justify-center items-center text-4xl">
                   <div
-                    className={`${
-                      item.title.length > 20
-                        ? 'text-xl sm:text-2xl'
-                        : 'text-2xl sm:text-3xl md:text-4xl'
-                    } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
+                    onMouseEnter={() => setSlideshowPaused(true)}
+                    onMouseLeave={() => setSlideshowPaused(false)}
+                    className="flex flex-col items-center justify-center sm:flex-row gap-6 h-[70vh] mx-auto sm:mx-2 "
                   >
-                    {/* If original language is not english 'title' in api call is used as opposed to original title */}
-                    <Link href={`/${type}/${item.id}`}>{item.title}</Link>
-                    <div className="text-sm pb-2 text-zinc-400 w-fit mx-auto">
-                      {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
-                      {singleContentData && singleContentData.id == item.id
-                        ? `${singleContentData.runtime} minutes`
-                        : 'Loading minutes...'}
-                    </div>
-                    <div className="sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0">
-                      {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
-                      {/* {reduceOverviewSize(item.overview)} */}
-                      {item.overview}
+                    <Link href={`/${type}/${item.id}`}>
+                      <img
+                        className="w-[200px] object-scale-down min-h-0 md:w-[300px]"
+                        alt={`${item.title} poster`}
+                        src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
+                    `}
+                      ></img>
+                    </Link>
+                    <div className="shrink sm:w-[400px] px-2 relative flex flex-col justify-center">
+                      <div
+                        className={`${
+                          item.title.length > 20
+                            ? 'text-xl sm:text-2xl'
+                            : 'text-2xl sm:text-3xl md:text-4xl'
+                        } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
+                      >
+                        {/* If original language is not english 'title' in api call is used as opposed to original title */}
+                        <Link href={`/${type}/${item.id}`}>{item.title}</Link>
+                        <div className="text-sm pb-2 text-zinc-400 w-fit mx-auto">
+                          {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
+                          {singleContentData && singleContentData.id == item.id
+                            ? `${singleContentData.runtime} minutes`
+                            : 'Loading minutes...'}
+                        </div>
+                        <div className="sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0">
+                          {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
+                          {/* {reduceOverviewSize(item.overview)} */}
+                          {item.overview}
+                        </div>
+                      </div>
+                      <SliderArrows
+                        handleLeftClick={handleLeftClick}
+                        handleRightClick={handleRightClick}
+                      />
                     </div>
                   </div>
-                  <SliderArrows
-                    handleLeftClick={handleLeftClick}
-                    handleRightClick={handleRightClick}
-                  />
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   )
 }
 

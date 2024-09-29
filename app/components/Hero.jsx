@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import HeroSlider from './HeroSlider'
 import { getData } from '../api/apiCalls'
+import { FallingLines } from 'react-loader-spinner'
 
 function Hero() {
   const [heroData, setHeroData] = useState([])
@@ -17,7 +18,13 @@ function Hero() {
   console.log('testing1', heroData)
   return (
     <div className="w-full relative h-[70vh]">
-      <HeroSlider type={'movie'} content={heroData} />
+      {!heroData ? (
+        <div className="flex justify-center items-center">
+          <FallingLines color="#ff7e5f" />
+        </div>
+      ) : (
+        <HeroSlider type={'movie'} content={heroData} />
+      )}
     </div>
   )
 }

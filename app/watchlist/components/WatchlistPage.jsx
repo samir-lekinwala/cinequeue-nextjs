@@ -5,6 +5,7 @@ import TotalWatchListTime from './TotalWatchListTime'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../../firebaseConfig'
 import { collection, getDocs, query, where } from 'firebase/firestore'
+import { FallingLines } from 'react-loader-spinner'
 
 function WatchlistPage() {
   const [data, setData] = useState()
@@ -33,12 +34,20 @@ function WatchlistPage() {
   }, [user])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <div className="">
-        <TotalWatchListTime data={data} />
-      </div>
-      <PostersSection data={data} />
-    </div>
+    <>
+      {!data ? (
+        <div className="flex justify-center items-center">
+          <FallingLines color="#ff7e5f" />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-4">
+          <div className="">
+            <TotalWatchListTime data={data} />
+          </div>
+          <PostersSection data={data} />
+        </div>
+      )}
+    </>
   )
 }
 
