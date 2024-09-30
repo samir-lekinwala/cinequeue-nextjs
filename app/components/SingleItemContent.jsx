@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import React, { useState } from 'react'
+import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 
 function SingleItemContent({ content, classes, type }) {
   const [hoverState, setHoverState] = useState(false)
@@ -27,12 +28,15 @@ function SingleItemContent({ content, classes, type }) {
         <div className="w-[200px] h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
           <div className="w-full">
             <Link href={`/${type}/${content.id}`}>
-              <button className="animate-gradient-animation-expand rounded-lg h-[1.5rem] duration-500 bg-opacity-10 text-white fixed right-0 left-0 top-0 hover:scale-105 hover:font-normal ease-in-out">
+              <button className="animate-gradient-animation-expand rounded-lg h-[1.5rem] duration-500 bg-opacity-10 text-white right-0 left-0 top-0 hover:scale-105 hover:font-normal ease-in-out">
                 View More
               </button>
             </Link>
           </div>
           <p className="pt-[1.5rem]">{content.overview}</p>
+          {/* <div className="z-80"> */}
+          <AddToLists type={type} content={content} />
+          {/* </div> */}
         </div>
       ) : null}
       <div

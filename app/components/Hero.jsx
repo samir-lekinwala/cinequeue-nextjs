@@ -17,7 +17,7 @@ function Hero() {
 
   console.log('testing1', heroData)
   return (
-    <div className="w-full relative h-[70vh]">
+    <div className="w-full relative ">
       {!heroData ? (
         <div className="flex justify-center items-center">
           <FallingLines color="#ff7e5f" />

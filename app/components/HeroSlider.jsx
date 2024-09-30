@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { getData } from '../api/apiCalls'
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from 'react-icons/ri'
 import { FallingLines } from 'react-loader-spinner'
+import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 
 function HeroSlider({ content, type }) {
   const smallSize = useMediaQuery('(min-width: 540px)')
@@ -65,14 +66,16 @@ function HeroSlider({ content, type }) {
     } else setCurrentSlide(currentSlide + 1)
   }
 
+  // console.log('single content data', singleContentData)
+
   return (
     <>
       {!content ? (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center z-10">
           <FallingLines color="#ff7e5f" />
         </div>
       ) : (
-        <div className="w-full h-full">
+        <div className="w-full h-full relative">
           <div className="w-full h-[70vh] ">
             {content.map((item, index) => (
               <div
@@ -90,7 +93,11 @@ function HeroSlider({ content, type }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
 
-                <div className=" text-white absolute inset-0 h-[70vh] flex w-[100vw] justify-center items-center text-4xl">
+                <div
+                  className={`${
+                    !smallSize ? '' : ''
+                  }text-white absolute inset-0 h-[70vh] flex w-[100vw] justify-center items-center text-4xl`}
+                >
                   <div
                     onMouseEnter={() => setSlideshowPaused(true)}
                     onMouseLeave={() => setSlideshowPaused(false)}
@@ -98,7 +105,7 @@ function HeroSlider({ content, type }) {
                   >
                     <Link href={`/${type}/${item.id}`}>
                       <img
-                        className="w-[200px] object-scale-down min-h-0 md:w-[300px]"
+                        className="w-[200px] object-scale-down min-h-0 sm:w-[300px] md:w-[300px]"
                         alt={`${item.title} poster`}
                         src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
                     `}
@@ -114,22 +121,47 @@ function HeroSlider({ content, type }) {
                       >
                         {/* If original language is not english 'title' in api call is used as opposed to original title */}
                         <Link href={`/${type}/${item.id}`}>{item.title}</Link>
-                        <div className="text-sm pb-2 text-zinc-400 w-fit mx-auto">
+                        <div
+                          className={`${'text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto'}`}
+                        >
                           {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                           {singleContentData && singleContentData.id == item.id
                             ? `${singleContentData.runtime} minutes`
                             : 'Loading minutes...'}
                         </div>
-                        <div className="sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0">
+
+                        <div className=" sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
                           {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
                           {/* {reduceOverviewSize(item.overview)} */}
                           {item.overview}
                         </div>
                       </div>
-                      <SliderArrows
-                        handleLeftClick={handleLeftClick}
-                        handleRightClick={handleRightClick}
-                      />
+                      {!smallSize ? (
+                        <div className="">
+                          <SliderArrows
+                            handleLeftClick={handleLeftClick}
+                            handleRightClick={handleRightClick}
+                          />
+                        </div>
+                      ) : null}
+
+                      {singleContentData ? (
+                        <div className={`${!smallSize ? 'my-1' : null}`}>
+                          <AddToLists
+                            type={type}
+                            content={item}
+                            contentRuntime={singleContentData.runtime}
+                          />
+                        </div>
+                      ) : null}
+                      {smallSize ? (
+                        <div className="">
+                          <SliderArrows
+                            handleLeftClick={handleLeftClick}
+                            handleRightClick={handleRightClick}
+                          />
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>

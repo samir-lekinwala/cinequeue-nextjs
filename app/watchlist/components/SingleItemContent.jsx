@@ -7,11 +7,11 @@ function SingleItemContent({ content, classes }) {
   const [hoverState, setHoverState] = useState(false)
 
   function hoverStateChangeTrue() {
-    setHoverState(true)
+    setHoverState(!hoverState)
   }
-  function hoverStateChangeFalse() {
-    setHoverState(false)
-  }
+  // function hoverStateChangeFalse() {
+  //   setHoverState(false)
+  // }
 
   // function getYearOfContent(item) {
   //   const year = item.split('').splice(0, 4).join('')
@@ -31,22 +31,24 @@ function SingleItemContent({ content, classes }) {
 
   return (
     <div
-      onMouseEnter={hoverStateChangeTrue}
-      onMouseLeave={hoverStateChangeFalse}
+      onClick={hoverStateChangeTrue}
       className={`flex flex-col w-[100px] sm:w-[200px] ${classes} overflow-hidden `}
     >
       {hoverState ? (
-        <Link href={`/${content.type}/${content.contentId}`}>
-          <div className="w-[100px] sm:w-[200px] h-[150px] sm:h-[300px] p-2 overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
-            {content.overview}
-          </div>
-        </Link>
+        <div className="w-[100px] sm:w-[200px] h-[150px] sm:h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
+          <Link href={`/${content.type}/${content.contentId}`}>
+            <button className="sticky object-contain top-0 animate-gradient-animation-expand rounded-lg h-[1.5rem] duration-500 bg-opacity-10 text-white hover:scale-105 hover:font-normal ease-in-out">
+              View More
+            </button>
+          </Link>
+          <p className="pt-[1.5rem]">{content.overview}</p>
+        </div>
       ) : null}
       <div
         className={`${
           hoverState
             ? 'opacity-10 transition-all duration-500 scale-125 '
-            : null
+            : 'transition-all duration-500 scale-100 ease-in-out'
         } `}
       >
         <img

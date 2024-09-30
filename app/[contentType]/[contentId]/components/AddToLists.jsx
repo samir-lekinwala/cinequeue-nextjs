@@ -14,13 +14,19 @@ import {
   where,
 } from 'firebase/firestore'
 
-function AddToLists({ type, content }) {
+function AddToLists({ type, content, contentRuntime }) {
   const [watchListed, setWatchListed] = useState()
   const [user, loading, error] = useAuthState(auth)
 
   const [seenListed, setSeenListed] = useState()
 
   const movieOrTvShow = type
+
+  function checkRuntime() {
+    if (content.runtime == undefined) {
+      return contentRuntime
+    } else return content.runtime
+  }
 
   async function addToDb(buttonType) {
     const newListRef = collection(db, buttonType)
@@ -129,7 +135,7 @@ function AddToLists({ type, content }) {
     userUid: user?.uid,
     type: movieOrTvShow,
     contentId: content.id,
-    runtime: content.runtime,
+    runtime: checkRuntime(),
     overview: content.overview,
     release_date: content.release_date,
     title: content.title,
