@@ -155,7 +155,7 @@ function HeroSlider({ content, type }) {
                                 : 'Loading minutes...'}
                             </div>
 
-                            <div className=" sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
+                            <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
                               {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
                               {/* {reduceOverviewSize(item.overview)} */}
                               {item.overview}
