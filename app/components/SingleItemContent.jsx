@@ -1,16 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from 'next/link'
 import React, { useState } from 'react'
+import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 
-function SingleItemContent({ content, classes }) {
+function SingleItemContent({ content, classes, type }) {
   const [hoverState, setHoverState] = useState(false)
 
   function hoverStateChangeTrue() {
-    setHoverState(true)
-    console.log('hover state true', hoverState)
+    setHoverState(!hoverState)
   }
   function hoverStateChangeFalse() {
     setHoverState(false)
-    console.log('hover state false', hoverState)
   }
 
   function getYearOfContent(item) {
@@ -20,20 +20,30 @@ function SingleItemContent({ content, classes }) {
 
   return (
     <div
-      onMouseEnter={hoverStateChangeTrue}
-      onMouseLeave={hoverStateChangeFalse}
+      onClick={hoverStateChangeTrue}
+      // oncl={hoverStateChangeFalse}
       className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
     >
       {hoverState ? (
-        <div className="w-[200px] h-[300px] p-2 overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
-          {content.overview}
+        <div className="w-[200px] h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
+          <div className="w-full">
+            <Link href={`/${type}/${content.id}`}>
+              <button className="animate-gradient-animation-expand rounded-lg h-[1.5rem] duration-500 bg-opacity-10 text-white right-0 left-0 top-0 hover:scale-105 hover:font-normal ease-in-out">
+                View More
+              </button>
+            </Link>
+          </div>
+          <p className="pt-[1.5rem]">{content.overview}</p>
+          {/* <div className="z-80"> */}
+          <AddToLists type={type} content={content} />
+          {/* </div> */}
         </div>
       ) : null}
       <div
         className={`${
           hoverState
-            ? 'opacity-10 transition-all duration-500 scale-125 '
-            : null
+            ? 'opacity-10 transition-all duration-500 scale-125 ease-in-out'
+            : 'transition-all duration-500 scale-100 ease-in-out'
         } `}
       >
         <img
@@ -45,10 +55,10 @@ function SingleItemContent({ content, classes }) {
       </div>
       <div key={content.id}>
         <p className=" text-center font-poppins text-gray-400">
-          {content.title}
+          <Link href={`/${type}/${content.id}`}>{content.title}</Link>
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
-          {getYearOfContent(content.release_date)}
+          {content.release_date}
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
           ⭐{content.vote_average}

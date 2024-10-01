@@ -119,7 +119,7 @@ function Nav() {
   const closeDrawer = () => setIsDrawerOpen(false)
 
   return (
-    <div className="flex bg-black w-full justify-between items-center p-2 lg:px-10">
+    <div className="flex bg-black w-full h-[48px] justify-between items-center p-2 lg:px-10 z-50">
       <Link href={'/'}>
         <Logo classes={'text-2xl text-white font-poppins'} />{' '}
       </Link>
@@ -173,63 +173,65 @@ function Nav() {
             /> */}
             <Logo classes={'text-white text-2xl'} />
           </div>
-          <div className="p-2">
+          {/* <div className="p-2">
             <Input
               className=""
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
               label="Search"
             />
-          </div>
+          </div> */}
           <List className="">
             <hr className="my-2 border-blue-gray-50" />
-            <ListItem className="text-white">
+            {/* <ListItem className="text-white">
               <ListItemPrefix>
                 <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
               Movies
               <ListItemSuffix>
-                {/* <Chip
+                <Chip
                   value="14"
                   size="sm"
                   variant="ghost"
                   color=""
                   className="bg-white rounded-full"
-                /> */}
+                />
               </ListItemSuffix>
-            </ListItem>
-            <ListItem className="text-white">
+            </ListItem> */}
+            {/* <ListItem className="text-white">
               <ListItemPrefix>
                 <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
               TV Shows
               <ListItemSuffix>
-                {/* <Chip
+                <Chip
                   value="14"
                   size="sm"
                   variant="ghost"
                   color=""
                   className="bg-white rounded-full"
-                /> */}
+                />
               </ListItemSuffix>
-            </ListItem>
+            </ListItem> */}
             {user ? (
               <>
-                <ListItem className="text-white">
-                  <ListItemPrefix>
-                    <Cog6ToothIcon className="h-5 w-5" />
-                  </ListItemPrefix>
-                  Watch List
-                  <ListItemSuffix>
-                    <Chip
-                      value="14"
-                      size="sm"
-                      variant="ghost"
-                      color=""
-                      className="bg-white rounded-full"
-                    />
-                  </ListItemSuffix>
-                </ListItem>
-                <ListItem className="text-white">
+                <Link href={'/watchlist'} onClick={closeDrawer}>
+                  <ListItem className="text-white">
+                    <ListItemPrefix>
+                      <Cog6ToothIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Watch List
+                    <ListItemSuffix>
+                      {/* <Chip
+                        value="14"
+                        size="sm"
+                        variant="ghost"
+                        color=""
+                        className="bg-white rounded-full"
+                      /> */}
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
+                {/* <ListItem className="text-white">
                   <ListItemPrefix>
                     <Cog6ToothIcon className="h-5 w-5" />
                   </ListItemPrefix>
@@ -249,7 +251,7 @@ function Nav() {
                     <UserCircleIcon className="h-5 w-5" />
                   </ListItemPrefix>
                   Profile
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem onClick={handleSignOut} className="text-white">
                   <ListItemPrefix>
