@@ -104,16 +104,6 @@ function HeroSlider({ content, type }) {
                         : 'opacity-0 z-0'
                     }`}
                   >
-                    {/* <div>
-                    {' '}
-                    <HeroSlide
-                      content={item}
-                      classes={'w-full h-[70vh] object-cover'}
-                    />
-                    background gradient fade for both top and bottom
-                    <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
-                  </div> */}
                     <div
                       className={`text-white absolute inset-0  flex w-[100vw] mt-10 sm:mt-0 justify-center text-4xl `}
                     >
@@ -126,7 +116,7 @@ function HeroSlider({ content, type }) {
                           <img
                             className={`${
                               currentSlide == index
-                                ? 'opacity-100'
+                                ? 'opacity-100 z-20 relative'
                                 : 'opacity-0'
                             } grow h-auto w-auto transition-all duration-700 ease-in-out`}
                             alt={`${item.title} poster`}

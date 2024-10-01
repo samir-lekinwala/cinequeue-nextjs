@@ -60,7 +60,7 @@ function SingleItemContent({ content, classes }) {
       </div>
       <div className="z-20">
         {/* <Link href={`/${content.type}/${content.contentId}`}> */}
-        <p className=" text-center font-poppins text-gray-400">
+        <p className=" text-center font-poppins text-gray-400 font-bold">
           {content.title}
         </p>
         {/* </Link> */}
@@ -70,7 +70,7 @@ function SingleItemContent({ content, classes }) {
         <p className=" text-center font-poppins text-gray-400 text-sm">
           Added on {date}
         </p>
-        <p className=" text-center font-poppins text-gray-400 text-sm">
+        <p className=" text-center font-poppins text-gray-400 text-sm font-semibold">
           {content.runtime} Minutes
         </p>
       </div>
