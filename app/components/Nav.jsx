@@ -173,65 +173,65 @@ function Nav() {
             /> */}
             <Logo classes={'text-white text-2xl'} />
           </div>
-          <div className="p-2">
+          {/* <div className="p-2">
             <Input
               className=""
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
               label="Search"
             />
-          </div>
+          </div> */}
           <List className="">
             <hr className="my-2 border-blue-gray-50" />
-            <ListItem className="text-white">
+            {/* <ListItem className="text-white">
               <ListItemPrefix>
                 <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
               Movies
               <ListItemSuffix>
-                {/* <Chip
+                <Chip
                   value="14"
                   size="sm"
                   variant="ghost"
                   color=""
                   className="bg-white rounded-full"
-                /> */}
+                />
               </ListItemSuffix>
-            </ListItem>
-            <ListItem className="text-white">
+            </ListItem> */}
+            {/* <ListItem className="text-white">
               <ListItemPrefix>
                 <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
               TV Shows
               <ListItemSuffix>
-                {/* <Chip
+                <Chip
                   value="14"
                   size="sm"
                   variant="ghost"
                   color=""
                   className="bg-white rounded-full"
-                /> */}
+                />
               </ListItemSuffix>
-            </ListItem>
+            </ListItem> */}
             {user ? (
               <>
-                <Link href={'/watchlist'}>
+                <Link href={'/watchlist'} onClick={closeDrawer}>
                   <ListItem className="text-white">
                     <ListItemPrefix>
                       <Cog6ToothIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     Watch List
                     <ListItemSuffix>
-                      <Chip
+                      {/* <Chip
                         value="14"
                         size="sm"
                         variant="ghost"
                         color=""
                         className="bg-white rounded-full"
-                      />
+                      /> */}
                     </ListItemSuffix>
                   </ListItem>
                 </Link>
-                <ListItem className="text-white">
+                {/* <ListItem className="text-white">
                   <ListItemPrefix>
                     <Cog6ToothIcon className="h-5 w-5" />
                   </ListItemPrefix>
@@ -251,7 +251,7 @@ function Nav() {
                     <UserCircleIcon className="h-5 w-5" />
                   </ListItemPrefix>
                   Profile
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem onClick={handleSignOut} className="text-white">
                   <ListItemPrefix>
