@@ -44,7 +44,7 @@ function MoviesCarousel() {
 
   console.log('movies content test', moviesContent)
   return (
-    <div className="text-green-500 w-full">
+    <div className="text-green-500 w-full z-50">
       {/* Checks if moviesContent exists/data has loaded */}
       {!moviesContent ? (
         <p>Movies loading...</p>
@@ -52,9 +52,9 @@ function MoviesCarousel() {
         moviesContent.map((carouselContent) => (
           // console.log('type from before owlcarousel map', carouselContent),
           <>
-            <p className="text-center text-2xl font-poppins text-gray-400">
+            {/* <p className="text-center text-2xl font-poppins text-gray-400 relative z-50">
               {carouselContent.type}
-            </p>
+            </p> */}
             <OwlCarousel
               key={carouselContent}
               content={carouselContent}

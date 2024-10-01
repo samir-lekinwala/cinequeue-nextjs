@@ -68,108 +68,199 @@ function HeroSlider({ content, type }) {
 
   // console.log('single content data', singleContentData)
 
-  return (
-    <>
-      {!content ? (
-        <div className="flex justify-center items-center z-10">
-          <FallingLines color="#ff7e5f" />
-        </div>
-      ) : (
-        <div className="w-full h-full relative">
-          <div className="w-full h-[70vh] ">
-            {content.map((item, index) => (
-              <div
-                className={`${
-                  currentSlide == index ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                } absolute inset-0 transition-all ease-in-out duration-[700ms] h-fit`}
-                key={item.id}
-              >
-                <HeroSlide
-                  content={item}
-                  classes={'w-full h-[70vh] object-cover'}
-                />
-
-                {/* background gradient fade for both top and bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
-
-                <div
-                  className={`${
-                    !smallSize ? '' : ''
-                  }text-white absolute inset-0 h-[70vh] flex w-[100vw] justify-center items-center text-4xl`}
-                >
+  function heroSliderv1() {
+    return (
+      <>
+        {!content ? (
+          <div className="flex justify-center items-center ">
+            <FallingLines color="#ff7e5f" />
+          </div>
+        ) : (
+          <div className="w-full flex  h-[100vh] relative ">
+            <div className="w-full  mb-20 sm:mb-0 object-fit">
+              {content.map((item, index) => (
+                <>
                   <div
-                    onMouseEnter={() => setSlideshowPaused(true)}
-                    onMouseLeave={() => setSlideshowPaused(false)}
-                    className="flex flex-col items-center justify-center sm:flex-row gap-6 h-[70vh] mx-auto sm:mx-2 "
+                    className={`${
+                      currentSlide == index
+                        ? 'opacity-100 h-[140vh] z-0'
+                        : 'opacity-0 z-0'
+                    } absolute inset-0 transition-all ease-in-out duration-[700ms]`}
+                    key={item.id}
+                    style={{
+                      zIndex: '0',
+                      backgroundImage: `
+              linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
+    linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
+    url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
+                      backgroundPosition: 'center',
+                      backgroundSize: 'cover',
+                    }}
+                  ></div>
+                  <div
+                    className={`${
+                      currentSlide == index
+                        ? 'opacity-100 z-10'
+                        : 'opacity-0 z-0'
+                    }`}
                   >
-                    <Link href={`/${type}/${item.id}`}>
-                      <img
-                        className="w-[200px] object-scale-down min-h-0 sm:w-[300px] md:w-[300px]"
-                        alt={`${item.title} poster`}
-                        src={`https://image.tmdb.org/t/p/w300/${item.poster_path}
-                    `}
-                      ></img>
-                    </Link>
-                    <div className="shrink sm:w-[400px] px-2 relative flex flex-col justify-center">
+                    {/* <div>
+                    {' '}
+                    <HeroSlide
+                      content={item}
+                      classes={'w-full h-[70vh] object-cover'}
+                    />
+                    background gradient fade for both top and bottom
+                    <div className="absolute inset-0 bg-gradient-to-t from-black from-2% "></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black from-0% "></div>
+                  </div> */}
+                    <div
+                      className={`text-white absolute inset-0  flex w-[100vw] mt-10 sm:mt-0 justify-center text-4xl `}
+                    >
                       <div
-                        className={`${
-                          item.title.length > 20
-                            ? 'text-xl sm:text-2xl'
-                            : 'text-2xl sm:text-3xl md:text-4xl'
-                        } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
+                        onMouseEnter={() => setSlideshowPaused(true)}
+                        onMouseLeave={() => setSlideshowPaused(false)}
+                        className="flex flex-col items-center  sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
                       >
-                        {/* If original language is not english 'title' in api call is used as opposed to original title */}
-                        <Link href={`/${type}/${item.id}`}>{item.title}</Link>
-                        <div
-                          className={`${'text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto'}`}
-                        >
-                          {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
-                          {singleContentData && singleContentData.id == item.id
-                            ? `${singleContentData.runtime} minutes`
-                            : 'Loading minutes...'}
-                        </div>
+                        <Link href={`/${type}/${item.id}`}>
+                          <img
+                            className={`${
+                              currentSlide == index
+                                ? 'opacity-100'
+                                : 'opacity-0'
+                            } grow h-auto w-auto transition-all duration-700 ease-in-out`}
+                            alt={`${item.title} poster`}
+                            src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+                          ></img>
+                        </Link>
+                        <div className="shrink sm:w-[400px] px-2 relative flex flex-col ">
+                          <div
+                            className={`${
+                              item.title.length > 20
+                                ? 'text-xl sm:text-2xl'
+                                : 'text-2xl sm:text-3xl md:text-4xl'
+                            } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
+                          >
+                            {/* If original language is not english 'title' in api call is used as opposed to original title */}
+                            <Link href={`/${type}/${item.id}`}>
+                              {item.title}
+                            </Link>
+                            <div
+                              className={`${'text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto'}`}
+                            >
+                              {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
+                              {singleContentData &&
+                              singleContentData.id == item.id
+                                ? `${singleContentData.runtime} minutes`
+                                : 'Loading minutes...'}
+                            </div>
 
-                        <div className=" sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
-                          {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
-                          {/* {reduceOverviewSize(item.overview)} */}
-                          {item.overview}
+                            <div className=" sm:text-base text-base text-pretty h-[15vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
+                              {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
+                              {/* {reduceOverviewSize(item.overview)} */}
+                              {item.overview}
+                            </div>
+                          </div>
+                          {!smallSize ? (
+                            <div className="">
+                              <SliderArrows
+                                handleLeftClick={handleLeftClick}
+                                handleRightClick={handleRightClick}
+                              />
+                            </div>
+                          ) : null}
+
+                          {singleContentData ? (
+                            <div
+                              className={`${
+                                !smallSize
+                                  ? 'relative z-20 my-1'
+                                  : 'relative z-20'
+                              }`}
+                            >
+                              <AddToLists
+                                type={type}
+                                content={item}
+                                contentRuntime={singleContentData.runtime}
+                              />
+                            </div>
+                          ) : null}
+                          {smallSize ? (
+                            <div className="">
+                              <SliderArrows
+                                handleLeftClick={handleLeftClick}
+                                handleRightClick={handleRightClick}
+                              />
+                            </div>
+                          ) : null}
                         </div>
                       </div>
-                      {!smallSize ? (
-                        <div className="">
-                          <SliderArrows
-                            handleLeftClick={handleLeftClick}
-                            handleRightClick={handleRightClick}
-                          />
-                        </div>
-                      ) : null}
-
-                      {singleContentData ? (
-                        <div className={`${!smallSize ? 'my-1' : null}`}>
-                          <AddToLists
-                            type={type}
-                            content={item}
-                            contentRuntime={singleContentData.runtime}
-                          />
-                        </div>
-                      ) : null}
-                      {smallSize ? (
-                        <div className="">
-                          <SliderArrows
-                            handleLeftClick={handleLeftClick}
-                            handleRightClick={handleRightClick}
-                          />
-                        </div>
-                      ) : null}
                     </div>
+                  </div>
+                </>
+              ))}
+            </div>
+          </div>
+        )}
+      </>
+    )
+  }
+
+  function heroSliderv2() {
+    return (
+      <div className="h-[120vh] relative">
+        {content.map((item, index) => (
+          <div key={item.id} className="absolute w-full object-contain">
+            {/* background image */}
+            <div
+              className={`${
+                currentSlide == index
+                  ? 'visible object-cover w-auto h-[120vh]'
+                  : 'hidden'
+              } `}
+              style={{
+                backgroundImage: `
+                linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
+      linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
+      url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+              }}
+            >
+              <div className="text-white flex justify-center ">
+                <div className="w-[600px] h-[70vh] flex flex-col sm:flex-row">
+                  <Link href={`/${type}/${item.id}`}>
+                    <img
+                      className=""
+                      alt={`${item.title} poster`}
+                      src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+                    ></img>
+                  </Link>
+                  <div className="shrink">
+                    <h2 className="flex flex-col">
+                      {item.title}{' '}
+                      <span>
+                        {singleContentData && singleContentData.id == item.id
+                          ? `${singleContentData.runtime} minutes`
+                          : 'Loading minutes...'}
+                      </span>
+                    </h2>
+                    <p className="text-white w-[200px]">{item.overview}</p>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            <div></div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+    )
+  }
+  return (
+    <>
+      {/* {heroSliderv2()} */}
+      {heroSliderv1()}
     </>
   )
 }

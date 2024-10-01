@@ -119,7 +119,7 @@ function Nav() {
   const closeDrawer = () => setIsDrawerOpen(false)
 
   return (
-    <div className="flex bg-black w-full justify-between items-center p-2 lg:px-10 z-50">
+    <div className="flex bg-black w-full h-[48px] justify-between items-center p-2 lg:px-10 z-50">
       <Link href={'/'}>
         <Logo classes={'text-2xl text-white font-poppins'} />{' '}
       </Link>
