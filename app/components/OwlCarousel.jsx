@@ -1,18 +1,18 @@
+'use client'
+
 import { useEffect } from 'react'
 import $ from 'jquery'
 import 'owl.carousel/dist/assets/owl.carousel.css'
 import 'owl.carousel/dist/assets/owl.theme.default.css'
 import 'owl.carousel'
 import SingleItemContent from './SingleItemContent'
-import Link from 'next/link'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 
 function OwlCarousel({ content, type }) {
   const data = content.data.results
   console.log('owl carousel check for content type', content)
 
   useEffect(() => {
+    const window = global.window
     if (typeof window !== 'undefined') {
       $(document).ready(function () {
         $('.owl-carousel').owlCarousel({
@@ -46,7 +46,7 @@ function OwlCarousel({ content, type }) {
       </p>
       <div className="owl-carousel">
         {!data ? (
-          <Skeleton count={5} />
+          <p>Loading...</p>
         ) : (
           data.map((item) => (
             <div className="item" key={item.id}>

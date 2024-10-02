@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { getData } from '../api/apiCalls'
 import Carousel from './Carousel'
-import OwlCarousel from './OwlCarousel'
+// import OwlCarousel from './OwlCarousel'
+import dynamic from 'next/dynamic'
 
 function MoviesCarousel() {
   const [moviesContent, setMoviesContent] = useState([])
+  const OwlCarousel = dynamic(() => import('./OwlCarousel'), { ssr: false })
 
   // const movieCarouselContent = [
   //   {

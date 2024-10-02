@@ -100,7 +100,7 @@ function AddToLists({ type, content, contentRuntime }) {
 
       fetchData()
     }
-  }, [user, watchListed])
+  }, [user, content.id])
 
   useEffect(() => {
     if (user) {
@@ -121,7 +121,7 @@ function AddToLists({ type, content, contentRuntime }) {
 
       fetchData()
     }
-  }, [user, watchListed])
+  }, [user, content.id])
 
   function watchListButton() {
     addToDb('watchlist')
