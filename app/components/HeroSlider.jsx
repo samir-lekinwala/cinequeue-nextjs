@@ -48,7 +48,7 @@ function HeroSlider({ content, type }) {
 
   useEffect(() => {
     if (content && content.length > 0) {
-      getSingleContentData('movie', content[currentSlide].id)
+      getSingleContentData(type, content[currentSlide].id)
     }
   }, [content, currentSlide])
 

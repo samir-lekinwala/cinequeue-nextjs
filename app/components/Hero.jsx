@@ -3,11 +3,11 @@ import HeroSlider from './HeroSlider'
 import { getData } from '../api/apiCalls'
 import { FallingLines } from 'react-loader-spinner'
 
-function Hero() {
+function Hero({ type }) {
   const [heroData, setHeroData] = useState([])
 
   async function getHeroData() {
-    const result = await getData('movie/popular?language=en-US&page=1')
+    const result = await getData(`${type}/popular?language=en-US&page=1`)
     setHeroData(result.results)
   }
 
