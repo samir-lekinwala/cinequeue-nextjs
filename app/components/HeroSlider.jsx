@@ -1,11 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
+'use client'
 import { useMediaQuery } from 'usehooks-ts'
 import React, { useEffect, useState } from 'react'
-import HeroSlide from './HeroSlide'
 import SliderArrows from './SliderArrows'
 import Link from 'next/link'
 import { getData } from '../api/apiCalls'
-import { RiArrowLeftWideFill, RiArrowRightWideFill } from 'react-icons/ri'
 import { FallingLines } from 'react-loader-spinner'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 

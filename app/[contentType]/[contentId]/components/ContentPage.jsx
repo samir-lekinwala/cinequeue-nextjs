@@ -14,7 +14,7 @@ function ContentPage({ type, contentId }) {
 
   useEffect(() => {
     getContentData()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   // console.log(type, contentId, 'test2')
 
   function getTrailer(array) {
