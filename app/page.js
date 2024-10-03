@@ -2,7 +2,7 @@
 import { auth } from './firebaseConfig'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Hero from './components/Hero'
-import MoviesCarousel from './components/MoviesCarousel'
+import HomePage from './components/HomePage'
 
 export default function Home() {
   const [user] = useAuthState(auth)
@@ -10,8 +10,7 @@ export default function Home() {
 
   return (
     <main className="">
-      <Hero type={'movie'} />
-      <MoviesCarousel />
+      <HomePage />
     </main>
   )
 }
