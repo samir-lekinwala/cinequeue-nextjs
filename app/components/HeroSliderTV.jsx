@@ -33,7 +33,9 @@ function HeroSliderTV({
       averageRunTime = runTimeArray[0]
     }
 
-    return averageRunTime
+    if (averageRunTime == 0) {
+      return getAverageRuntimeFromSeason1(singleContentData['season/1'])
+    } else return averageRunTime.toFixed(0)
   }
 
   function getTotalEpisodesRuntime() {
@@ -41,6 +43,16 @@ function HeroSliderTV({
     const totalNubmerOfEpisodes = singleContentData.number_of_episodes
 
     return singleEpisodeRuntime * totalNubmerOfEpisodes
+  }
+
+  function getAverageRuntimeFromSeason1(season) {
+    const episodesArray = season.episodes
+    let totalSeason1Runtime = 0
+
+    for (let i = 0; i < episodesArray.length; i++) {
+      totalSeason1Runtime += episodesArray[i].runtime
+    }
+    return (totalSeason1Runtime / episodesArray.length - 1).toFixed(0)
   }
 
   return (
