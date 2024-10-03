@@ -53,7 +53,9 @@ function HeroSlider({ content, type }) {
   }, [type])
 
   async function getSingleContentData(type, id) {
-    const result = await getData(`${type}/${id}`)
+    const result = await getData(
+      `${type}/${id}${type == 'tv' ? ' ?append_to_response=season%2F1' : null}`
+    )
     setSingleContentData(result)
   }
 

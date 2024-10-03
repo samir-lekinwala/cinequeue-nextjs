@@ -16,6 +16,33 @@ function HeroSliderTV({
   smallSize,
   currentSlide,
 }) {
+  console.log('single content data', singleContentData)
+
+  function getEpisodeRunTime() {
+    const runTimeArray = singleContentData.episode_run_time
+    let averageRunTime = 0
+
+    if (runTimeArray.length > 1) {
+      let totalTimeFromArray = 0
+
+      for (let i = 0; i < runTimeArray.length; index++) {
+        totalTimeFromArray += runTimeArray[i]
+      }
+      averageRunTime = totalTimeFromArray / runTimeArray.length - 1
+    } else if (runTimeArray.length == 1) {
+      averageRunTime = runTimeArray[0]
+    }
+
+    return averageRunTime
+  }
+
+  function getTotalEpisodesRuntime() {
+    const singleEpisodeRuntime = getEpisodeRunTime()
+    const totalNubmerOfEpisodes = singleContentData.number_of_episodes
+
+    return singleEpisodeRuntime * totalNubmerOfEpisodes
+  }
+
   return (
     <>
       {content[0].name == undefined ? (
@@ -90,7 +117,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         >
                           {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                           {singleContentData && singleContentData.id == item.id
-                            ? `${singleContentData.runtime} minutes`
+                            ? `${getTotalEpisodesRuntime()} minutes`
                             : 'Loading minutes...'}
                         </div>
 
