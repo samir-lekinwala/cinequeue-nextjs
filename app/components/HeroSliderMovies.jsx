@@ -41,7 +41,7 @@ function HeroSliderMovies({
                 className={`${
                   currentSlide == index
                     ? 'opacity-100 h-[140vh] z-0'
-                    : 'opacity-0 z-0'
+                    : 'opacity-0 z-0 h-[140vh]'
                 } absolute inset-0 transition-all ease-in-out duration-[700ms]`}
                 key={item.id}
                 style={{
@@ -73,12 +73,18 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                           currentSlide == index
                             ? 'opacity-100 z-20 relative'
                             : 'opacity-0'
-                        } grow h-auto w-auto transition-all duration-700 ease-in-out`}
+                        } grow h-auto w-auto transition-all duration-[700ms] ease-in-out`}
                         alt={`${item.title} poster`}
                         src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
                       ></img>
                     </Link>
-                    <div className="shrink sm:w-[400px] px-2 relative flex flex-col ">
+                    <div
+                      className={` ${
+                        currentSlide == index
+                          ? 'opacity-100 z-20 relative'
+                          : 'opacity-0'
+                      }shrink sm:w-[400px] px-2 relative flex flex-col transition-all duration-[700ms] ease-in-out`}
+                    >
                       <div
                         className={`${
                           item.title.length > 20
@@ -104,7 +110,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         </div>
                       </div>
                       {!smallSize ? (
-                        <div className="">
+                        <div className=" pb-4">
                           <SliderArrows
                             handleLeftClick={handleLeftClick}
                             handleRightClick={handleRightClick}
@@ -115,7 +121,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       {singleContentData ? (
                         <div
                           className={`${
-                            !smallSize ? 'relative z-20 my-1' : 'relative z-20'
+                            !smallSize ? 'relative z-20 my-4' : 'relative z-20'
                           }`}
                         >
                           <AddToLists
@@ -126,7 +132,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         </div>
                       ) : null}
                       {smallSize ? (
-                        <div className="">
+                        <div className="mt-2">
                           <SliderArrows
                             handleLeftClick={handleLeftClick}
                             handleRightClick={handleRightClick}
