@@ -41,11 +41,16 @@ function HeroSlider({ content, type }) {
         setCountdown(countdown - 1)
 
         handleRightClick()
+        console.log(countdown)
       }, 6000)
 
       return () => clearInterval(interval)
     }
   })
+
+  useEffect(() => {
+    setCountdown(20)
+  }, [type])
 
   async function getSingleContentData(type, id) {
     const result = await getData(`${type}/${id}`)

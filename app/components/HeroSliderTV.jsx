@@ -77,9 +77,11 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       <div
                         className={`${
                           item.name.length > 20
+                            ? 'text-lg sm:text-xl'
+                            : item.name.length > 30
                             ? 'text-base sm:text-xl'
                             : 'text-2xl sm:text-3xl md:text-4xl'
-                        } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
+                        } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty mx-auto`}
                       >
                         {/* If original language is not english 'title' in api call is used as opposed to original title */}
                         <Link href={`/${type}/${item.id}`}>{item.name}</Link>
