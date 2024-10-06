@@ -3,6 +3,8 @@ import AddToLists from '../components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
 
 function PosterSection({ content, type }) {
+  // console.log('content and type', content, type)
+
   return (
     <>
       {' '}
