@@ -42,7 +42,7 @@ function HeroSliderTV({
     const singleEpisodeRuntime = getEpisodeRunTime()
     const totalNubmerOfEpisodes = singleContentData.number_of_episodes
 
-    return singleEpisodeRuntime * totalNubmerOfEpisodes
+    return ((singleEpisodeRuntime * totalNubmerOfEpisodes) / 60).toFixed(2)
   }
 
   function getAverageRuntimeFromSeason1(season) {
@@ -129,8 +129,8 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         >
                           {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                           {singleContentData && singleContentData.id == item.id
-                            ? `${getTotalEpisodesRuntime()} minutes`
-                            : 'Loading minutes...'}
+                            ? `${getTotalEpisodesRuntime()} hours`
+                            : 'Loading runtime...'}
                         </div>
 
                         <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
