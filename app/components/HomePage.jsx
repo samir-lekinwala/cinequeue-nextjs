@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Hero from './Hero'
 import MoviesCarousel from './MoviesCarousel'
+import TVCarousel from './TVCarousel'
 import SwitchContent from './SwitchContent'
 
 function HomePage() {
@@ -41,7 +42,7 @@ function HomePage() {
         contentType={contentType}
       />
       <Hero type={contentType} />
-      <MoviesCarousel />
+      {contentType == 'movie' ? <MoviesCarousel /> : <TVCarousel />}
     </div>
   )
 }
