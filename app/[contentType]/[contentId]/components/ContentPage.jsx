@@ -14,17 +14,27 @@ function ContentPage({ type, contentId }) {
 
   useEffect(() => {
     async function getContentData() {
-      const result = await getData(`${type}/${contentId}`)
+      if (type == 'movie') {
+        const result = await getData(`${type}/${contentId}`)
+        setData(result)
+      } else if (type == 'tv') {
+        const result = await getData(
+          `${type}/${contentId}?append_to_response=season%2F1`
+        )
+        setData(result)
+      }
+
+      // '?append_to_response=season%2F1'
+
       const videoResult = await getData(`${type}/${contentId}/videos`)
       const creditResults = await getData(`${type}/${contentId}/credits`)
 
-      setData(result)
       setVideosKey(getTrailer(videoResult.results))
       setCredits(creditResults.cast)
     }
 
     getContentData()
-  }, [contentId]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [contentId, type]) // eslint-disable-line react-hooks/exhaustive-deps
   // console.log(type, contentId, 'test2')
 
   function getTrailer(array) {

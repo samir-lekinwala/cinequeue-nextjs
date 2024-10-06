@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import AddToLists from '../components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
+import { getTotalEpisodesRuntime } from '../../../functions/tvShowRuntime'
 
 function PosterSection({ content, type }) {
   // console.log('content and type', content, type)
@@ -38,7 +39,12 @@ function PosterSection({ content, type }) {
               {type == 'movie' ? content.title : content.name}
               <div className="text-sm pb-2 text-zinc-400 w-fit mx-auto">
                 {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
-                {content.runtime} minutes ⭐ {content.vote_average}
+                {type == 'movie' ? (
+                  <>{content.runtime} minutes</>
+                ) : (
+                  <>{getTotalEpisodesRuntime(content)} hours</>
+                )}{' '}
+                ⭐ {content.vote_average}
               </div>
               <div className=" text-base text-pretty text-ellipsis overflow-auto min-h-0">
                 {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}

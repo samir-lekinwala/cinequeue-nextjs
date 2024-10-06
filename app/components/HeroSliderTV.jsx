@@ -3,6 +3,7 @@ import React from 'react'
 import SliderArrows from './SliderArrows'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
+import { getTotalEpisodesRuntime } from '../functions/tvShowRuntime'
 
 function HeroSliderTV({
   // item,
@@ -17,43 +18,6 @@ function HeroSliderTV({
   currentSlide,
 }) {
   console.log('single content data', singleContentData)
-
-  function getEpisodeRunTime() {
-    const runTimeArray = singleContentData.episode_run_time
-    let averageRunTime = 0
-
-    if (runTimeArray.length > 1) {
-      let totalTimeFromArray = 0
-
-      for (let i = 0; i < runTimeArray.length; index++) {
-        totalTimeFromArray += runTimeArray[i]
-      }
-      averageRunTime = totalTimeFromArray / runTimeArray.length - 1
-    } else if (runTimeArray.length == 1) {
-      averageRunTime = runTimeArray[0]
-    }
-
-    if (averageRunTime == 0) {
-      return getAverageRuntimeFromSeason1(singleContentData['season/1'])
-    } else return averageRunTime.toFixed(0)
-  }
-
-  function getTotalEpisodesRuntime() {
-    const singleEpisodeRuntime = getEpisodeRunTime()
-    const totalNubmerOfEpisodes = singleContentData.number_of_episodes
-
-    return ((singleEpisodeRuntime * totalNubmerOfEpisodes) / 60).toFixed(2)
-  }
-
-  function getAverageRuntimeFromSeason1(season) {
-    const episodesArray = season.episodes
-    let totalSeason1Runtime = 0
-
-    for (let i = 0; i < episodesArray.length; i++) {
-      totalSeason1Runtime += episodesArray[i].runtime
-    }
-    return (totalSeason1Runtime / episodesArray.length - 1).toFixed(0)
-  }
 
   return (
     <>
@@ -129,7 +93,9 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         >
                           {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                           {singleContentData && singleContentData.id == item.id
-                            ? `${getTotalEpisodesRuntime()} hours`
+                            ? `${getTotalEpisodesRuntime(
+                                singleContentData
+                              )} hours`
                             : 'Loading runtime...'}
                         </div>
 
