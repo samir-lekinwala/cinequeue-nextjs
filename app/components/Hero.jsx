@@ -3,17 +3,17 @@ import HeroSlider from './HeroSlider'
 import { getData } from '../api/apiCalls'
 import { FallingLines } from 'react-loader-spinner'
 
-function Hero() {
+function Hero({ type }) {
   const [heroData, setHeroData] = useState([])
 
   async function getHeroData() {
-    const result = await getData('movie/popular?language=en-US&page=1')
+    const result = await getData(`trending/${type}/week?language=en-US`)
     setHeroData(result.results)
   }
 
   useEffect(() => {
     getHeroData()
-  }, [])
+  }, [type])
 
   console.log('testing1', heroData)
   return (
@@ -23,7 +23,7 @@ function Hero() {
           <FallingLines color="#ff7e5f" />
         </div>
       ) : (
-        <HeroSlider type={'movie'} content={heroData} />
+        <HeroSlider type={type} content={heroData} />
       )}
     </div>
   )

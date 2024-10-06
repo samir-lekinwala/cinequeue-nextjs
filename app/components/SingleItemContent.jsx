@@ -55,10 +55,12 @@ function SingleItemContent({ content, classes, type }) {
       </div>
       <div key={content.id}>
         <p className=" text-center font-poppins text-gray-400">
-          <Link href={`/${type}/${content.id}`}>{content.title}</Link>
+          <Link href={`/${type}/${content.id}`}>
+            {type == 'movie' ? content.title : content.name}
+          </Link>
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
-          {content.release_date}
+          {type == 'movie ' ? content.release_date : content.first_air_date}
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
           ⭐{content.vote_average}

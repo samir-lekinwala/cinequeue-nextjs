@@ -13,29 +13,45 @@ function ContentPage({ type, contentId }) {
   const [credits, setCredits] = useState()
 
   useEffect(() => {
+    async function getContentData() {
+      if (type == 'movie') {
+        const result = await getData(`${type}/${contentId}`)
+        setData(result)
+      } else if (type == 'tv') {
+        const result = await getData(
+          `${type}/${contentId}?append_to_response=season%2F1`
+        )
+        setData(result)
+      }
+
+      // '?append_to_response=season%2F1'
+
+      const videoResult = await getData(`${type}/${contentId}/videos`)
+      const creditResults = await getData(`${type}/${contentId}/credits`)
+
+      setVideosKey(getTrailer(videoResult.results))
+      setCredits(creditResults.cast)
+    }
+
     getContentData()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [contentId, type]) // eslint-disable-line react-hooks/exhaustive-deps
   // console.log(type, contentId, 'test2')
 
   function getTrailer(array) {
     const result = array.find((element) => element.type == 'Trailer')
-    // console.log('gettrailer', result)
-    return result.key
-  }
 
-  async function getContentData() {
-    const result = await getData(`${type}/${contentId}`)
-    const videoResult = await getData(`${type}/${contentId}/videos`)
-    const creditResults = await getData(`${type}/${contentId}/credits`)
-
-    setData(result)
-    setVideosKey(getTrailer(videoResult.results))
-    console.log(creditResults)
-    setCredits(creditResults.cast)
+    if (!result) {
+      const secondOption = array.find((element) => element.type == 'Featurette')
+      if (!secondOption) {
+        const thirdOption = array[0].key
+        return thirdOption
+      } else return secondOption.key
+    } else return result.key
   }
 
   // console.log(data?.backdrop_path)
-  console.log('credits', credits?.cast)
+  // console.log('credits', credits?.cast)
+  console.log('credits', credits)
 
   return (
     <>
