@@ -40,12 +40,13 @@ function ContentPage({ type, contentId }) {
   function getTrailer(array) {
     const result = array.find((element) => element.type == 'Trailer')
 
-    if (result == undefined) {
+    if (!result) {
       const secondOption = array.find((element) => element.type == 'Featurette')
-      return secondOption.key
-    }
-    // console.log('gettrailer', result)
-    else return result.key
+      if (!secondOption) {
+        const thirdOption = array[0].key
+        return thirdOption
+      } else return secondOption.key
+    } else return result.key
   }
 
   // console.log(data?.backdrop_path)
