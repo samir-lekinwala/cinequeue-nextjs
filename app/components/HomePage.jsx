@@ -8,12 +8,20 @@ function HomePage() {
   const [contentType, setContentType] = useState('movie')
   const [typeBarClick, setTypeBarClick] = useState(true)
 
+  useEffect(() => {
+    if (localStorage.getItem('type') == undefined) {
+      setContentType('movie')
+    } else setContentType(JSON.parse(localStorage.getItem('type')))
+  }, [])
+
   function handleMoviesClick() {
     setContentType('movie')
+    localStorage.setItem('type', JSON.stringify('movie'))
   }
 
   function handleTVShowsClick() {
     setContentType('tv')
+    localStorage.setItem('type', JSON.stringify('tv'))
   }
 
   function handleTypeBarClick() {
