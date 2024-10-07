@@ -52,7 +52,11 @@ function PosterSection({ content, type }) {
                 {content.overview}
               </div>
             </div>
-            <AddToLists type={type} content={content} />
+            <AddToLists
+              type={type}
+              content={content}
+              contentRuntime={getTotalEpisodesRuntime(content) * 60}
+            />
           </div>
         </div>
       )}

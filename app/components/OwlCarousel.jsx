@@ -9,7 +9,7 @@ import SingleItemContent from './SingleItemContent'
 
 function OwlCarousel({ content, type }) {
   const data = content.data.results
-  console.log('owl carousel check for content type', content)
+  // console.log('owl carousel check for content type', content)
 
   useEffect(() => {
     const window = global.window

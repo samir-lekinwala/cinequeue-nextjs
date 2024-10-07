@@ -21,11 +21,18 @@ function AddToLists({ type, content, contentRuntime }) {
   const [seenListed, setSeenListed] = useState()
 
   const movieOrTvShow = type
+  // console.log(content)
 
   function checkRuntime() {
     if (content.runtime == undefined) {
       return contentRuntime
     } else return content.runtime
+  }
+
+  function getReleaseDate() {
+    if (type == 'show') {
+      return content.first_air_date
+    } else return content.release_date
   }
 
   async function addToDb(buttonType) {
@@ -137,7 +144,7 @@ function AddToLists({ type, content, contentRuntime }) {
     contentId: content.id,
     runtime: checkRuntime(),
     overview: content.overview,
-    release_date: content.release_date,
+    release_date: getReleaseDate(),
     title: content.title,
     poster_path: content.poster_path,
   }

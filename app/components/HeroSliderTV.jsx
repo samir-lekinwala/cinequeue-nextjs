@@ -17,7 +17,7 @@ function HeroSliderTV({
   smallSize,
   currentSlide,
 }) {
-  console.log('single content data', singleContentData)
+  // console.log('single content data', singleContentData)
 
   return (
     <>
