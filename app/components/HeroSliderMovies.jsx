@@ -95,11 +95,12 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         {/* If original language is not english 'title' in api call is used as opposed to original title */}
                         <Link href={`/${type}/${item.id}`}>{item.title}</Link>
                         <div
-                          className={`${'text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto'}`}
+                          className={`${'relative text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto flex justify-between gap-4'}`}
                         >
+                          <div className="">⭐{item.vote_average}</div>
                           {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                           {singleContentData && singleContentData.id == item.id
-                            ? `${singleContentData.runtime} minutes`
+                            ? `⌛${singleContentData.runtime} minutes`
                             : 'Loading minutes...'}
                         </div>
 
