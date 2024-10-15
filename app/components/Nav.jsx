@@ -63,7 +63,7 @@
 
 // export default Nav
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CiMenuBurger } from 'react-icons/ci'
 import {
   IconButton,
@@ -110,20 +110,62 @@ function Nav() {
   const [open, setOpen] = React.useState(0)
   const [openAlert, setOpenAlert] = React.useState(true)
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
+  const [searchBarClick, setSearchBarClick] = useState(false)
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value)
   }
 
+  const clickSearchBar = () => {
+    setSearchBarClick(true)
+    console.log('dummy', dummy.current)
+  }
+
   const openDrawer = () => setIsDrawerOpen(true)
   const closeDrawer = () => setIsDrawerOpen(false)
 
-  return (
-    <div className="flex bg-black w-full h-[48px] justify-between items-center p-2 lg:px-10 z-50">
-      <Link href={'/'}>
-        <Logo classes={'text-2xl text-white font-poppins'} />{' '}
-      </Link>
+  const dummy = useRef(null)
 
+  useEffect(() => {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(event) {
+      if (dummy.current && !dummy.current.contains(event.target)) {
+        setSearchBarClick(false)
+      }
+    }
+    // Bind the event listener
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [dummy])
+
+  return (
+    <div className="flex bg-black relative w-full h-[48px] justify-between items-center z-50">
+      <Link href={'/'}>
+        <Logo
+          classes={`${
+            searchBarClick
+              ? ''
+              : 'z-50 relative text-2xl text-white font-poppins cursor-pointer px-2'
+          } `}
+        />{' '}
+      </Link>
+      <div className="z-0 absolute w-full flex justify-center text-white my-auto">
+        <div
+          ref={dummy}
+          onClick={clickSearchBar}
+          className={`w-1/4  ${
+            searchBarClick ? 'w-full' : ''
+          } transition-all ease-in-out`}
+        >
+          <MagnifyingGlassIcon className="absolute h-5 w-5" />
+          <input className="bg-gray-800 h-[20px] w-full rounded-2xl bg-opacity-25"></input>
+        </div>
+      </div>
       {isDrawerOpen ? null : (
         <>
           <div className="flex gap-4 items-center">
@@ -135,15 +177,16 @@ function Nav() {
                 Sign In
               </button>
             ) : null}
-
-            <CiMenuBurger
-              // color="black"
-              onClick={openDrawer}
-              className={`
-              h-[2rem] w-[2rem] text-white 
+            <div className="px-2">
+              <CiMenuBurger
+                // color="black"
+                onClick={openDrawer}
+                className={`
+              h-[2rem] w-[2rem] relative z-50 text-white 
                 
               `}
-            />
+              />
+            </div>
           </div>
         </>
       )}
