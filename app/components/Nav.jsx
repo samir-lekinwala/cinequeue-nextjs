@@ -103,6 +103,7 @@ import { auth } from '../firebaseConfig'
 import signInWithGoogle from '../functions/signInWithGoogle'
 import handleSignOut from '../functions/handleSignOut'
 import Link from 'next/link'
+import { set } from 'firebase/database'
 
 function Nav() {
   const [user] = useAuthState(auth)
@@ -111,6 +112,11 @@ function Nav() {
   const [openAlert, setOpenAlert] = React.useState(true)
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
   const [searchBarClick, setSearchBarClick] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
+
+  function handleSearchInput(e) {
+    setSearchInput(e.target.value)
+  }
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value)
@@ -125,6 +131,10 @@ function Nav() {
   const closeDrawer = () => setIsDrawerOpen(false)
 
   const dummy = useRef(null)
+
+  useEffect(() => {
+    console.log(searchInput)
+  }, [searchInput])
 
   useEffect(() => {
     /**
@@ -144,53 +154,61 @@ function Nav() {
   }, [dummy])
 
   return (
-    <div className="flex bg-black relative w-full h-[48px] justify-between items-center z-50">
-      <Link href={'/'}>
-        <Logo
-          classes={`${
-            searchBarClick
-              ? ''
-              : 'z-50 relative text-2xl text-white font-poppins cursor-pointer px-2'
-          } `}
-        />{' '}
-      </Link>
-      <div className="z-0 absolute w-full flex justify-center text-white my-auto">
-        <div
-          ref={dummy}
-          onClick={clickSearchBar}
-          className={`w-1/4  ${
-            searchBarClick ? 'w-full' : ''
-          } transition-all ease-in-out`}
-        >
-          <MagnifyingGlassIcon className="absolute h-5 w-5" />
-          <input className="bg-gray-800 h-[20px] w-full rounded-2xl bg-opacity-25"></input>
+    <div>
+      <div className=" z-50 bg-black justify-between items-center flex relative w-full h-[48px]">
+        <Link href={'/'}>
+          <Logo
+            classes={`${
+              searchBarClick
+                ? ''
+                : 'z-50 relative text-2xl text-white font-poppins cursor-pointer px-2'
+            } `}
+          />{' '}
+        </Link>
+        <div className="z-0 absolute w-full flex justify-center text-white my-auto">
+          <div
+            ref={dummy}
+            onClick={clickSearchBar}
+            className={`w-1/4  ${
+              searchBarClick ? 'w-full' : ''
+            } transition-all ease-in-out relative`}
+          >
+            <MagnifyingGlassIcon
+              className={`${
+                searchInput.length > 0 ? 'hidden' : 'absolute h-full p-[6px]'
+              }`}
+            />
+            <input
+              onChange={(e) => handleSearchInput(e)}
+              className="bg-gray-800 h-[20px] w-full rounded-2xl bg-opacity-25 text-center"
+            ></input>
+          </div>
         </div>
-      </div>
-      {isDrawerOpen ? null : (
-        <>
-          <div className="flex gap-4 items-center">
-            {!user ? (
-              <button
-                onClick={signInWithGoogle}
-                className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins"
-              >
-                Sign In
-              </button>
-            ) : null}
-            <div className="px-2">
-              <CiMenuBurger
-                // color="black"
-                onClick={openDrawer}
-                className={`
+        {isDrawerOpen ? null : (
+          <>
+            <div className="flex gap-4 items-center">
+              {!user ? (
+                <button
+                  onClick={signInWithGoogle}
+                  className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins"
+                >
+                  Sign In
+                </button>
+              ) : null}
+              <div className="px-2">
+                <CiMenuBurger
+                  // color="black"
+                  onClick={openDrawer}
+                  className={`${searchBarClick ? 'hidden' : ''}
               h-[2rem] w-[2rem] relative z-50 text-white 
                 
               `}
-              />
+                />
+              </div>
             </div>
-          </div>
-        </>
-      )}
-
+          </>
+        )}
+      </div>
       <Drawer
         open={isDrawerOpen}
         onClose={closeDrawer}
