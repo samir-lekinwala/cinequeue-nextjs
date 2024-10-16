@@ -104,6 +104,7 @@ import signInWithGoogle from '../functions/signInWithGoogle'
 import handleSignOut from '../functions/handleSignOut'
 import Link from 'next/link'
 import { set } from 'firebase/database'
+import SearchBar from './SearchBar'
 
 function Nav() {
   const [user] = useAuthState(auth)
@@ -112,7 +113,6 @@ function Nav() {
   const [openAlert, setOpenAlert] = React.useState(true)
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
   const [searchBarClick, setSearchBarClick] = useState(false)
-  const [searchInput, setSearchInput] = useState('')
 
   function handleSearchInput(e) {
     setSearchInput(e.target.value)
@@ -122,36 +122,8 @@ function Nav() {
     setOpen(open === value ? 0 : value)
   }
 
-  const clickSearchBar = () => {
-    setSearchBarClick(true)
-    console.log('dummy', dummy.current)
-  }
-
   const openDrawer = () => setIsDrawerOpen(true)
   const closeDrawer = () => setIsDrawerOpen(false)
-
-  const dummy = useRef(null)
-
-  useEffect(() => {
-    console.log(searchInput)
-  }, [searchInput])
-
-  useEffect(() => {
-    /**
-     * Alert if clicked on outside of element
-     */
-    function handleClickOutside(event) {
-      if (dummy.current && !dummy.current.contains(event.target)) {
-        setSearchBarClick(false)
-      }
-    }
-    // Bind the event listener
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [dummy])
 
   return (
     <div>
@@ -165,25 +137,10 @@ function Nav() {
             } `}
           />{' '}
         </Link>
-        <div className="z-0 absolute w-full flex justify-center text-white my-auto">
-          <div
-            ref={dummy}
-            onClick={clickSearchBar}
-            className={`w-1/4  ${
-              searchBarClick ? 'w-full' : ''
-            } transition-all ease-in-out relative`}
-          >
-            <MagnifyingGlassIcon
-              className={`${
-                searchInput.length > 0 ? 'hidden' : 'absolute h-full p-[6px]'
-              }`}
-            />
-            <input
-              onChange={(e) => handleSearchInput(e)}
-              className="bg-gray-800 h-[20px] w-full rounded-2xl bg-opacity-25 text-center"
-            ></input>
-          </div>
-        </div>
+        <SearchBar
+          searchBarClick={searchBarClick}
+          setSearchBarClick={setSearchBarClick}
+        />
         {isDrawerOpen ? null : (
           <>
             <div className="flex gap-4 items-center">
