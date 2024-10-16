@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import React, { useEffect, useRef, useState } from 'react'
 import { getData } from '../api/apiCalls'
 import { set } from 'firebase/database'
+import SingleSearchItem from './SingleSearchItem'
 
 function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchInput, setSearchInput] = useState('')
@@ -96,11 +97,9 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
           ) : null}
         </form>
         {searchData.results ? (
-          <div className="bg-red-200 absolute z-30 top-[25px] w-full flex flex-col max-h-[70vh]">
+          <div className="bg-black absolute z-30 top-[25px] w-full flex flex-col max-h-[70vh] overflow-scroll items-start">
             {searchData.results.map((item) => (
-              <p className="text-white" key={item.id}>
-                {item.title}
-              </p>
+              <SingleSearchItem key={item.id} data={item} type={'movie'} />
             ))}
           </div>
         ) : null}
