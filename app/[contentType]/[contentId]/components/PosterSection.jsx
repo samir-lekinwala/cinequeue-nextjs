@@ -42,7 +42,7 @@ function PosterSection({ content, type }) {
                 {type == 'movie' ? (
                   <>{content.runtime} minutes</>
                 ) : (
-                  <>{getTotalEpisodesRuntime(content)} hours</>
+                  <>{getTotalEpisodesRuntime(content, type)} hours</>
                 )}{' '}
                 ⭐ {content.vote_average}
               </div>
