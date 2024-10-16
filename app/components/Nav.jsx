@@ -63,7 +63,7 @@
 
 // export default Nav
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CiMenuBurger } from 'react-icons/ci'
 import {
   IconButton,
@@ -103,6 +103,8 @@ import { auth } from '../firebaseConfig'
 import signInWithGoogle from '../functions/signInWithGoogle'
 import handleSignOut from '../functions/handleSignOut'
 import Link from 'next/link'
+import { set } from 'firebase/database'
+import SearchBar from './SearchBar'
 
 function Nav() {
   const [user] = useAuthState(auth)
@@ -110,6 +112,11 @@ function Nav() {
   const [open, setOpen] = React.useState(0)
   const [openAlert, setOpenAlert] = React.useState(true)
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
+  const [searchBarClick, setSearchBarClick] = useState(false)
+
+  function handleSearchInput(e) {
+    setSearchInput(e.target.value)
+  }
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value)
@@ -119,35 +126,46 @@ function Nav() {
   const closeDrawer = () => setIsDrawerOpen(false)
 
   return (
-    <div className="flex bg-black w-full h-[48px] justify-between items-center p-2 lg:px-10 z-50">
-      <Link href={'/'}>
-        <Logo classes={'text-2xl text-white font-poppins'} />{' '}
-      </Link>
-
-      {isDrawerOpen ? null : (
-        <>
-          <div className="flex gap-4 items-center">
-            {!user ? (
-              <button
-                onClick={signInWithGoogle}
-                className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins"
-              >
-                Sign In
-              </button>
-            ) : null}
-
-            <CiMenuBurger
-              // color="black"
-              onClick={openDrawer}
-              className={`
-              h-[2rem] w-[2rem] text-white 
+    <div>
+      <div className=" z-50 bg-black justify-between items-center flex relative w-full h-[48px]">
+        <Link href={'/'}>
+          <Logo
+            classes={`${
+              searchBarClick
+                ? ''
+                : 'z-50 relative text-2xl text-white font-poppins cursor-pointer px-2'
+            } `}
+          />{' '}
+        </Link>
+        <SearchBar
+          searchBarClick={searchBarClick}
+          setSearchBarClick={setSearchBarClick}
+        />
+        {isDrawerOpen ? null : (
+          <>
+            <div className="flex gap-4 items-center">
+              {!user ? (
+                <button
+                  onClick={signInWithGoogle}
+                  className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins"
+                >
+                  Sign In
+                </button>
+              ) : null}
+              <div className="px-2">
+                <CiMenuBurger
+                  // color="black"
+                  onClick={openDrawer}
+                  className={`${searchBarClick ? 'hidden' : ''}
+              h-[2rem] w-[2rem] relative z-50 text-white 
                 
               `}
-            />
-          </div>
-        </>
-      )}
-
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
       <Drawer
         open={isDrawerOpen}
         onClose={closeDrawer}
