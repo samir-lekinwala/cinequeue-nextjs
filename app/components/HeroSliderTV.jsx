@@ -98,7 +98,8 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                             {singleContentData &&
                             singleContentData.id == item.id
                               ? `⌛${getTotalEpisodesRuntime(
-                                  singleContentData
+                                  singleContentData,
+                                  'tv'
                                 )} hours`
                               : 'Loading runtime...'}
                           </div>
