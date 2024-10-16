@@ -114,10 +114,6 @@ function Nav() {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
   const [searchBarClick, setSearchBarClick] = useState(false)
 
-  function handleSearchInput(e) {
-    setSearchInput(e.target.value)
-  }
-
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value)
   }
@@ -127,7 +123,7 @@ function Nav() {
 
   return (
     <div>
-      <div className=" z-50 bg-black justify-between items-center flex relative w-full h-[48px]">
+      <div className=" z-50 relative bg-black justify-between items-center flex w-full h-[48px]">
         <Link href={'/'}>
           <Logo
             classes={`${

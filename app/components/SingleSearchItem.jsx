@@ -10,20 +10,26 @@ function SingleSearchItem({ data: item, type }) {
     data.poster_path = item.poster_path
     data.vote_average = item.vote_average
     data.release_date = item.release_date
+    data.overview = item.overview
   }
-
   return (
-    <div>
+    <div className="w-full h-full p-2">
       {data.id ? (
-        <Link href={`${type}/${data.id}`}>
-          <div>
-            <p className="text-white">
-              <span className=" font-semibold">{data.title}</span>{' '}
+        <Link href={`/${type}/${data.id}`}>
+          <div className="flex items-center">
+            <div className="">
               <img
+                className="w-[150px]"
                 src={`https://image.tmdb.org/t/p/w300/${data.poster_path}`}
               />
+            </div>
+            <div className="flex flex-col w-2/3">
+              <span className="font-semibold">{data.title}</span>
               <span>{data.release_date}</span>
-            </p>
+              <div className="h-40 overflow-auto">
+                <div className="text-gray-400">{data.overview}</div>
+              </div>
+            </div>
           </div>
         </Link>
       ) : null}

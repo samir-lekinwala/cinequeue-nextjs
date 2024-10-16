@@ -7,11 +7,27 @@ import SingleSearchItem from './SingleSearchItem'
 function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchInput, setSearchInput] = useState('')
   const [searchData, setSearchData] = useState([])
+  const [searchResultsExists, setSearchResultsExists] = useState(false)
   const dummy = useRef(null)
 
   function handleSearchInput(e) {
     setSearchInput(e.target.value)
   }
+
+  useEffect(() => {
+    if (searchData.results) {
+      // Prevent scrolling on the body
+      document.body.style.overflow = 'hidden'
+    } else {
+      // Re-enable scrolling on the body
+      document.body.style.overflow = ''
+    }
+
+    // Cleanup function to reset overflow when component unmounts or searchData changes
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [searchData.results])
 
   // useEffect(() => {
   //   console.log(searchInput)
@@ -35,6 +51,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     const result = await getData(`search/movie?query=${searchInput}`)
     console.log(result)
     setSearchData(result)
+    setSearchResultsExists(true)
   }
 
   // useEffect(() => {
@@ -51,6 +68,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
         setSearchBarClick(false)
         setSearchInput('')
         setSearchData([])
+        setSearchResultsExists(false)
       }
     }
     // Bind the event listener
@@ -67,6 +85,10 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
         searchBarClick ? 'absolute pr-0' : ''
       } w-full flex justify-end sm:justify-center pr-5 sm:p-0 text-white my-auto`}
     >
+      {searchResultsExists ? (
+        <div className="fixed inset-0 backdrop-blur-sm"> </div>
+      ) : null}
+
       <div
         ref={dummy}
         onClick={clickSearchBar}
@@ -97,11 +119,13 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
           ) : null}
         </form>
         {searchData.results ? (
-          <div className="bg-black absolute z-30 top-[25px] w-full flex flex-col max-h-[70vh] overflow-scroll items-start">
-            {searchData.results.map((item) => (
-              <SingleSearchItem key={item.id} data={item} type={'movie'} />
-            ))}
-          </div>
+          <>
+            <div className="bg-black absolute backdrop-blur-sm bg-opacity-90 z-30 top-[25px] w-full flex flex-col gap-2 max-h-[70vh] transition-all overflow-scroll items-start">
+              {searchData.results.map((item) => (
+                <SingleSearchItem key={item.id} data={item} type={'movie'} />
+              ))}
+            </div>
+          </>
         ) : null}
       </div>
     </div>
