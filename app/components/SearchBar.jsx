@@ -3,11 +3,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { getData } from '../api/apiCalls'
 import { set } from 'firebase/database'
 import SingleSearchItem from './SingleSearchItem'
+import page from '../watchlist/page'
 
 function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchInput, setSearchInput] = useState('')
   const [searchData, setSearchData] = useState([])
   const [searchResultsExists, setSearchResultsExists] = useState(false)
+  const [pageNumber, setPageNumber] = useState(1)
   const dummy = useRef(null)
 
   function handleSearchInput(e) {
@@ -46,9 +48,20 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     getSearchData()
   }
 
+  function handlePreviousPageClick() {
+    setPageNumber(pageNumber - 1)
+    getSearchData()
+  }
+  function handleNextPageClick() {
+    setPageNumber(pageNumber + 1)
+    getSearchData()
+  }
+
   async function getSearchData() {
     console.log('search input from searchdata', searchInput)
-    const result = await getData(`search/movie?query=${searchInput}`)
+    const result = await getData(
+      `search/movie?query=${searchInput}&page=${pageNumber}`
+    )
     console.log(result)
     setSearchData(result)
     setSearchResultsExists(true)
@@ -78,6 +91,26 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [dummy, searchInput])
+
+  function showingResultsFromPageNumber() {
+    let resultsSpan = ''
+
+    if (searchData.total_results < 20) {
+      resultsSpan = `0 to ${searchData.total_results}`
+    } else if (
+      searchData.total_results > 20 &&
+      searchData.total_pages == pageNumber
+    ) {
+      const previousPagesResults = (pageNumber - 1) * 20
+      const lastPageResultsLength =
+        searchData.results.length + previousPagesResults
+      resultsSpan = `${previousPagesResults + 1} to ${lastPageResultsLength}`
+    } else {
+      resultsSpan = `${pageNumber * 20 - 19} to ${pageNumber * 20}`
+    }
+
+    return resultsSpan
+  }
 
   return (
     <div
@@ -121,9 +154,30 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
         {searchData.results ? (
           <>
             <div className="bg-black absolute backdrop-blur-sm bg-opacity-90 z-30 top-[25px] w-full flex flex-col gap-2 max-h-[70vh] transition-all overflow-scroll items-start">
+              {/* how many results and pages */}
+              <div>Total results {searchData.total_results}</div>
+              <div>Showing Results {showingResultsFromPageNumber()}</div>
+              <div>
+                <div
+                  onClick={handlePreviousPageClick}
+                  className={`${pageNumber == 1 ? 'hidden' : 'visible'}`}
+                >
+                  Previous
+                </div>
+                <div onClick={handleNextPageClick}>Next</div>
+              </div>
               {searchData.results.map((item) => (
                 <SingleSearchItem key={item.id} data={item} type={'movie'} />
               ))}
+              <div>
+                <div
+                  onClick={handlePreviousPageClick}
+                  className={`${pageNumber == 1 ? 'hidden' : 'visible'}`}
+                >
+                  Previous
+                </div>
+                <div onClick={handleNextPageClick}>Next</div>
+              </div>
             </div>
           </>
         ) : null}
