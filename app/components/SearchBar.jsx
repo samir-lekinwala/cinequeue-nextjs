@@ -10,6 +10,9 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchData, setSearchData] = useState([])
   const [searchResultsExists, setSearchResultsExists] = useState(false)
   const [pageNumber, setPageNumber] = useState(1)
+  const [lastSearchResultNumber, setLastSearchResultNumber] = useState(0)
+  const [nextPageButton, setNextPageButton] = useState(false)
+  const [previousPageButton, setPreviousPageButton] = useState(false)
   const dummy = useRef(null)
 
   function handleSearchInput(e) {
@@ -31,13 +34,6 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     }
   }, [searchData.results])
 
-  // useEffect(() => {
-  //   console.log(searchInput)
-  // }, [searchInput])
-
-  //need function that sets the state with data
-  //need useeffect that gets the function to run when submit button clicked
-
   const clickSearchBar = () => {
     setSearchBarClick(true)
     console.log('dummy', dummy.current)
@@ -45,17 +41,24 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
 
   function handleSubmitButton(e) {
     e.preventDefault()
+    setPageNumber(1)
     getSearchData()
   }
 
   function handlePreviousPageClick() {
-    setPageNumber(pageNumber - 1)
-    getSearchData()
+    if (pageNumber !== 1) {
+      setPageNumber(pageNumber - 1)
+    } else setPageNumber(1)
   }
   function handleNextPageClick() {
-    setPageNumber(pageNumber + 1)
-    getSearchData()
+    if (pageNumber !== searchData.total_pages) {
+      setPageNumber(pageNumber + 1)
+    } else setPageNumber(searchData.total_pages)
   }
+
+  useEffect(() => {
+    getSearchData()
+  }, [pageNumber])
 
   async function getSearchData() {
     console.log('search input from searchdata', searchInput)
@@ -65,23 +68,18 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     console.log(result)
     setSearchData(result)
     setSearchResultsExists(true)
+    setLastSearchResultNumber(result.total_results)
   }
 
-  // useEffect(() => {
-
-  //   getSearchData()
-  // }, [searchInput])
-
   useEffect(() => {
-    /**
-     * Alert if clicked on outside of element
-     */
     function handleClickOutside(event) {
       if (dummy.current && !dummy.current.contains(event.target)) {
         setSearchBarClick(false)
         setSearchInput('')
         setSearchData([])
         setSearchResultsExists(false)
+        setPageNumber(1)
+        setLastSearchResultNumber(0)
       }
     }
     // Bind the event listener
@@ -90,27 +88,60 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       // Unbind the event listener on clean up
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [dummy, searchInput])
+  }, [dummy, searchInput, setSearchBarClick])
 
   function showingResultsFromPageNumber() {
     let resultsSpan = ''
+    // let currentTotal = 0
 
     if (searchData.total_results < 20) {
       resultsSpan = `0 to ${searchData.total_results}`
     } else if (
       searchData.total_results > 20 &&
-      searchData.total_pages == pageNumber
+      searchData.total_pages == pageNumber &&
+      searchData.results.length > 0
     ) {
       const previousPagesResults = (pageNumber - 1) * 20
       const lastPageResultsLength =
         searchData.results.length + previousPagesResults
       resultsSpan = `${previousPagesResults + 1} to ${lastPageResultsLength}`
+      // currentTotal = lastPageResultsLength
     } else {
       resultsSpan = `${pageNumber * 20 - 19} to ${pageNumber * 20}`
+      // currentTotal = pageNumber * 20
+      // setPreviousPageButton(true)
     }
 
     return resultsSpan
   }
+
+  useEffect(() => {
+    if (pageNumber <= searchData.total_pages) {
+      setNextPageButton(true)
+    } else {
+      setNextPageButton(false)
+    }
+
+    if (pageNumber <= 1) {
+      setPreviousPageButton(false)
+    } else {
+      setPreviousPageButton(true)
+    }
+
+    if (pageNumber * 20 >= searchData.total_results) {
+      setNextPageButton(false)
+    }
+  }, [pageNumber, searchData.total_pages, searchData.total_results])
+
+  const closeSearchBar = () => {
+    setSearchBarClick(false)
+    setSearchInput('')
+    setSearchData([])
+    setSearchResultsExists(false)
+    setPageNumber(1)
+    console.log('searchbarclick', searchBarClick)
+  }
+  // console.log('searchbar click', searchBarClick)
 
   return (
     <div
@@ -155,29 +186,58 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
           <>
             <div className="bg-black absolute backdrop-blur-sm bg-opacity-90 z-30 top-[25px] w-full flex flex-col gap-2 max-h-[70vh] transition-all overflow-scroll items-start">
               {/* how many results and pages */}
-              <div>Total results {searchData.total_results}</div>
-              <div>Showing Results {showingResultsFromPageNumber()}</div>
-              <div>
-                <div
+              {searchData.total_results == 0 ? (
+                <div className="text-center w-full text-2xl">
+                  No results found.
+                </div>
+              ) : (
+                <>
+                  <div className="flex justify-center w-full flex-col items-center">
+                    <div>Total results {searchData.total_results}</div>
+                    <div>
+                      Showing Results {showingResultsFromPageNumber()} Page
+                      number: {pageNumber}
+                    </div>
+                  </div>
+                  <div className="flex justify-between w-full px-4 transition-all">
+                    <div
+                      onClick={handlePreviousPageClick}
+                      className={`${
+                        previousPageButton
+                          ? 'opacity-100 cursor-pointer'
+                          : 'opacity-0'
+                      } hover:text-gray-400 transition-all duration-200`}
+                    >
+                      Previous
+                    </div>
+                    <div
+                      onClick={handleNextPageClick}
+                      className={`${
+                        nextPageButton
+                          ? 'opacity-100 cursor-pointer'
+                          : 'opacity-0'
+                      } hover:text-gray-400 transition-all duration-200`}
+                    >
+                      Next
+                    </div>
+                  </div>
+
+                  {searchData.results.map((item) => (
+                    <div key={item.id} onClick={closeSearchBar}>
+                      <SingleSearchItem data={item} type={'movie'} />
+                    </div>
+                  ))}
+                  <div>
+                    {/* <div
                   onClick={handlePreviousPageClick}
                   className={`${pageNumber == 1 ? 'hidden' : 'visible'}`}
                 >
                   Previous
                 </div>
-                <div onClick={handleNextPageClick}>Next</div>
-              </div>
-              {searchData.results.map((item) => (
-                <SingleSearchItem key={item.id} data={item} type={'movie'} />
-              ))}
-              <div>
-                <div
-                  onClick={handlePreviousPageClick}
-                  className={`${pageNumber == 1 ? 'hidden' : 'visible'}`}
-                >
-                  Previous
-                </div>
-                <div onClick={handleNextPageClick}>Next</div>
-              </div>
+                <div onClick={handleNextPageClick}>Next</div> */}
+                  </div>
+                </>
+              )}
             </div>
           </>
         ) : null}
