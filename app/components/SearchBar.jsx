@@ -183,7 +183,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       >
         <MagnifyingGlassIcon
           className={` ${
-            searchBarClick ? 'h-full absolute' : ' relative h-[20px]'
+            searchBarClick ? 'h-full absolute' : 'sm:absolute relative h-[20px]'
           } w-[15px]'
           `}
         />
@@ -192,9 +192,9 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
             <input
               value={searchInput}
               onChange={(e) => handleSearchInput(e)}
-              className={`${
-                searchBarClick ? 'visible w-full' : ''
-              } bg-gray-800 h-[20px] rounded-2xl  bg-opacity-25 pr-16 pl-6 text-center`}
+              className={`bg-gray-800 h-[20px] rounded-2xl  bg-opacity-25 pr-16 pl-6 text-center ${
+                searchBarClick ? 'block w-full' : 'sm:block hidden w-1/2 h-20'
+              } `}
             />
             {searchBarClick ? (
               <button
@@ -208,7 +208,15 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
               </button>
             ) : null}
           </form>
-        ) : null}
+        ) : (
+          <form className="relative">
+            <input
+              value={searchInput}
+              onChange={(e) => handleSearchInput(e)}
+              className={`bg-gray-800 h-[20px] rounded-2xl hidden sm:block w-full  bg-opacity-25 pr-16 pl-6 text-center`}
+            />
+          </form>
+        )}
 
         {searchData.results ? (
           <>
