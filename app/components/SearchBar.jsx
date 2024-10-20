@@ -182,27 +182,34 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
         }  transition-all ease-in-out relative `}
       >
         <MagnifyingGlassIcon
-          className={`absolute h-full w-[15px]'
+          className={` ${
+            searchBarClick ? 'h-full absolute' : ' relative h-[20px]'
+          } w-[15px]'
           `}
         />
-        <form className="relative">
-          <input
-            value={searchInput}
-            onChange={(e) => handleSearchInput(e)}
-            className={`${
-              searchBarClick ? 'visible ' : ''
-            } bg-gray-800 h-[20px] w-full rounded-2xl bg-opacity-25 pr-16 pl-6 text-center`}
-          />
-          {searchBarClick ? (
-            <button
-              onClick={(e) => handleSubmitButton(e)}
-              type="submit"
-              className="absolute right-2"
-            >
-              Search
-            </button>
-          ) : null}
-        </form>
+        {searchBarClick ? (
+          <form className="relative">
+            <input
+              value={searchInput}
+              onChange={(e) => handleSearchInput(e)}
+              className={`${
+                searchBarClick ? 'visible w-full' : ''
+              } bg-gray-800 h-[20px] rounded-2xl  bg-opacity-25 pr-16 pl-6 text-center`}
+            />
+            {searchBarClick ? (
+              <button
+                onClick={(e) => handleSubmitButton(e)}
+                type="submit"
+                className={`
+                    
+                  absolute right-2`}
+              >
+                Search
+              </button>
+            ) : null}
+          </form>
+        ) : null}
+
         {searchData.results ? (
           <>
             <div className="bg-black absolute backdrop-blur-sm bg-opacity-90 z-30 top-[25px] w-full flex flex-col gap-2 max-h-[70vh] transition-all overflow-scroll items-start">
