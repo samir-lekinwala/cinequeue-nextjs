@@ -4,6 +4,7 @@ import { getData } from '../api/apiCalls'
 import { set } from 'firebase/database'
 import SingleSearchItem from './SingleSearchItem'
 import page from '../watchlist/page'
+import Link from 'next/link'
 
 function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchInput, setSearchInput] = useState('')
@@ -13,7 +14,8 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [lastSearchResultNumber, setLastSearchResultNumber] = useState(0)
   const [nextPageButton, setNextPageButton] = useState(false)
   const [previousPageButton, setPreviousPageButton] = useState(false)
-  const dummy = useRef(null)
+  const searchRef = useRef(null)
+  const searchItemRef = useRef(null)
 
   function handleSearchInput(e) {
     setSearchInput(e.target.value)
@@ -36,7 +38,6 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
 
   const clickSearchBar = () => {
     setSearchBarClick(true)
-    console.log('dummy', dummy.current)
   }
 
   function handleSubmitButton(e) {
@@ -48,16 +49,20 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   function handlePreviousPageClick() {
     if (pageNumber !== 1) {
       setPageNumber(pageNumber - 1)
+      getSearchData()
     } else setPageNumber(1)
   }
   function handleNextPageClick() {
     if (pageNumber !== searchData.total_pages) {
       setPageNumber(pageNumber + 1)
+      getSearchData()
     } else setPageNumber(searchData.total_pages)
   }
 
   useEffect(() => {
-    getSearchData()
+    if (searchInput) {
+      getSearchData()
+    }
   }, [pageNumber])
 
   async function getSearchData() {
@@ -65,7 +70,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     const result = await getData(
       `search/movie?query=${searchInput}&page=${pageNumber}`
     )
-    console.log(result)
+    console.log('testing6', result)
     setSearchData(result)
     setSearchResultsExists(true)
     setLastSearchResultNumber(result.total_results)
@@ -73,13 +78,8 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (dummy.current && !dummy.current.contains(event.target)) {
-        setSearchBarClick(false)
-        setSearchInput('')
-        setSearchData([])
-        setSearchResultsExists(false)
-        setPageNumber(1)
-        setLastSearchResultNumber(0)
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        closeSearchBar()
       }
     }
     // Bind the event listener
@@ -88,7 +88,24 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       // Unbind the event listener on clean up
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [dummy, searchInput, setSearchBarClick])
+  }, [searchRef])
+
+  // useEffect(() => {
+  //   function handleClickOutside(event) {
+  //     if (
+  //       searchItemRef.current &&
+  //       !searchItemRef.current.contains(event.target)
+  //     ) {
+  //       closeSearchBar()
+  //     }
+  //   }
+  //   // Bind the event listener
+  //   document.addEventListener('mousedown', handleClickOutside)
+  //   return () => {
+  //     // Unbind the event listener on clean up
+  //     document.removeEventListener('mousedown', handleClickOutside)
+  //   }
+  // }, [searchItemRef, searchBarClick])
 
   function showingResultsFromPageNumber() {
     let resultsSpan = ''
@@ -134,11 +151,15 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   }, [pageNumber, searchData.total_pages, searchData.total_results])
 
   const closeSearchBar = () => {
-    setSearchBarClick(false)
+    setTimeout(() => {
+      setSearchBarClick(false)
+    }, 1)
+
     setSearchInput('')
     setSearchData([])
     setSearchResultsExists(false)
     setPageNumber(1)
+    setLastSearchResultNumber(0)
     console.log('searchbarclick', searchBarClick)
   }
   // console.log('searchbar click', searchBarClick)
@@ -154,7 +175,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       ) : null}
 
       <div
-        ref={dummy}
+        ref={searchRef}
         onClick={clickSearchBar}
         className={`  ${
           searchBarClick ? 'w-full' : 'w-0 sm:w-1/4'
@@ -223,9 +244,20 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
                   </div>
 
                   {searchData.results.map((item) => (
-                    <div key={item.id} onClick={closeSearchBar}>
-                      <SingleSearchItem data={item} type={'movie'} />
-                    </div>
+                    <>
+                      <div
+                        key={item.id}
+                        onClick={closeSearchBar}
+                        // ref={searchItemRef}
+                      >
+                        <SingleSearchItem
+                          data={item}
+                          type={'movie'}
+                          setSearchBarClick={setSearchBarClick}
+                          searchBarClick={searchBarClick}
+                        />
+                      </div>
+                    </>
                   ))}
                   <div>
                     {/* <div
