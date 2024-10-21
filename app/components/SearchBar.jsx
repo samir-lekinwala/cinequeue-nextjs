@@ -76,7 +76,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     if (searchInput) {
       getSearchData()
     }
-  }, [pageNumber])
+  }, [pageNumber, nextPageButton, previousPageButton])
 
   async function getSearchData() {
     console.log('search input from searchdata', searchInput)
