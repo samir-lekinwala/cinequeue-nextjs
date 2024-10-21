@@ -167,8 +167,8 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   return (
     <div
       className={`z-0 sm:absolute ${
-        searchBarClick ? 'absolute pr-0' : ''
-      } w-full flex justify-end sm:justify-center pr-5 sm:p-0 text-white my-auto`}
+        searchBarClick ? 'absolute p-2' : 'pr-5'
+      } w-full flex justify-end sm:justify-center text-white my-auto`}
     >
       {searchResultsExists ? (
         <div className="fixed inset-0 backdrop-blur-sm"> </div>
@@ -183,30 +183,36 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       >
         <MagnifyingGlassIcon
           className={` ${
-            searchBarClick ? 'h-full absolute' : 'sm:absolute relative h-[20px]'
-          } w-[15px]'
+            searchBarClick
+              ? 'h-full absolute ml-1'
+              : 'sm:absolute relative h-[20px]'
+          } w-[15px] '
           `}
         />
         {searchBarClick ? (
           <form className="relative">
-            <input
-              value={searchInput}
-              onChange={(e) => handleSearchInput(e)}
-              className={`bg-gray-800 h-[20px] rounded-2xl  bg-opacity-25 pr-16 pl-6 text-center ${
-                searchBarClick ? 'block w-full' : 'sm:block hidden w-1/2 h-20'
-              } `}
-            />
-            {searchBarClick ? (
-              <button
-                onClick={(e) => handleSubmitButton(e)}
-                type="submit"
-                className={`
+            <div className="flex items-center">
+              <input
+                value={searchInput}
+                onChange={(e) => handleSearchInput(e)}
+                className={`bg-gray-800 h-[20px] rounded-2xl  bg-opacity-25 text-center ${
+                  searchBarClick
+                    ? ' w-full block'
+                    : 'sm:block hidden w-1/2 h-20'
+                } `}
+              />
+              {searchBarClick ? (
+                <button
+                  onClick={(e) => handleSubmitButton(e)}
+                  type="submit"
+                  className={`rounded-2xl bg-opacity-25 text-base absolute right-0 mr-1 font-poppins
                     
-                  absolute right-2`}
-              >
-                Search
-              </button>
-            ) : null}
+                  `}
+                >
+                  Search
+                </button>
+              ) : null}
+            </div>
           </form>
         ) : (
           <form className="relative">
