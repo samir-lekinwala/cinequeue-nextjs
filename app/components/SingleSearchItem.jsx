@@ -16,7 +16,7 @@ function SingleSearchItem({ data: item, type }) {
     <div className="w-full h-full p-2">
       {data.id ? (
         <Link href={`/${type}/${data.id}`}>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <div className="">
               <img
                 className="w-[150px]"

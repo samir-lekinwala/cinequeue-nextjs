@@ -16,10 +16,23 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [previousPageButton, setPreviousPageButton] = useState(false)
   const searchRef = useRef(null)
   const searchItemRef = useRef(null)
+  const inputRef = useRef(null)
 
   function handleSearchInput(e) {
     setSearchInput(e.target.value)
   }
+
+  const inputFocus = () => {
+    inputRef.current.focus()
+  }
+
+  useEffect(() => {
+    if (searchBarClick) {
+      setTimeout(() => {
+        inputFocus()
+      }, 100)
+    }
+  }, [searchBarClick])
 
   useEffect(() => {
     if (searchData.results) {
@@ -167,7 +180,9 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   return (
     <div
       className={`z-0 sm:absolute ${
-        searchBarClick ? 'absolute p-2' : 'pr-5'
+        searchBarClick ? 'absolute p-2' : 'sm:pr-0 pr-16'
+      } ${
+        searchData ? 'absolute p-0' : ''
       } w-full flex justify-end sm:justify-center text-white my-auto`}
     >
       {searchResultsExists ? (
@@ -184,15 +199,16 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
         <MagnifyingGlassIcon
           className={` ${
             searchBarClick
-              ? 'h-full absolute ml-1'
+              ? 'h-full absolute '
               : 'sm:absolute relative h-[20px]'
-          } w-[15px] '
+          } w-[24px] '
           `}
         />
         {searchBarClick ? (
           <form className="relative">
             <div className="flex items-center">
               <input
+                ref={inputRef}
                 value={searchInput}
                 onChange={(e) => handleSearchInput(e)}
                 className={`bg-gray-800 h-[20px] rounded-2xl  bg-opacity-25 text-center ${
