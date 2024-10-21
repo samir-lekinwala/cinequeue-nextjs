@@ -80,13 +80,19 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
 
   async function getSearchData() {
     console.log('search input from searchdata', searchInput)
-    const result = await getData(
+    const resultMovies = await getData(
       `search/movie?query=${searchInput}&page=${pageNumber}`
     )
-    console.log('testing6', result)
-    setSearchData(result)
+    const resultTv = await getData(
+      `search/tv?query=${searchInput}&page=${pageNumber}`
+    )
+    const result = [...resultMovies.results, ...resultTv.results]
+    const totalResults = resultMovies.total_results + resultTv.total_results
+    const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
+    console.log('testing6', combinedResult)
+    setSearchData({ total_results: totalResults, results: combinedResult })
     setSearchResultsExists(true)
-    setLastSearchResultNumber(result.total_results)
+    setLastSearchResultNumber(totalResults)
   }
 
   useEffect(() => {
@@ -287,12 +293,21 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
                         onClick={closeSearchBar}
                         // ref={searchItemRef}
                       >
-                        <SingleSearchItem
-                          data={item}
-                          type={'movie'}
-                          setSearchBarClick={setSearchBarClick}
-                          searchBarClick={searchBarClick}
-                        />
+                        {item.title ? (
+                          <SingleSearchItem
+                            data={item}
+                            type={'movie'}
+                            setSearchBarClick={setSearchBarClick}
+                            searchBarClick={searchBarClick}
+                          />
+                        ) : (
+                          <SingleSearchItem
+                            data={item}
+                            type={'tv'}
+                            setSearchBarClick={setSearchBarClick}
+                            searchBarClick={searchBarClick}
+                          />
+                        )}
                       </div>
                     </>
                   ))}

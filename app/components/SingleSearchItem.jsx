@@ -11,13 +11,22 @@ function SingleSearchItem({ data: item, type }) {
     data.vote_average = item.vote_average
     data.release_date = item.release_date
     data.overview = item.overview
+    data.type = 'Movie'
+  } else if (type == 'tv') {
+    data.id = item.id
+    data.title = item.name
+    data.poster_path = item.poster_path
+    data.vote_average = item.vote_average
+    data.release_date = item.first_air_date
+    data.overview = item.overview
+    data.type = 'TV Show'
   }
   return (
     <div className="w-full h-full p-2">
       {data.id ? (
         <Link href={`/${type}/${data.id}`}>
           <div className="flex items-center gap-2">
-            <div className="">
+            <div className="relative">
               <img
                 className="w-[150px]"
                 src={`https://image.tmdb.org/t/p/w300/${data.poster_path}`}
@@ -25,7 +34,8 @@ function SingleSearchItem({ data: item, type }) {
             </div>
             <div className="flex flex-col w-2/3">
               <span className="font-semibold">{data.title}</span>
-              <span>{data.release_date}</span>
+              <span className="text-xs text-gray-400">{data.type}</span>
+              <span className="text-xs ">{data.release_date}</span>
               <div className="h-40 overflow-auto">
                 <div className="text-gray-400">{data.overview}</div>
               </div>
