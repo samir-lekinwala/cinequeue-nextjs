@@ -13,11 +13,9 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchResultsExists, setSearchResultsExists] = useState(false)
   const [pageNumber, setPageNumber] = useState(1)
   const [lastSearchResultNumber, setLastSearchResultNumber] = useState(0)
-  const [nextPageButton, setNextPageButton] = useState(false)
-  const [previousPageButton, setPreviousPageButton] = useState(false)
+
   const [isLoading, setIsLoading] = useState(false)
   const searchRef = useRef(null)
-  const searchItemRef = useRef(null)
   const inputRef = useRef(null)
 
   function handleSearchInput(e) {
@@ -60,25 +58,6 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     setPageNumber(1)
     getSearchData()
   }
-
-  // function handlePreviousPageClick() {
-  //   if (pageNumber !== 1) {
-  //     setPageNumber(pageNumber - 1)
-  //     getSearchData()
-  //   } else setPageNumber(1)
-  // }
-  // function handleNextPageClick() {
-  //   if (pageNumber !== searchData.total_pages) {
-  //     setPageNumber(pageNumber + 1)
-  //     getSearchData()
-  //   } else setPageNumber(searchData.total_pages)
-  // }
-
-  // useEffect(() => {
-  //   if (searchInput) {
-  //     getSearchData()
-  //   }
-  // }, [pageNumber, nextPageButton, previousPageButton])
 
   async function getSearchData() {
     console.log('search input from searchdata', searchInput)
@@ -125,66 +104,6 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [searchRef])
-
-  // useEffect(() => {
-  //   function handleClickOutside(event) {
-  //     if (
-  //       searchItemRef.current &&
-  //       !searchItemRef.current.contains(event.target)
-  //     ) {
-  //       closeSearchBar()
-  //     }
-  //   }
-  //   // Bind the event listener
-  //   document.addEventListener('mousedown', handleClickOutside)
-  //   return () => {
-  //     // Unbind the event listener on clean up
-  //     document.removeEventListener('mousedown', handleClickOutside)
-  //   }
-  // }, [searchItemRef, searchBarClick])
-
-  // function showingResultsFromPageNumber() {
-  //   let resultsSpan = ''
-  //   // let currentTotal = 0
-
-  //   if (searchData.total_results < 20) {
-  //     resultsSpan = `0 to ${searchData.total_results}`
-  //   } else if (
-  //     searchData.total_results > 20 &&
-  //     searchData.total_pages == pageNumber &&
-  //     searchData.results.length > 0
-  //   ) {
-  //     const previousPagesResults = (pageNumber - 1) * 20
-  //     const lastPageResultsLength =
-  //       searchData.results.length + previousPagesResults
-  //     resultsSpan = `${previousPagesResults + 1} to ${lastPageResultsLength}`
-  //     // currentTotal = lastPageResultsLength
-  //   } else {
-  //     resultsSpan = `${pageNumber * 20 - 19} to ${pageNumber * 20}`
-  //     // currentTotal = pageNumber * 20
-  //     // setPreviousPageButton(true)
-  //   }
-
-  //   return resultsSpan
-  // }
-
-  // useEffect(() => {
-  //   if (pageNumber <= searchData.total_pages) {
-  //     setNextPageButton(true)
-  //   } else {
-  //     setNextPageButton(false)
-  //   }
-
-  //   if (pageNumber <= 1) {
-  //     setPreviousPageButton(false)
-  //   } else {
-  //     setPreviousPageButton(true)
-  //   }
-
-  //   if (pageNumber * 20 >= searchData.total_results) {
-  //     setNextPageButton(false)
-  //   }
-  // }, [pageNumber, searchData.total_pages, searchData.total_results])
 
   const closeSearchBar = () => {
     setTimeout(() => {
@@ -262,7 +181,6 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
             />
           </form>
         )}
-        {/* testing from here -------------------------------------- */}
         {searchData.results ? (
           <InfiniteScrollFunc
             items={searchData.results}
@@ -273,80 +191,6 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
             searchBarClick={searchBarClick}
           />
         ) : null}
-
-        {/* {searchData.results ? (
-          <>
-            <div className="bg-black absolute backdrop-blur-sm bg-opacity-90 z-30 top-[25px] w-full flex flex-col gap-2 max-h-[70vh] transition-all overflow-scroll items-start">
-              
-              {searchData.total_results == 0 ? (
-                <div className="text-center w-full text-2xl">
-                  No results found.
-                </div>
-              ) : (
-                <>
-                  <div className="flex justify-center w-full flex-col items-center">
-                    <div>Total results {searchData.total_results}</div>
-                    <div>
-                      Showing Results {showingResultsFromPageNumber()} Page
-                      number: {pageNumber}
-                    </div>
-                  </div>
-                  <div className="flex justify-between w-full px-4 transition-all">
-                    <div
-                      onClick={handlePreviousPageClick}
-                      className={`${
-                        previousPageButton
-                          ? 'opacity-100 cursor-pointer'
-                          : 'opacity-0'
-                      } hover:text-gray-400 transition-all duration-200`}
-                    >
-                      Previous
-                    </div>
-                    <div
-                      onClick={handleNextPageClick}
-                      className={`${
-                        nextPageButton
-                          ? 'opacity-100 cursor-pointer'
-                          : 'opacity-0'
-                      } hover:text-gray-400 transition-all duration-200`}
-                    >
-                      Next
-                    </div>
-                  </div>
-
-                  {searchData.results.map((item) => (
-                    <>
-                      <div
-                        key={item.id}
-                        onClick={closeSearchBar}
-                        // ref={searchItemRef}
-                      >
-                        {item.title ? (
-                          <SingleSearchItem
-                            data={item}
-                            type={'movie'}
-                            setSearchBarClick={setSearchBarClick}
-                            searchBarClick={searchBarClick}
-                          />
-                        ) : (
-                          <SingleSearchItem
-                            data={item}
-                            type={'tv'}
-                            setSearchBarClick={setSearchBarClick}
-                            searchBarClick={searchBarClick}
-                          />
-                        )}
-                      </div>
-                    </>
-                  ))}
-                  <div>
-                  </div>
-                </>
-              )}
-            </div>
-          </>
-        ) : null} */}
-        {/* to here ------------------------------------- */}
       </div>
     </div>
   )

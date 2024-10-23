@@ -2,23 +2,20 @@ import Link from 'next/link'
 import React from 'react'
 
 function SingleSearchItem({ data: item, type }) {
-  let data = {}
+  let data = {
+    id: item.id,
+    poster_path: item.poster_path,
+    vote_average: item.vote_average,
+    overview: item.overview,
+  }
 
   if (type == 'movie') {
-    data.id = item.id
     data.title = item.title
-    data.poster_path = item.poster_path
-    data.vote_average = item.vote_average
     data.release_date = item.release_date
-    data.overview = item.overview
     data.type = 'Movie'
   } else if (type == 'tv') {
-    data.id = item.id
     data.title = item.name
-    data.poster_path = item.poster_path
-    data.vote_average = item.vote_average
     data.release_date = item.first_air_date
-    data.overview = item.overview
     data.type = 'TV Show'
   }
   return (
@@ -26,14 +23,22 @@ function SingleSearchItem({ data: item, type }) {
       {data.id ? (
         <Link href={`/${type}/${data.id}`}>
           <div className="flex items-center gap-2">
-            <div className="relative">
+            {data.poster_path ? (
               <img
                 className="w-[150px]"
                 src={`https://image.tmdb.org/t/p/w300/${data.poster_path}`}
               />
-            </div>
-            <div className="flex flex-col w-2/3">
+            ) : (
+              <div className=" flex flex-col ">
+                <span className="w-[150px] h-[225px] bg-gray-400 flex justify-center items-center">
+                  No Poster Available
+                </span>
+              </div>
+            )}
+
+            <div className="flex flex-col justify-center">
               <span className="font-semibold">{data.title}</span>
+              <span className="text-xs">⭐{data.vote_average}</span>
               <span className="text-xs text-gray-400">{data.type}</span>
               <span className="text-xs ">{data.release_date}</span>
               <div className="h-40 overflow-auto">
