@@ -5,6 +5,7 @@ import { set } from 'firebase/database'
 import SingleSearchItem from './SingleSearchItem'
 import page from '../watchlist/page'
 import Link from 'next/link'
+import InfiniteScrollFunc from '../functions/InfiniteScrollFunc'
 
 function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchInput, setSearchInput] = useState('')
@@ -14,6 +15,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [lastSearchResultNumber, setLastSearchResultNumber] = useState(0)
   const [nextPageButton, setNextPageButton] = useState(false)
   const [previousPageButton, setPreviousPageButton] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const searchRef = useRef(null)
   const searchItemRef = useRef(null)
   const inputRef = useRef(null)
@@ -59,24 +61,24 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     getSearchData()
   }
 
-  function handlePreviousPageClick() {
-    if (pageNumber !== 1) {
-      setPageNumber(pageNumber - 1)
-      getSearchData()
-    } else setPageNumber(1)
-  }
-  function handleNextPageClick() {
-    if (pageNumber !== searchData.total_pages) {
-      setPageNumber(pageNumber + 1)
-      getSearchData()
-    } else setPageNumber(searchData.total_pages)
-  }
+  // function handlePreviousPageClick() {
+  //   if (pageNumber !== 1) {
+  //     setPageNumber(pageNumber - 1)
+  //     getSearchData()
+  //   } else setPageNumber(1)
+  // }
+  // function handleNextPageClick() {
+  //   if (pageNumber !== searchData.total_pages) {
+  //     setPageNumber(pageNumber + 1)
+  //     getSearchData()
+  //   } else setPageNumber(searchData.total_pages)
+  // }
 
-  useEffect(() => {
-    if (searchInput) {
-      getSearchData()
-    }
-  }, [pageNumber, nextPageButton, previousPageButton])
+  // useEffect(() => {
+  //   if (searchInput) {
+  //     getSearchData()
+  //   }
+  // }, [pageNumber, nextPageButton, previousPageButton])
 
   async function getSearchData() {
     console.log('search input from searchdata', searchInput)
@@ -89,10 +91,25 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     const result = [...resultMovies.results, ...resultTv.results]
     const totalResults = resultMovies.total_results + resultTv.total_results
     const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
-    console.log('testing6', combinedResult)
-    setSearchData({ total_results: totalResults, results: combinedResult })
+    const totalPages = resultMovies.total_pages + resultTv.total_pages
+    console.log(
+      'testing6',
+      combinedResult,
+      'resultmovies',
+      resultMovies,
+      'resultTV',
+      resultTv
+    )
+    setSearchData({
+      total_results: totalResults,
+      results: combinedResult,
+      total_pages: totalPages,
+    })
     setSearchResultsExists(true)
     setLastSearchResultNumber(totalResults)
+    // if (!result) {
+    //   setIsLoading(true)
+    // } else setIsLoading(false)
   }
 
   useEffect(() => {
@@ -126,48 +143,48 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   //   }
   // }, [searchItemRef, searchBarClick])
 
-  function showingResultsFromPageNumber() {
-    let resultsSpan = ''
-    // let currentTotal = 0
+  // function showingResultsFromPageNumber() {
+  //   let resultsSpan = ''
+  //   // let currentTotal = 0
 
-    if (searchData.total_results < 20) {
-      resultsSpan = `0 to ${searchData.total_results}`
-    } else if (
-      searchData.total_results > 20 &&
-      searchData.total_pages == pageNumber &&
-      searchData.results.length > 0
-    ) {
-      const previousPagesResults = (pageNumber - 1) * 20
-      const lastPageResultsLength =
-        searchData.results.length + previousPagesResults
-      resultsSpan = `${previousPagesResults + 1} to ${lastPageResultsLength}`
-      // currentTotal = lastPageResultsLength
-    } else {
-      resultsSpan = `${pageNumber * 20 - 19} to ${pageNumber * 20}`
-      // currentTotal = pageNumber * 20
-      // setPreviousPageButton(true)
-    }
+  //   if (searchData.total_results < 20) {
+  //     resultsSpan = `0 to ${searchData.total_results}`
+  //   } else if (
+  //     searchData.total_results > 20 &&
+  //     searchData.total_pages == pageNumber &&
+  //     searchData.results.length > 0
+  //   ) {
+  //     const previousPagesResults = (pageNumber - 1) * 20
+  //     const lastPageResultsLength =
+  //       searchData.results.length + previousPagesResults
+  //     resultsSpan = `${previousPagesResults + 1} to ${lastPageResultsLength}`
+  //     // currentTotal = lastPageResultsLength
+  //   } else {
+  //     resultsSpan = `${pageNumber * 20 - 19} to ${pageNumber * 20}`
+  //     // currentTotal = pageNumber * 20
+  //     // setPreviousPageButton(true)
+  //   }
 
-    return resultsSpan
-  }
+  //   return resultsSpan
+  // }
 
-  useEffect(() => {
-    if (pageNumber <= searchData.total_pages) {
-      setNextPageButton(true)
-    } else {
-      setNextPageButton(false)
-    }
+  // useEffect(() => {
+  //   if (pageNumber <= searchData.total_pages) {
+  //     setNextPageButton(true)
+  //   } else {
+  //     setNextPageButton(false)
+  //   }
 
-    if (pageNumber <= 1) {
-      setPreviousPageButton(false)
-    } else {
-      setPreviousPageButton(true)
-    }
+  //   if (pageNumber <= 1) {
+  //     setPreviousPageButton(false)
+  //   } else {
+  //     setPreviousPageButton(true)
+  //   }
 
-    if (pageNumber * 20 >= searchData.total_results) {
-      setNextPageButton(false)
-    }
-  }, [pageNumber, searchData.total_pages, searchData.total_results])
+  //   if (pageNumber * 20 >= searchData.total_results) {
+  //     setNextPageButton(false)
+  //   }
+  // }, [pageNumber, searchData.total_pages, searchData.total_results])
 
   const closeSearchBar = () => {
     setTimeout(() => {
@@ -245,11 +262,22 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
             />
           </form>
         )}
-
+        {/* testing from here -------------------------------------- */}
         {searchData.results ? (
+          <InfiniteScrollFunc
+            items={searchData.results}
+            length={searchData.total_results}
+            fetchData={getData}
+            closeSearchBar={closeSearchBar}
+            setSearchBarClick={setSearchBarClick}
+            searchBarClick={searchBarClick}
+          />
+        ) : null}
+
+        {/* {searchData.results ? (
           <>
             <div className="bg-black absolute backdrop-blur-sm bg-opacity-90 z-30 top-[25px] w-full flex flex-col gap-2 max-h-[70vh] transition-all overflow-scroll items-start">
-              {/* how many results and pages */}
+              
               {searchData.total_results == 0 ? (
                 <div className="text-center w-full text-2xl">
                   No results found.
@@ -312,19 +340,13 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
                     </>
                   ))}
                   <div>
-                    {/* <div
-                  onClick={handlePreviousPageClick}
-                  className={`${pageNumber == 1 ? 'hidden' : 'visible'}`}
-                >
-                  Previous
-                </div>
-                <div onClick={handleNextPageClick}>Next</div> */}
                   </div>
                 </>
               )}
             </div>
           </>
-        ) : null}
+        ) : null} */}
+        {/* to here ------------------------------------- */}
       </div>
     </div>
   )
