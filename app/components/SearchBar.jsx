@@ -11,9 +11,10 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchInput, setSearchInput] = useState('')
   const [searchData, setSearchData] = useState([])
   const [searchResultsExists, setSearchResultsExists] = useState(false)
-  const [pageNumber, setPageNumber] = useState({ movies: 0, tv: 0 })
+  const [pageNumber, setPageNumber] = useState({ movies: 1, tv: 1 })
   const [totalSearchResults, setTotalSearchResults] = useState(0)
   const [totalPages, setTotalPages] = useState({ movies: 0, tv: 0 })
+  const [hasMore, setHasMore] = useState(true)
 
   const searchRef = useRef(null)
   const inputRef = useRef(null)
@@ -55,11 +56,12 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
 
   function handleSubmitButton(e) {
     e.preventDefault()
-    setPageNumber({ movies: 1, tv: 1 })
+    setPageNumber(() => ({ movies: 1, tv: 1 }))
     getSearchData()
   }
 
   async function getSearchData(movies, tv) {
+    console.log('why is this running in the beginning?')
     if (movies && tv) {
       console.log('movies and tv')
       const resultMovies = await getData(
@@ -70,9 +72,21 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       )
       const result = [...resultMovies.results, ...resultTv.results]
       const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
-
-      console.log('page', pageNumber, combinedResult)
-      console.log('testing20', [...searchData.results, ...combinedResult])
+      setSearchData({ results: [...searchData.results, ...combinedResult] })
+    } else if (movies) {
+      console.log('movies')
+      const resultMovies = await getData(
+        `search/movie?query=${searchInput}&page=${pageNumber.movies}`
+      )
+      const result = [...resultMovies.results]
+      const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
+      setSearchData({ results: [...searchData.results, ...combinedResult] })
+    } else if (tv) {
+      const resultTv = await getData(
+        `search/tv?query=${searchInput}&page=${pageNumber.tv}`
+      )
+      const result = [...resultTv.results]
+      const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
       setSearchData({ results: [...searchData.results, ...combinedResult] })
     } else {
       const resultMovies = await getData(
@@ -120,7 +134,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     setSearchInput('')
     setSearchData([])
     setSearchResultsExists(false)
-    setPageNumber({ movies: 0, tv: 0 })
+    setPageNumber({ movies: 1, tv: 1 })
     setTotalSearchResults(0)
     setTotalPages({ movies: 0, tv: 0 })
     console.log('searchbarclick', searchBarClick)
@@ -130,29 +144,19 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     console.log('getnextsearchresults func')
 
     if (
-      pageNumber.movies < totalPages.movies &&
-      pageNumber.tv < totalPages.tv
+      pageNumber.movies <= totalPages.movies &&
+      pageNumber.tv <= totalPages.tv
     ) {
-      const tempPageNumberMovies = pageNumber.movies + 1
-      const tempPageNumberTv = pageNumber.tv + 1
-
       setPageNumber((previousPageNumber) => ({
         movies: previousPageNumber.movies + 1,
         tv: previousPageNumber.tv + 1,
       }))
       getSearchData('movies', 'tv')
-      // console.log('total pages', totalPages)
-
-      // getSearchData('movies', 'tv')
-      // console.log('test1', pageNumber, totalPages, {
-      //   movies: pageNumber.movies + 1,
-      //   tv: pageNumber.tv + 1,
-      // })
-    } else if (pageNumber.movies < totalPages.movies) {
+    } else if (pageNumber.movies <= totalPages.movies) {
       setPageNumber({ movies: pageNumber.movies + 1, tv: pageNumber.tv })
       getSearchData('movies')
       console.log('test2', pageNumber, totalPages)
-    } else if (pageNumber.tv < totalPages.tv) {
+    } else if (pageNumber.tv <= totalPages.tv) {
       setPageNumber({ movies: pageNumber.movies, tv: pageNumber.tv + 1 })
       getSearchData('tv')
       console.log('test3', pageNumber, totalPages)
@@ -162,6 +166,16 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     //changes the pagenumber based on if the pagenumber is less than the total number.
     //
   }
+
+  useEffect(() => {
+    if (
+      pageNumber.movies == totalPages.movies &&
+      pageNumber.tv == totalPages.tv
+    ) {
+      setHasMore(false)
+      console.log('has more should be false', hasMore)
+    }
+  }, [pageNumber, totalPages.movies, totalPages.tv])
 
   return (
     <div
@@ -234,6 +248,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
             closeSearchBar={closeSearchBar}
             setSearchBarClick={setSearchBarClick}
             searchBarClick={searchBarClick}
+            hasMore={hasMore}
           />
         ) : null}
       </div>
