@@ -158,7 +158,7 @@ function Nav() {
               {!user && !searchBarClick ? (
                 <button
                   onClick={signInWithGoogle}
-                  className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins"
+                  className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins relative z-20"
                 >
                   Sign In
                 </button>
