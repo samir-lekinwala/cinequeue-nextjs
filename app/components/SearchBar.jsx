@@ -57,6 +57,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
   function handleSubmitButton(e) {
     e.preventDefault()
     setPageNumber(() => ({ movies: 1, tv: 1 }))
+    setHasMore(true)
     getSearchData()
   }
 
@@ -138,25 +139,26 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     setTotalSearchResults(0)
     setTotalPages({ movies: 0, tv: 0 })
     console.log('searchbarclick', searchBarClick)
+    setHasMore(true)
   }
 
   function getNextSearchResults() {
     console.log('getnextsearchresults func')
 
     if (
-      pageNumber.movies <= totalPages.movies &&
-      pageNumber.tv <= totalPages.tv
+      pageNumber.movies < totalPages.movies &&
+      pageNumber.tv < totalPages.tv
     ) {
       setPageNumber((previousPageNumber) => ({
         movies: previousPageNumber.movies + 1,
         tv: previousPageNumber.tv + 1,
       }))
       getSearchData('movies', 'tv')
-    } else if (pageNumber.movies <= totalPages.movies) {
+    } else if (pageNumber.movies < totalPages.movies) {
       setPageNumber({ movies: pageNumber.movies + 1, tv: pageNumber.tv })
       getSearchData('movies')
       console.log('test2', pageNumber, totalPages)
-    } else if (pageNumber.tv <= totalPages.tv) {
+    } else if (pageNumber.tv < totalPages.tv) {
       setPageNumber({ movies: pageNumber.movies, tv: pageNumber.tv + 1 })
       getSearchData('tv')
       console.log('test3', pageNumber, totalPages)
@@ -248,7 +250,7 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
             closeSearchBar={closeSearchBar}
             setSearchBarClick={setSearchBarClick}
             searchBarClick={searchBarClick}
-            hasMore={hasMore}
+            more={hasMore}
           />
         ) : null}
       </div>

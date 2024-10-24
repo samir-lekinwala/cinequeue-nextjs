@@ -9,7 +9,7 @@ function InfiniteScrollFunc({
   setSearchBarClick,
   searchBarClick,
   totalResults,
-  hasMore,
+  more,
   // setNextSearchScroll,
 }) {
   console.log('infinite scroll func', length)
@@ -24,7 +24,7 @@ function InfiniteScrollFunc({
           next={fetchData}
           style={{ display: 'flex', flexDirection: 'column' }} //To put endMessage and loader to the top.
           inverse={false} //
-          hasMore={hasMore}
+          hasMore={more}
           loader={<h4>Loading...</h4>}
           scrollableTarget="scrollableDiv"
         >
