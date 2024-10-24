@@ -3,16 +3,37 @@ import React, { useEffect, useRef, useState } from 'react'
 import { getData } from '../api/apiCalls'
 import { set } from 'firebase/database'
 import SingleSearchItem from './SingleSearchItem'
+import page from '../watchlist/page'
+import Link from 'next/link'
+import InfiniteScrollFunc from '../functions/InfiniteScrollFunc'
 
 function SearchBar({ searchBarClick, setSearchBarClick }) {
   const [searchInput, setSearchInput] = useState('')
   const [searchData, setSearchData] = useState([])
   const [searchResultsExists, setSearchResultsExists] = useState(false)
-  const dummy = useRef(null)
+  const [pageNumber, setPageNumber] = useState({ movies: 1, tv: 1 })
+  const [totalSearchResults, setTotalSearchResults] = useState(0)
+  const [totalPages, setTotalPages] = useState({ movies: 0, tv: 0 })
+  const [hasMore, setHasMore] = useState(true)
+
+  const searchRef = useRef(null)
+  const inputRef = useRef(null)
 
   function handleSearchInput(e) {
     setSearchInput(e.target.value)
   }
+
+  const inputFocus = () => {
+    inputRef.current.focus()
+  }
+
+  useEffect(() => {
+    if (searchBarClick) {
+      setTimeout(() => {
+        inputFocus()
+      }, 100)
+    }
+  }, [searchBarClick])
 
   useEffect(() => {
     if (searchData.results) {
@@ -29,46 +50,73 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
     }
   }, [searchData.results])
 
-  // useEffect(() => {
-  //   console.log(searchInput)
-  // }, [searchInput])
-
-  //need function that sets the state with data
-  //need useeffect that gets the function to run when submit button clicked
-
   const clickSearchBar = () => {
     setSearchBarClick(true)
-    console.log('dummy', dummy.current)
   }
 
   function handleSubmitButton(e) {
     e.preventDefault()
+    setPageNumber(() => ({ movies: 1, tv: 1 }))
+    setHasMore(true)
     getSearchData()
   }
 
-  async function getSearchData() {
-    console.log('search input from searchdata', searchInput)
-    const result = await getData(`search/movie?query=${searchInput}`)
-    console.log(result)
-    setSearchData(result)
-    setSearchResultsExists(true)
+  async function getSearchData(movies, tv) {
+    console.log('why is this running in the beginning?')
+    if (movies && tv) {
+      console.log('movies and tv')
+      const resultMovies = await getData(
+        `search/movie?query=${searchInput}&page=${pageNumber.movies}`
+      )
+      const resultTv = await getData(
+        `search/tv?query=${searchInput}&page=${pageNumber.tv}`
+      )
+      const result = [...resultMovies.results, ...resultTv.results]
+      const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
+      setSearchData({ results: [...searchData.results, ...combinedResult] })
+    } else if (movies) {
+      console.log('movies')
+      const resultMovies = await getData(
+        `search/movie?query=${searchInput}&page=${pageNumber.movies}`
+      )
+      const result = [...resultMovies.results]
+      const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
+      setSearchData({ results: [...searchData.results, ...combinedResult] })
+    } else if (tv) {
+      const resultTv = await getData(
+        `search/tv?query=${searchInput}&page=${pageNumber.tv}`
+      )
+      const result = [...resultTv.results]
+      const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
+      setSearchData({ results: [...searchData.results, ...combinedResult] })
+    } else {
+      const resultMovies = await getData(
+        `search/movie?query=${searchInput}&page=${pageNumber.movies}`
+      )
+      const resultTv = await getData(
+        `search/tv?query=${searchInput}&page=${pageNumber.tv}`
+      )
+      const result = [...resultMovies.results, ...resultTv.results]
+      const totalResults = resultMovies.total_results + resultTv.total_results
+      const combinedResult = result.sort((a, b) => a.popularity < b.popularity)
+      // const totalPages = resultMovies.total_pages + resultTv.total_pages
+
+      setSearchData({
+        results: combinedResult,
+      })
+      setTotalPages({
+        movies: resultMovies.total_pages,
+        tv: resultTv.total_pages,
+      })
+      setTotalSearchResults(totalResults)
+      setSearchResultsExists(true)
+    }
   }
 
-  // useEffect(() => {
-
-  //   getSearchData()
-  // }, [searchInput])
-
   useEffect(() => {
-    /**
-     * Alert if clicked on outside of element
-     */
     function handleClickOutside(event) {
-      if (dummy.current && !dummy.current.contains(event.target)) {
-        setSearchBarClick(false)
-        setSearchInput('')
-        setSearchData([])
-        setSearchResultsExists(false)
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        closeSearchBar()
       }
     }
     // Bind the event listener
@@ -77,55 +125,133 @@ function SearchBar({ searchBarClick, setSearchBarClick }) {
       // Unbind the event listener on clean up
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [dummy, searchInput])
+  }, [searchRef])
+
+  const closeSearchBar = () => {
+    setTimeout(() => {
+      setSearchBarClick(false)
+    }, 1)
+
+    setSearchInput('')
+    setSearchData([])
+    setSearchResultsExists(false)
+    setPageNumber({ movies: 1, tv: 1 })
+    setTotalSearchResults(0)
+    setTotalPages({ movies: 0, tv: 0 })
+    console.log('searchbarclick', searchBarClick)
+    setHasMore(true)
+  }
+
+  function getNextSearchResults() {
+    console.log('getnextsearchresults func')
+
+    if (
+      pageNumber.movies < totalPages.movies &&
+      pageNumber.tv < totalPages.tv
+    ) {
+      setPageNumber((previousPageNumber) => ({
+        movies: previousPageNumber.movies + 1,
+        tv: previousPageNumber.tv + 1,
+      }))
+      getSearchData('movies', 'tv')
+    } else if (pageNumber.movies < totalPages.movies) {
+      setPageNumber({ movies: pageNumber.movies + 1, tv: pageNumber.tv })
+      getSearchData('movies')
+      console.log('test2', pageNumber, totalPages)
+    } else if (pageNumber.tv < totalPages.tv) {
+      setPageNumber({ movies: pageNumber.movies, tv: pageNumber.tv + 1 })
+      getSearchData('tv')
+      console.log('test3', pageNumber, totalPages)
+    }
+
+    //will get called via the infinite scrolling component
+    //changes the pagenumber based on if the pagenumber is less than the total number.
+    //
+  }
+
+  useEffect(() => {
+    if (
+      pageNumber.movies == totalPages.movies &&
+      pageNumber.tv == totalPages.tv
+    ) {
+      setHasMore(false)
+      console.log('has more should be false', hasMore)
+    }
+  }, [pageNumber, totalPages.movies, totalPages.tv])
 
   return (
     <div
       className={`z-0 sm:absolute ${
-        searchBarClick ? 'absolute pr-0' : ''
-      } w-full flex justify-end sm:justify-center pr-5 sm:p-0 text-white my-auto`}
+        searchBarClick ? 'absolute p-2' : 'sm:pr-0 pr-16'
+      } ${
+        searchData ? 'absolute p-0' : ''
+      } w-full flex justify-end sm:justify-center text-white my-auto`}
     >
       {searchResultsExists ? (
         <div className="fixed inset-0 backdrop-blur-sm"> </div>
       ) : null}
 
       <div
-        ref={dummy}
+        ref={searchRef}
         onClick={clickSearchBar}
         className={`  ${
           searchBarClick ? 'w-full' : 'w-0 sm:w-1/4'
         }  transition-all ease-in-out relative `}
       >
         <MagnifyingGlassIcon
-          className={`absolute h-full w-[15px]'
+          className={` ${
+            searchBarClick
+              ? 'h-full absolute '
+              : 'sm:absolute relative h-[20px]'
+          } w-[24px] '
           `}
         />
-        <form className="relative">
-          <input
-            value={searchInput}
-            onChange={(e) => handleSearchInput(e)}
-            className={`${
-              searchBarClick ? 'visible ' : ''
-            } bg-gray-800 h-[20px] w-full rounded-2xl bg-opacity-25 pr-16 pl-6 text-center`}
-          />
-          {searchBarClick ? (
-            <button
-              onClick={(e) => handleSubmitButton(e)}
-              type="submit"
-              className="absolute right-2"
-            >
-              Search
-            </button>
-          ) : null}
-        </form>
-        {searchData.results ? (
-          <>
-            <div className="bg-black absolute backdrop-blur-sm bg-opacity-90 z-30 top-[25px] w-full flex flex-col gap-2 max-h-[70vh] transition-all overflow-scroll items-start">
-              {searchData.results.map((item) => (
-                <SingleSearchItem key={item.id} data={item} type={'movie'} />
-              ))}
+        {searchBarClick ? (
+          <form className="relative">
+            <div className="flex items-center">
+              <input
+                ref={inputRef}
+                value={searchInput}
+                onChange={(e) => handleSearchInput(e)}
+                className={`bg-gray-800 h-[20px] rounded-2xl  bg-opacity-25 text-center ${
+                  searchBarClick
+                    ? ' w-full block'
+                    : 'sm:block hidden w-1/2 h-20'
+                } `}
+              />
+              {searchBarClick ? (
+                <button
+                  onClick={(e) => handleSubmitButton(e)}
+                  type="submit"
+                  className={`rounded-2xl bg-opacity-25 text-base absolute right-0 mr-1 font-poppins
+                    
+                  `}
+                >
+                  Search
+                </button>
+              ) : null}
             </div>
-          </>
+          </form>
+        ) : (
+          <form className="relative">
+            <input
+              value={searchInput}
+              onChange={(e) => handleSearchInput(e)}
+              className={`bg-gray-800 h-[20px] rounded-2xl hidden sm:block w-full  bg-opacity-25 pr-16 pl-6 text-center`}
+            />
+          </form>
+        )}
+        {searchData.results ? (
+          <InfiniteScrollFunc
+            items={searchData.results}
+            totalResults={totalSearchResults}
+            fetchData={getNextSearchResults}
+            // setNextSearchScroll={setNextSearchScroll}
+            closeSearchBar={closeSearchBar}
+            setSearchBarClick={setSearchBarClick}
+            searchBarClick={searchBarClick}
+            more={hasMore}
+          />
         ) : null}
       </div>
     </div>

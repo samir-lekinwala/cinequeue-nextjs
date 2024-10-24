@@ -121,6 +121,21 @@ function Nav() {
   const openDrawer = () => setIsDrawerOpen(true)
   const closeDrawer = () => setIsDrawerOpen(false)
 
+  useEffect(() => {
+    if (isDrawerOpen) {
+      // Prevent scrolling on the body
+      document.body.style.overflow = 'hidden'
+    } else {
+      // Re-enable scrolling on the body
+      document.body.style.overflow = ''
+    }
+
+    // Cleanup function to reset overflow when component unmounts or searchData changes
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isDrawerOpen])
+
   return (
     <div>
       <div className=" z-50 relative bg-black justify-between items-center flex w-full h-[48px]">
@@ -140,7 +155,7 @@ function Nav() {
         {isDrawerOpen ? null : (
           <>
             <div className="flex gap-4 items-center">
-              {!user ? (
+              {!user && !searchBarClick ? (
                 <button
                   onClick={signInWithGoogle}
                   className="text-white bg-white bg-opacity-10 rounded-xl p-1 px-2 font-poppins"
