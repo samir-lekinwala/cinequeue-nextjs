@@ -8,7 +8,8 @@ function InfiniteScrollFunc({
   closeSearchBar,
   setSearchBarClick,
   searchBarClick,
-  length,
+  totalResults,
+  // setNextSearchScroll,
 }) {
   console.log('infinite scroll func', length)
 
@@ -16,8 +17,9 @@ function InfiniteScrollFunc({
     <div className="absolute h-[70vh] bg-black bg-opacity-80">
       <div id="scrollableDiv" className="h-[70vh] overflow-auto flex flex-col">
         {/*Put the scroll bar always on the bottom*/}
+        <span className="text-center">Total results: {totalResults}</span>
         <InfiniteScroll
-          dataLength={length}
+          dataLength={items.length}
           next={fetchData}
           style={{ display: 'flex', flexDirection: 'column' }} //To put endMessage and loader to the top.
           inverse={false} //
