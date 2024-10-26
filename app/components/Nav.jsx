@@ -96,6 +96,8 @@ import {
   MagnifyingGlassIcon,
   Bars3Icon,
   XMarkIcon,
+  EyeIcon,
+  QueueListIcon,
 } from '@heroicons/react/24/outline'
 import Logo from './Logo'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -246,9 +248,26 @@ function Nav() {
                 <Link href={'/watchlist'} onClick={closeDrawer}>
                   <ListItem className="text-white">
                     <ListItemPrefix>
-                      <Cog6ToothIcon className="h-5 w-5" />
+                      <QueueListIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     Watch List
+                    <ListItemSuffix>
+                      {/* <Chip
+                        value="14"
+                        size="sm"
+                        variant="ghost"
+                        color=""
+                        className="bg-white rounded-full"
+                      /> */}
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
+                <Link href={'/seenlist'} onClick={closeDrawer}>
+                  <ListItem className="text-white">
+                    <ListItemPrefix>
+                      <EyeIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Seen List
                     <ListItemSuffix>
                       {/* <Chip
                         value="14"
