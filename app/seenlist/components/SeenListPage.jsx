@@ -1,15 +1,17 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
-import PostersSection from './PostersSection'
-import TotalWatchListTime from './TotalWatchListTime'
+import PostersSection from '../../watchlist/components/PostersSection'
+import TotalWatchListTime from '../../watchlist/components/TotalWatchListTime'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../../firebaseConfig'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FallingLines } from 'react-loader-spinner'
 
-function WatchlistPage() {
+function SeenListPage() {
   const [data, setData] = useState()
   const [runtimeType, setRuntimeType] = useState('minutes')
+  // const [runtimeArrayIndex, setRuntimeArrayIndex] = useState(0)
 
   const [user] = useAuthState(auth)
 
@@ -17,7 +19,7 @@ function WatchlistPage() {
     if (user) {
       // Perform Firestore query only when the user is authenticated
       const fetchData = async () => {
-        const watchlistRef = collection(db, 'watchlist')
+        const watchlistRef = collection(db, 'seenlist')
         const q = query(watchlistRef, where('userUid', '==', user.uid))
         const snapshot = await getDocs(q)
 
@@ -43,7 +45,7 @@ function WatchlistPage() {
       ) : (
         <div className="flex flex-col items-center justify-center gap-4">
           <span className="text-transparent text-2xl font-poppins animate-gradient-animation-text">
-            Watch List
+            Seen List
           </span>
           <div className="">
             <TotalWatchListTime
@@ -58,4 +60,4 @@ function WatchlistPage() {
   )
 }
 
-export default WatchlistPage
+export default SeenListPage

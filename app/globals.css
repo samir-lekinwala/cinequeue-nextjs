@@ -25,6 +25,20 @@ body {
     background-position: 0% 50%;
   }
 }
+@keyframes gradient-animation-text {
+  0% {
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+  }
+  50% {
+    background-position: 100% 50%;
+    -webkit-background-clip: text;
+  }
+  100% {
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+  }
+}
 
 @keyframes expand {
   0% {
@@ -60,6 +74,11 @@ body {
   background-size: 200% 200%;
   animation: gradient-animation 4s ease-in-out infinite;
 }
+.animate-gradient-animation-text {
+  background: linear-gradient(45deg, #ff7e5f, #feb47b, #ff7e5f);
+  background-size: 200% 200%;
+  animation: gradient-animation-text 4s ease-in-out infinite;
+}
 .animate-gradient-animation-expand {
   background: linear-gradient(45deg, #ff7e5f, #feb47b, #ff7e5f);
   background-size: 200% 200%;
@@ -71,6 +90,5 @@ body {
   background-size: 200% 200%;
   animation: gradient-animation 4s ease-in-out infinite;
 }
-
 
 

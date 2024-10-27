@@ -55,7 +55,7 @@ function PosterSection({ content, type }) {
             <AddToLists
               type={type}
               content={content}
-              contentRuntime={getTotalEpisodesRuntime(content) * 60}
+              contentRuntime={getTotalEpisodesRuntime(content, type) * 60}
             />
           </div>
         </div>

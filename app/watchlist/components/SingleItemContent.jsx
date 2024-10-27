@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Timestamp, toDate } from 'firebase/firestore'
 import Link from 'next/link'
 
-function SingleItemContent({ content, classes }) {
+function SingleItemContent({ content, classes, runtimeType }) {
   const [hoverState, setHoverState] = useState(false)
+  const [runtimeTypeChangedRuntime, setRuntimeTypeChangedRuntime] = useState()
 
   function hoverStateChangeTrue() {
     setHoverState(!hoverState)
@@ -17,6 +18,22 @@ function SingleItemContent({ content, classes }) {
   //   const year = item.split('').splice(0, 4).join('')
   //   return year
   // }
+
+  useEffect(() => {
+    function changeRuntime() {
+      if (runtimeType == 'minutes') {
+        setRuntimeTypeChangedRuntime(content.runtime)
+      } else if (runtimeType == 'hours') {
+        setRuntimeTypeChangedRuntime((content.runtime / 60).toFixed(2))
+      } else if (runtimeType == 'days') {
+        setRuntimeTypeChangedRuntime((content.runtime / 1440).toFixed(2))
+      } else if (runtimeType == 'weeks') {
+        setRuntimeTypeChangedRuntime((content.runtime / 10080).toFixed(3))
+      }
+    }
+
+    changeRuntime()
+  }, [runtimeType])
 
   const date = new Timestamp(
     content.createdAt.seconds,
@@ -70,8 +87,8 @@ function SingleItemContent({ content, classes }) {
         <p className=" text-center font-poppins text-gray-400 text-sm">
           Added on {date}
         </p>
-        <p className=" text-center font-poppins text-gray-400 text-sm font-semibold">
-          {content.runtime} Minutes
+        <p className=" text-center font-poppins text-transparent animate-gradient-animation-text text-sm font-semibold">
+          {runtimeTypeChangedRuntime} {runtimeType}
         </p>
       </div>
     </div>
