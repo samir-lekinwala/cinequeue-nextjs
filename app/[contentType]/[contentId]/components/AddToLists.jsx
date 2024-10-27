@@ -15,6 +15,8 @@ import {
 } from 'firebase/firestore'
 
 function AddToLists({ type, content, contentRuntime }) {
+  console.log('contentruntime', contentRuntime, 'content', content)
+
   const [watchListed, setWatchListed] = useState()
   const [user, loading, error] = useAuthState(auth)
 
@@ -30,13 +32,14 @@ function AddToLists({ type, content, contentRuntime }) {
   }
 
   function getReleaseDate() {
-    if (type == 'show') {
-      return content.first_air_date
-    } else return content.release_date
+    if (type == 'movie') {
+      return content.release_date
+    } else return content.first_air_date
   }
 
   async function addToDb(buttonType) {
     const newListRef = collection(db, buttonType)
+    console.log('todatabase variable', toDatabase)
     try {
       await addDoc(newListRef, toDatabase).then((docRef) => {
         console.log('added Id', docRef.id)
@@ -139,13 +142,13 @@ function AddToLists({ type, content, contentRuntime }) {
 
   const toDatabase = {
     createdAt: serverTimestamp(),
-    userUid: user?.uid,
+    userUid: user.uid,
     type: movieOrTvShow,
     contentId: content.id,
     runtime: checkRuntime(),
     overview: content.overview,
     release_date: getReleaseDate(),
-    title: content.title,
+    title: type == 'movie' ? content.title : content.name,
     poster_path: content.poster_path,
   }
 

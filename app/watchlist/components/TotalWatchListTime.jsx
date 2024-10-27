@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 
-function TotalWatchListTime({ data }) {
+function TotalWatchListTime({ data, setRuntimeTypeMain }) {
   const [runtime, setRuntime] = useState(null)
   // const [hoursRuntime, setHoursRuntime] = useState(null)
   // const [clickHours, setClickHours] = useState(false)
@@ -19,6 +19,12 @@ function TotalWatchListTime({ data }) {
       setRuntimeType(runtimeType + 1)
     }
   }
+
+  useEffect(() => {
+    if (runtimeData.length > 0) {
+      setRuntimeTypeMain(runtimeData[runtimeType].type)
+    }
+  }, [runtimeType])
 
   useEffect(() => {
     if (data) {
@@ -61,9 +67,11 @@ function TotalWatchListTime({ data }) {
     >
       Total amount of {runtimeData[runtimeType].type} required to complete
       watching all content{' '}
-      <div>
+      <div className="text-transparent animate-gradient-animation-text">
         <p className="text-2xl">{runtimeData[runtimeType].runtime}</p>
-        <p className="text-center">{runtimeData[runtimeType].type}</p>
+        <p id="runtime-type" className="text-center">
+          {runtimeData[runtimeType].type}
+        </p>
       </div>
     </div>
   ) : null

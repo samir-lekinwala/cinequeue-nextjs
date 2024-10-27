@@ -9,6 +9,7 @@ import { FallingLines } from 'react-loader-spinner'
 
 function WatchlistPage() {
   const [data, setData] = useState()
+  const [runtimeType, setRuntimeType] = useState('minutes')
 
   const [user] = useAuthState(auth)
 
@@ -41,10 +42,16 @@ function WatchlistPage() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-4">
+          <span className="text-transparent text-2xl font-poppins animate-gradient-animation-text">
+            Watch List
+          </span>
           <div className="">
-            <TotalWatchListTime data={data} />
+            <TotalWatchListTime
+              data={data}
+              setRuntimeTypeMain={setRuntimeType}
+            />
           </div>
-          <PostersSection data={data} />
+          <PostersSection data={data} runtimeType={runtimeType} />
         </div>
       )}
     </>

@@ -6,15 +6,19 @@ import { auth, db } from '../../firebaseConfig'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import SingleItemContent from '../components/SingleItemContent'
 
-function PostersSection({ data }) {
-  console.log(data)
+function PostersSection({ data, runtimeType }) {
+  data.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
 
   return (
     <div className="flex gap-4 flex-wrap justify-center">
-      {data?.length > 0 ? (
+      {data.length > 0 ? (
         data.map((item) => (
-          <div key={item.id}>
-            <SingleItemContent content={item} classes={''} />
+          <div key={item.contentId}>
+            <SingleItemContent
+              content={item}
+              classes={''}
+              runtimeType={runtimeType}
+            />
           </div>
         ))
       ) : (
