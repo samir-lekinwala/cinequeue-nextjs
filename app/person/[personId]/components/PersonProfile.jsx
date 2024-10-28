@@ -67,25 +67,23 @@ function PersonProfile({ data }) {
           console.log('combined deplicate test', characterMap)
         }
 
-        let newSortedTvCredits = []
+        let newSortedTvCredits = [...tvCreditsArray]
 
         for (const key in characterMap) {
-          if (characterMap[key].length > 1) {
+          if (characterMap[key].length >= 2) {
             console.log('length longer than 1', key, characterMap[key])
             // tvCreditsArray[key]
-            const filterDuplicate = tvCreditsArray.filter(
+            const filterDuplicate = newSortedTvCredits.filter(
               (item) => item.id == key
             )
-            const removedDuplicates = tvCreditsArray.filter(
+            const removedDuplicates = newSortedTvCredits.filter(
               (item) => item.id != key
             )
-
             filterDuplicate[0].character = characterMap[key].join(', ')
+
             removedDuplicates.push(filterDuplicate[0])
             // removedDuplicates.push()
             newSortedTvCredits = [...removedDuplicates]
-            console.log('sorted by id second test', filterDuplicate)
-            console.log('sorted by id third test', removedDuplicates)
           }
         }
 
@@ -164,7 +162,7 @@ function PersonProfile({ data }) {
         <div className="flex justify-center flex-wrap gap-2">
           {tvCredits?.map((tv) => (
             <div key={tv.credit_id}>
-              <span className="text-white w-full object-contain">
+              <span className="text-white object-contain w-[200px] flex">
                 {tv.character}
               </span>
               <SingleItemContent
