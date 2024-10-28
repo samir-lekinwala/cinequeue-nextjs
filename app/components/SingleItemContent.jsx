@@ -46,12 +46,19 @@ function SingleItemContent({ content, classes, type }) {
             : 'transition-all duration-500 scale-100 ease-in-out'
         } `}
       >
-        <img
-          className={``}
-          src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
-                `}
-          alt={`${content.title} poster`}
-        />
+        {' '}
+        {content.poster_path ? (
+          <img
+            className={`w-[200px] h-[300px] object-cover bg-gray-400 bg-opacity-35`}
+            src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
+              `}
+            alt={`${content.title} poster`}
+          />
+        ) : (
+          <div className="w-[200px] h-[300px] bg-gray-400 bg-opacity-50 flex justify-center items-center text-white">
+            <span>No Poster Available</span>
+          </div>
+        )}
       </div>
       <div key={content.id}>
         <p className=" text-center font-poppins text-gray-400">

@@ -6,9 +6,13 @@ function PersonProfile({ data }) {
   const [yearsOld, setYearsOld] = useState(0)
   const [movieCredits, setMovieCredits] = useState([])
   const [tvCredits, setTvCredits] = useState([])
+  const [charactersClick, setCharactersClick] = useState(false)
 
   const biographyOpen = () => setBiographyButtonClick(true)
   const biographyClose = () => setBiographyButtonClick(false)
+
+  const handleCharactersClick = () => setCharactersClick(!charactersClick)
+  // const handleCharactersClick = () => setCharactersClick(false)
 
   function calculateAge(birthDate, otherDate) {
     birthDate = new Date(birthDate)
@@ -144,9 +148,14 @@ function PersonProfile({ data }) {
         Movies
         <div className="flex justify-center flex-wrap gap-2">
           {movieCredits?.map((movie) => (
-            <div key={movie.id}>
-              <span className="text-white w-full object-contain">
-                {movie.character}
+            <div key={movie.id} className="">
+              <span
+                onClick={handleCharactersClick}
+                className={`text-white object-contain w-[200px] ${
+                  charactersClick ? 'line-clamp-none' : 'line-clamp-1'
+                } `}
+              >
+                {movie.character ? movie.character : 'No Character Name Found'}
               </span>
               <SingleItemContent
                 content={movie}
@@ -161,9 +170,14 @@ function PersonProfile({ data }) {
         <span className="text-white text-2xl">TV</span>
         <div className="flex justify-center flex-wrap gap-2">
           {tvCredits?.map((tv) => (
-            <div key={tv.credit_id}>
-              <span className="text-white object-contain w-[200px] flex">
-                {tv.character}
+            <div key={tv.credit_id} className="">
+              <span
+                onClick={handleCharactersClick}
+                className={`text-white object-contain w-[200px] ${
+                  charactersClick ? 'line-clamp-none' : 'line-clamp-1'
+                } `}
+              >
+                {tv.character ? tv.character : 'No Character Name Found'}
               </span>
               <SingleItemContent
                 content={tv}
