@@ -144,48 +144,58 @@ function PersonProfile({ data }) {
           </div>
         </div>
       </div>
-      <div>
-        Movies
-        <div className="flex justify-center flex-wrap gap-2">
-          {movieCredits?.map((movie) => (
-            <div key={movie.id} className="">
-              <span
-                onClick={handleCharactersClick}
-                className={`text-white object-contain w-[200px] ${
-                  charactersClick ? 'line-clamp-none' : 'line-clamp-1'
-                } `}
-              >
-                {movie.character ? movie.character : 'No Character Name Found'}
-              </span>
-              <SingleItemContent
-                content={movie}
-                type={'movie'}
-                classes={'rounded-xl'}
-              />
-            </div>
-          ))}
+      <div className="flex flex-col gap-10">
+        <div className="text-transparent animate-gradient-animation-text text-center">
+          <span className="text-2xl flex flex-col items-center">
+            Movies
+            <span className="h-[0.5px] bottom-0 w-2/3 bg-deep-orange-500 animate-gradient-animation"></span>
+          </span>
+          <div className="flex justify-center flex-wrap gap-2 ">
+            {movieCredits?.map((movie) => (
+              <div key={movie.id} className="">
+                <span
+                  onClick={handleCharactersClick}
+                  className={`text-white object-contain w-[200px] ${
+                    charactersClick ? 'line-clamp-none' : 'line-clamp-1'
+                  } `}
+                >
+                  {movie.character
+                    ? movie.character
+                    : 'No Character Name Found'}
+                </span>
+                <SingleItemContent
+                  content={movie}
+                  type={'movie'}
+                  classes={'rounded-xl'}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="">
-        <span className="text-white text-2xl">TV</span>
-        <div className="flex justify-center flex-wrap gap-2">
-          {tvCredits?.map((tv) => (
-            <div key={tv.credit_id} className="">
-              <span
-                onClick={handleCharactersClick}
-                className={`text-white object-contain w-[200px] ${
-                  charactersClick ? 'line-clamp-none' : 'line-clamp-1'
-                } `}
-              >
-                {tv.character ? tv.character : 'No Character Name Found'}
-              </span>
-              <SingleItemContent
-                content={tv}
-                type={'tv'}
-                classes={'rounded-xl'}
-              />
-            </div>
-          ))}
+        <div className="text-center">
+          <span className="flex justify-center items-center flex-col relative text-transparent animate-gradient-animation-text text-2xl">
+            TV
+            <span className="h-[0.5px] bottom-0 w-2/3 bg-deep-orange-500 animate-gradient-animation"></span>
+          </span>
+          <div className="flex justify-center flex-wrap gap-2">
+            {tvCredits?.map((tv) => (
+              <div key={tv.credit_id} className="">
+                <span
+                  onClick={handleCharactersClick}
+                  className={`text-white object-contain w-[200px] ${
+                    charactersClick ? 'line-clamp-none' : 'line-clamp-1'
+                  } `}
+                >
+                  {tv.character ? tv.character : 'No Character Name Found'}
+                </span>
+                <SingleItemContent
+                  content={tv}
+                  type={'tv'}
+                  classes={'rounded-xl'}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
