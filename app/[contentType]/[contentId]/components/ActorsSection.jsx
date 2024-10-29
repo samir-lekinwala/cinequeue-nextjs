@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { set } from 'firebase/database'
+import Link from 'next/link'
 import React, { useState } from 'react'
 import { FallingLines } from 'react-loader-spinner'
 
@@ -36,18 +37,21 @@ function ActorsSection({ actors }) {
               key={actor.id}
             >
               <p className="">{actor.name}</p>
-              {actor.profile_path == null ? (
-                <div className="w-40 h-40 border border-gray-400 rounded-full">
-                  {' '}
-                </div>
-              ) : (
-                <img
-                  alt={actor.name}
-                  className="w-40 h-40 rounded-full object-cover"
-                  src={`https://image.tmdb.org/t/p/original/${actor.profile_path}`}
-                ></img>
-              )}
-
+              <div>
+                <Link href={`/person/${actor.id}`}>
+                  {actor.profile_path == null ? (
+                    <div className="w-40 h-40 border border-gray-400 rounded-full">
+                      {' '}
+                    </div>
+                  ) : (
+                    <img
+                      alt={actor.name}
+                      className="w-40 h-40 rounded-full object-cover"
+                      src={`https://image.tmdb.org/t/p/original/${actor.profile_path}`}
+                    ></img>
+                  )}
+                </Link>
+              </div>
               <p className="text-gray-400 w-[180px] h-[3rem] overflow-auto">
                 {actor.character}
               </p>
