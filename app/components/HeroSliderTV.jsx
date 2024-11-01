@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SliderArrows from './SliderArrows'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
@@ -17,7 +17,13 @@ function HeroSliderTV({
   smallSize,
   currentSlide,
 }) {
-  // console.log('single content data', singleContentData)
+  const [runtime, setRuntime] = useState()
+
+  useEffect(() => {
+    if (singleContentData) {
+      setRuntime(getTotalEpisodesRuntime(singleContentData, 'tv') * 60)
+    }
+  }, [singleContentData])
 
   return (
     <>
@@ -120,7 +126,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         </div>
                       ) : null}
 
-                      {singleContentData ? (
+                      {singleContentData && runtime > 0 ? (
                         <div
                           className={`${
                             !smallSize ? 'relative z-20 my-4' : 'relative z-20'
@@ -129,7 +135,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                           <AddToLists
                             type={type}
                             content={item}
-                            contentRuntime={singleContentData.runtime}
+                            contentRuntime={runtime}
                           />
                         </div>
                       ) : null}
