@@ -15,10 +15,11 @@ import {
 } from 'firebase/firestore'
 
 function AddToLists({ type, content, contentRuntime }) {
-  console.log('contentruntime', contentRuntime, 'content', content)
+  // console.log('contentruntime', contentRuntime, 'content', content)
 
   const [watchListed, setWatchListed] = useState()
   const [user, loading, error] = useAuthState(auth)
+  // console.log(user)
 
   const [seenListed, setSeenListed] = useState()
 
@@ -142,7 +143,7 @@ function AddToLists({ type, content, contentRuntime }) {
 
   const toDatabase = {
     createdAt: serverTimestamp(),
-    userUid: user.uid,
+    userUid: user?.uid,
     type: movieOrTvShow,
     contentId: content.id,
     runtime: checkRuntime(),

@@ -107,6 +107,7 @@ import handleSignOut from '../functions/handleSignOut'
 import Link from 'next/link'
 import { set } from 'firebase/database'
 import SearchBar from './SearchBar'
+import { useRouter } from 'next/compat/router'
 
 function Nav() {
   const [user] = useAuthState(auth)
@@ -115,6 +116,11 @@ function Nav() {
   const [openAlert, setOpenAlert] = React.useState(true)
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
   const [searchBarClick, setSearchBarClick] = useState(false)
+  const router = useRouter()
+
+  const refreshPage = () => {
+    router.reload()
+  }
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value)
@@ -141,7 +147,7 @@ function Nav() {
   return (
     <div>
       <div className=" z-50 relative bg-black justify-between items-center flex w-full h-[48px]">
-        <Link href={'/'}>
+        <Link href={'/'} onClick={refreshPage}>
           <Logo
             classes={`${
               searchBarClick
