@@ -1,4 +1,4 @@
-function getAverageRuntimeFromSeason1(season) {
+export function getAverageRuntimeFromSeason1(season) {
   if (season.episodes.length > 1) {
     const episodesArray = season.episodes
     let totalSeason1Runtime = 0

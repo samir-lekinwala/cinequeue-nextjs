@@ -10,7 +10,7 @@ function Trailer({ trailerLink, classes }) {
         className={classes}
         frameBorder="0"
         allowFullScreen
-        src={`https://www.youtube.com/embed/${trailerLink}?&controls=0&enablejsapi=1&origin=http://example.com`}
+        src={`https://www.youtube.com/embed/${trailerLink}?&controls=0&enablejsapi=1&origin=https://cinequeue-nextjs.netlify.app/`}
       ></iframe>
     </div>
   )

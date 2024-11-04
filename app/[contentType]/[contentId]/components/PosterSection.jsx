@@ -1,11 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AddToLists from '../components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
-import { getTotalEpisodesRuntime } from '../../../functions/tvShowRuntime'
+import {
+  getAverageRuntimeFromSeason1,
+  getTotalEpisodesRuntime,
+} from '../../../functions/tvShowRuntime'
 
 function PosterSection({ content, type }) {
-  // console.log('content and type', content, type)
+  const [runtimeClick, setRuntimeClick] = useState(false)
 
+  const showEpisodeInfoRef = useRef(null)
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (
+        showEpisodeInfoRef.current &&
+        !showEpisodeInfoRef.current.contains(e.target)
+      ) {
+        setRuntimeClick(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [showEpisodeInfoRef])
+
+  const handleRuntimeClick = () => {
+    setRuntimeClick(!runtimeClick)
+  }
+  console.log(content)
   return (
     <>
       {' '}
@@ -21,7 +46,7 @@ function PosterSection({ content, type }) {
             src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
     `}
           ></img>
-          <div className="shrink px-2 relative flex flex-col justify-center max-w-[450px] md:min-w-96 md:h-[450px]">
+          <div className="shrink px-2 relative flex flex-col justify-center items-center max-w-[450px] md:min-w-96 md:h-[450px]">
             <div
               className={`md:h-[368px] z-40 text-center sm:text-pretty ${
                 type == 'movie'
@@ -37,12 +62,39 @@ function PosterSection({ content, type }) {
             >
               {/* If original language is not english 'title' in api call is used as opposed to original title */}
               {type == 'movie' ? content.title : content.name}
-              <div className="text-sm pb-2 text-zinc-400 w-fit mx-auto">
+              <div className="text-sm pb-2 text-zinc-400 mx-auto w-fit relative">
                 {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                 {type == 'movie' ? (
                   <>{content.runtime} minutes</>
                 ) : (
-                  <>{getTotalEpisodesRuntime(content, type)} hours</>
+                  <>
+                    <span className="relative" onClick={handleRuntimeClick}>
+                      <span className="animate-gradient-animation-text text-transparent cursor-pointer">
+                        {getTotalEpisodesRuntime(content, type)} hours
+                      </span>
+                      {runtimeClick ? (
+                        <div
+                          ref={showEpisodeInfoRef}
+                          className=" absolute  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
+                        >
+                          <div className="flex flex-col items-center">
+                            <p>
+                              Total number of episodes:{' '}
+                              {content.number_of_episodes}
+                            </p>
+                            <p>Seasons: {content.number_of_seasons}</p>
+                            <p>
+                              Episode average runtime:{' '}
+                              {getAverageRuntimeFromSeason1(
+                                content['season/1']
+                              )}{' '}
+                              minutes
+                            </p>
+                          </div>
+                        </div>
+                      ) : null}
+                    </span>
+                  </>
                 )}{' '}
                 ⭐ {content.vote_average}
               </div>
