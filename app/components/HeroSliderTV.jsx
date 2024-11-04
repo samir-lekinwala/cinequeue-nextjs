@@ -20,10 +20,10 @@ function HeroSliderTV({
   const [runtime, setRuntime] = useState()
 
   useEffect(() => {
-    if (singleContentData) {
-      setRuntime(getTotalEpisodesRuntime(singleContentData, 'tv') * 60)
+    if (singleContentData && singleContentData.name) {
+      setRuntime(getTotalEpisodesRuntime(singleContentData, type) * 60)
     }
-  }, [singleContentData])
+  }, [singleContentData, type])
 
   return (
     <>
@@ -103,10 +103,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                             {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                             {singleContentData &&
                             singleContentData.id == item.id
-                              ? `⌛${getTotalEpisodesRuntime(
-                                  singleContentData,
-                                  'tv'
-                                )} hours`
+                              ? `⌛${(runtime / 60).toFixed(2)} hours`
                               : 'Loading runtime...'}
                           </div>
                         </div>

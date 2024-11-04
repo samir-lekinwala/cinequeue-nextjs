@@ -5,15 +5,16 @@ import { FallingLines } from 'react-loader-spinner'
 
 function Hero({ type }) {
   const [heroData, setHeroData] = useState([])
+  useEffect(() => {
+    if (type) {
+      getHeroData()
+    }
+  }, [type])
 
   async function getHeroData() {
     const result = await getData(`trending/${type}/week?language=en-US`)
     setHeroData(result.results)
   }
-
-  useEffect(() => {
-    getHeroData()
-  }, [type])
 
   console.log('testing1', heroData)
   return (

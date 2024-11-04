@@ -11,7 +11,6 @@ function getAverageRuntimeFromSeason1(season) {
 }
 
 export function getTotalEpisodesRuntime(singleItemData, type) {
-  console.log('single item data point 2', singleItemData)
   const singleEpisodeRuntime = getEpisodeRunTime(singleItemData, type)
   const totalNubmerOfEpisodes = singleItemData.number_of_episodes
 
@@ -40,5 +39,4 @@ function getEpisodeRunTime(singleItemData, type) {
       } else return averageRunTime.toFixed(0)
     } else return 0
   } else return 0
-  console.log('single item checking v1', singleItemData)
 }

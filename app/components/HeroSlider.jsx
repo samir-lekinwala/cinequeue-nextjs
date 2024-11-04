@@ -16,24 +16,25 @@ function HeroSlider({ content, type }) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [singleContentData, setSingleContentData] = useState(null)
   const [slideshowPause, setSlideshowPaused] = useState(false)
-  const [countdown, setCountdown] = useState(20)
-  // const [content, setContent] = useState(null)
+  const [countdown, setCountdown] = useState(19)
 
-  // function reduceOverviewSize(overview) {
-  //   const overFortyWords = overview.split(' ').length > 40
-  //   let newOverview = []
-  //   if (overFortyWords) {
-  //     newOverview = overview.split(' ').slice(0, 40).join(' ')
-  //     return (
-  //       <>
-  //         {newOverview}
-  //         <Link href={'/'} className="text-zinc-400">
-  //           ...Read More
-  //         </Link>
-  //       </>
-  //     )
-  //   } else return overview
-  // }
+  //useEffects
+  useEffect(() => {
+    if (content && content.length > 0) {
+      getSingleContentData(type, content[currentSlide].id)
+      console.log('current slide', currentSlide)
+    }
+  }, [content, currentSlide, type])
+
+  useEffect(() => {
+    setCountdown(19)
+  }, [type])
+
+  useEffect(() => {
+    if (type == 'tv' && !singleContentData.name) {
+      getSingleContentData(type, content[currentSlide].id)
+    }
+  }, [currentSlide])
 
   useEffect(() => {
     if (!slideshowPause && countdown !== 0) {
@@ -48,25 +49,18 @@ function HeroSlider({ content, type }) {
     }
   })
 
-  useEffect(() => {
-    setCountdown(20)
-  }, [type])
-
+  //data for the current slide, used interchangably with movies and tv shows
   async function getSingleContentData(type, id) {
     const result = await getData(
-      `${type}/${id}${type == 'tv' ? ' ?append_to_response=season%2F1' : null}`
+      `${type}/${id}${type == 'tv' ? '?append_to_response=season%2F1' : null}`
     )
+    console.log('async function getsinglecontentdata result', type, id, result)
     setSingleContentData(result)
   }
 
-  useEffect(() => {
-    if (content && content.length > 0) {
-      getSingleContentData(type, content[currentSlide].id)
-    }
-  }, [content, currentSlide, type])
-
   const sliderLength = content.length - 1
 
+  //buttons for slider
   function handleLeftClick() {
     if (currentSlide == 0) {
       setCurrentSlide(sliderLength)
@@ -77,8 +71,6 @@ function HeroSlider({ content, type }) {
       setCurrentSlide(0)
     } else setCurrentSlide(currentSlide + 1)
   }
-
-  // console.log('single content data', singleContentData)
 
   function heroSliderv1() {
     return (
