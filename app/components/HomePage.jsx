@@ -5,7 +5,7 @@ import TVCarousel from './TVCarousel'
 import SwitchContent from './SwitchContent'
 
 function HomePage() {
-  const [contentType, setContentType] = useState('movie')
+  const [contentType, setContentType] = useState(null)
   const [typeBarClick, setTypeBarClick] = useState(true)
 
   useEffect(() => {

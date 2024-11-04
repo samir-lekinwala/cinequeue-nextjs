@@ -119,7 +119,7 @@ function Nav() {
   const router = useRouter()
 
   const refreshPage = () => {
-    router.reload()
+    router.refresh()
   }
 
   const handleOpen = (value) => {
