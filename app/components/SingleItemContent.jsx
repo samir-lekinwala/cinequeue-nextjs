@@ -67,7 +67,7 @@ function SingleItemContent({ content, classes, type }) {
           </Link>
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
-          {type == 'movie ' ? content.release_date : content.first_air_date}
+          {type == 'movie' ? content.release_date : content.first_air_date}
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
           ⭐{content.vote_average}

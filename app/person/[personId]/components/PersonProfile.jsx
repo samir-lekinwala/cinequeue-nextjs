@@ -152,7 +152,10 @@ function PersonProfile({ data }) {
           </span>
           <div className="flex justify-center flex-wrap gap-2 ">
             {movieCredits?.map((movie) => (
-              <div key={movie.id} className="">
+              <div
+                key={movie.id}
+                className="hover:scale-[1.02] transition-all duration-300"
+              >
                 <span
                   onClick={handleCharactersClick}
                   className={`text-white object-contain w-[200px] ${
@@ -179,7 +182,10 @@ function PersonProfile({ data }) {
           </span>
           <div className="flex justify-center flex-wrap gap-2">
             {tvCredits?.map((tv) => (
-              <div key={tv.credit_id} className="">
+              <div
+                key={tv.credit_id}
+                className="hover:scale-[1.02] transition-all duration-300"
+              >
                 <span
                   onClick={handleCharactersClick}
                   className={`text-white object-contain w-[200px] ${
