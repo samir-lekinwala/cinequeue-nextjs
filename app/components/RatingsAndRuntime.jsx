@@ -1,24 +1,60 @@
 import { ClockIcon, StarIcon } from '@heroicons/react/16/solid'
 import RuntimeBreakdown from './RuntimeBreakdown'
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 function RatingsAndRuntime({ content, runtime }) {
   //useState for runtime hours clicked
   const [runtimeClick, setRuntimeClick] = useState(false)
+  const [ratingClick, setRatingClick] = useState(false)
+  console.log(content)
+
+  const showEpisodeInfoRef = useRef(null)
+  const ratingInfoRef = useRef(null)
+
+  useEffect(() => {
+    if (ratingClick) {
+      const handleOutsideClick = (e) => {
+        if (
+          ratingInfoRef.current &&
+          !ratingInfoRef.current.contains(e.target)
+        ) {
+          setRatingClick(!ratingClick)
+        }
+      }
+      //add event listener
+      document.addEventListener('mousedown', handleOutsideClick)
+      //clean up event listener
+      return () => document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [ratingClick, ratingInfoRef])
 
   //ref for runtime details
-  const showEpisodeInfoRef = useRef(null)
 
   return (
     <div>
       {' '}
       <span className="relative">
         <div className="flex gap-2">
-          <span className="flex gap-[2px] items-center">
+          <span
+            onClick={() => setRatingClick(true)}
+            ref={ratingInfoRef}
+            className="flex gap-[2px] items-center relative"
+          >
             <StarIcon className="text-yellow-500 w-4 h-4" />{' '}
-            {content.vote_average}
+            {content.vote_count < 10 ? <>No Rating</> : content.vote_average}
           </span>
+          {ratingClick ? (
+            <div
+              onClick={() => setRatingClick(false)}
+              className=" absolute top-4  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
+            >
+              <div className="flex flex-col items-center">
+                <p>Total number of votes: {content.vote_count}</p>
+              </div>
+            </div>
+          ) : null}
+
           <span
             onClick={() => setRuntimeClick(!runtimeClick)}
             ref={showEpisodeInfoRef}
