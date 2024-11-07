@@ -1,19 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import AddToLists from '../components/AddToLists'
-import RuntimeBreakdown from '../../../components/RuntimeBreakdown'
+// import RuntimeBreakdown from '../../../components/RuntimeBreakdown'
+import RatingsAndRuntime from '../../../components/RatingsAndRuntime'
 import { FallingLines } from 'react-loader-spinner'
 import {
   // getAverageRuntimeFromSeason1,
   getTotalEpisodesRuntime,
 } from '../../../functions/tvShowRuntime'
-import { ClockIcon, StarIcon } from '@heroicons/react/24/solid'
 
 function PosterSection({ content, type }) {
-  //useState for runtime hours clicked
-  const [runtimeClick, setRuntimeClick] = useState(false)
-
-  //ref for runtime details
-  const showEpisodeInfoRef = useRef(null)
+  const runtime = getTotalEpisodesRuntime(content, type)
 
   return (
     <>
@@ -50,32 +46,7 @@ function PosterSection({ content, type }) {
                 {type == 'movie' ? (
                   <>{content.runtime} minutes</>
                 ) : (
-                  <>
-                    <span
-                      className="relative"
-                      onClick={() => setRuntimeClick(!runtimeClick)}
-                      ref={showEpisodeInfoRef}
-                    >
-                      <div className="flex gap-2">
-                        <span className="flex gap-1 items-center">
-                          <StarIcon className="text-yellow-500 w-4 h-4" />{' '}
-                          {content.vote_average}
-                        </span>
-                        <span className="flex items-center gap-1 animate-gradient-animation-text text-transparent cursor-pointer">
-                          <ClockIcon className="text-white w-4 h-4" />
-                          {getTotalEpisodesRuntime(content, type)} hours
-                        </span>
-                      </div>
-                      {runtimeClick ? (
-                        <RuntimeBreakdown
-                          content={content}
-                          showEpisodeInfoRef={showEpisodeInfoRef}
-                          runtimeClick={runtimeClick}
-                          setRuntimeClick={setRuntimeClick}
-                        />
-                      ) : null}
-                    </span>
-                  </>
+                  <RatingsAndRuntime content={content} runtime={runtime} />
                 )}
               </div>
               <div className=" text-base text-pretty text-ellipsis overflow-auto min-h-0">
@@ -87,7 +58,7 @@ function PosterSection({ content, type }) {
             <AddToLists
               type={type}
               content={content}
-              contentRuntime={getTotalEpisodesRuntime(content, type) * 60}
+              contentRuntime={runtime * 60}
             />
           </div>
         </div>
