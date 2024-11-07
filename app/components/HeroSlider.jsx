@@ -28,6 +28,7 @@ function HeroSlider({ content, type }) {
 
   useEffect(() => {
     setCountdown(19)
+    setCurrentSlide(0)
   }, [type])
 
   useEffect(() => {
