@@ -46,7 +46,7 @@ function ActorsSection({ actors }) {
                   ) : (
                     <img
                       alt={actor.name}
-                      className="w-40 h-40 rounded-full object-cover"
+                      className="w-40 h-40 rounded-full object-cover hover:scale-[1.03] hover:shadow-lg hover:shadow-[#ff7e5f] duration-300 transition-all ease-in-out"
                       src={`https://image.tmdb.org/t/p/original/${actor.profile_path}`}
                     ></img>
                   )}
@@ -59,8 +59,8 @@ function ActorsSection({ actors }) {
             {index == 11 && !moreCastButton ? (
               (console.log('index over 11'),
               (
-                <div className="group relative flex justify-center items-center">
-                  <div className="w-40 h-40 border-deep-orange-800 ease-in transition-all duration-400 border rounded-full text-center content-center animate-gradient-animation">
+                <div className="group relative flex justify-center items-center ">
+                  <div className="hover:scale-[1.03] w-40 h-40 border-deep-orange-800 ease-in transition-all duration-400 border rounded-full text-center content-center animate-gradient-animation">
                     <button
                       onClick={revealAllCast}
                       className="group-hover:scale-125 transition-all"
@@ -72,7 +72,7 @@ function ActorsSection({ actors }) {
               ))
             ) : index == actors.length - 1 && moreCastButton ? (
               <div className="group relative flex justify-center items-center">
-                <div className="w-40 h-40 border-deep-orange-800 ease-in transition-all duration-400 border rounded-full text-center content-center animate-gradient-animation-close">
+                <div className="hover:scale-[1.03] w-40 h-40 border-deep-orange-800 ease-in transition-all duration-400 border rounded-full text-center content-center animate-gradient-animation-close">
                   <button
                     onClick={hideExtraCast}
                     className="group-hover:scale-125 transition-all"
