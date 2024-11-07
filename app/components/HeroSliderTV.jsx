@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SliderArrows from './SliderArrows'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
 import { getTotalEpisodesRuntime } from '../functions/tvShowRuntime'
+import RuntimeBreakdown from './RuntimeBreakdown'
 
 function HeroSliderTV({
   // item,
@@ -18,6 +19,9 @@ function HeroSliderTV({
   currentSlide,
 }) {
   const [runtime, setRuntime] = useState()
+  const [runtimeClick, setRuntimeClick] = useState(false)
+
+  const showEpisodeInfoRef = useRef(null)
 
   useEffect(() => {
     if (singleContentData && singleContentData.name) {
@@ -99,13 +103,24 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                           className={`${'text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto flex justify-between gap-4'}`}
                         >
                           <div>⭐{item.vote_average}</div>
-                          <div>
+                          <div
+                            ref={showEpisodeInfoRef}
+                            onClick={() => setRuntimeClick(!runtimeClick)}
+                          >
                             {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                             {singleContentData &&
                             singleContentData.id == item.id
                               ? `⌛${(runtime / 60).toFixed(2)} hours`
                               : 'Loading runtime...'}
                           </div>
+                          {runtimeClick ? (
+                            <RuntimeBreakdown
+                              content={singleContentData}
+                              showEpisodeInfoRef={showEpisodeInfoRef}
+                              runtimeClick={runtimeClick}
+                              setRuntimeClick={setRuntimeClick}
+                            />
+                          ) : null}
                         </div>
 
                         <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
