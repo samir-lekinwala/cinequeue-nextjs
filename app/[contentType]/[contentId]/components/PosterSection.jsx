@@ -6,6 +6,7 @@ import {
   // getAverageRuntimeFromSeason1,
   getTotalEpisodesRuntime,
 } from '../../../functions/tvShowRuntime'
+import { ClockIcon, StarIcon } from '@heroicons/react/24/solid'
 
 function PosterSection({ content, type }) {
   //useState for runtime hours clicked
@@ -55,9 +56,16 @@ function PosterSection({ content, type }) {
                       onClick={() => setRuntimeClick(!runtimeClick)}
                       ref={showEpisodeInfoRef}
                     >
-                      <span className="animate-gradient-animation-text text-transparent cursor-pointer">
-                        {getTotalEpisodesRuntime(content, type)} hours
-                      </span>
+                      <div className="flex gap-2">
+                        <span className="flex gap-1 items-center">
+                          <StarIcon className="text-yellow-500 w-4 h-4" />{' '}
+                          {content.vote_average}
+                        </span>
+                        <span className="flex items-center gap-1 animate-gradient-animation-text text-transparent cursor-pointer">
+                          <ClockIcon className="text-white w-4 h-4" />
+                          {getTotalEpisodesRuntime(content, type)} hours
+                        </span>
+                      </div>
                       {runtimeClick ? (
                         <RuntimeBreakdown
                           content={content}
@@ -68,8 +76,7 @@ function PosterSection({ content, type }) {
                       ) : null}
                     </span>
                   </>
-                )}{' '}
-                ⭐ {content.vote_average}
+                )}
               </div>
               <div className=" text-base text-pretty text-ellipsis overflow-auto min-h-0">
                 {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
