@@ -14,24 +14,6 @@ function PosterSection({ content, type }) {
   //ref for runtime details
   const showEpisodeInfoRef = useRef(null)
 
-  //useEffect that handles when outside of ref is clicked to close the runtime details
-  useEffect(() => {
-    if (runtimeClick) {
-      const handleOutsideClick = (e) => {
-        if (
-          showEpisodeInfoRef.current &&
-          !showEpisodeInfoRef.current.contains(e.target)
-        ) {
-          setRuntimeClick(!runtimeClick)
-        }
-      }
-      //add event listener
-      document.addEventListener('mousedown', handleOutsideClick)
-      //clean up event listener
-      return () => document.removeEventListener('mousedown', handleOutsideClick)
-    }
-  }, [runtimeClick, showEpisodeInfoRef])
-
   return (
     <>
       {!content ? (
@@ -79,7 +61,9 @@ function PosterSection({ content, type }) {
                       {runtimeClick ? (
                         <RuntimeBreakdown
                           content={content}
-                          // showEpisodeInfoRef={showEpisodeInfoRef}
+                          showEpisodeInfoRef={showEpisodeInfoRef}
+                          runtimeClick={runtimeClick}
+                          setRuntimeClick={setRuntimeClick}
                         />
                       ) : null}
                     </span>
