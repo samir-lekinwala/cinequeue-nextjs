@@ -3,8 +3,9 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 
-function SingleItemContent({ content, classes, type }) {
+function SingleItemContent({ content, classes, type, actorsPage }) {
   const [hoverState, setHoverState] = useState(false)
+  const [charactersClick, setCharactersClick] = useState(false)
 
   function hoverStateChangeTrue() {
     setHoverState(!hoverState)
@@ -20,12 +21,14 @@ function SingleItemContent({ content, classes, type }) {
 
   return (
     <div
-      onClick={hoverStateChangeTrue}
       // oncl={hoverStateChangeFalse}
       className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
     >
       {hoverState ? (
-        <div className="w-[200px] h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
+        <div
+          onClick={hoverStateChangeFalse}
+          className="w-[200px] h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400"
+        >
           <div className="w-full">
             <Link href={`/${type}/${content.id}`}>
               <button className="animate-gradient-animation-expand rounded-lg h-[1.5rem] duration-500 bg-opacity-10 text-white right-0 left-0 top-0 hover:scale-105 hover:font-normal ease-in-out">
@@ -33,7 +36,9 @@ function SingleItemContent({ content, classes, type }) {
               </button>
             </Link>
           </div>
-          <p className="pt-[1.5rem]">{content.overview}</p>
+          <p onClick={hoverStateChangeFalse} className="pt-[1.5rem]">
+            {content.overview}
+          </p>
           {/* <div className="z-80"> */}
           <AddToLists type={type} content={content} />
           {/* </div> */}
@@ -46,16 +51,30 @@ function SingleItemContent({ content, classes, type }) {
             : 'transition-all duration-500 scale-100 ease-in-out'
         } `}
       >
-        {' '}
+        {actorsPage ? (
+          <span
+            onClick={() => setCharactersClick(!charactersClick)}
+            className={`text-white object-contain w-[200px] ${
+              charactersClick ? 'line-clamp-none' : 'line-clamp-1'
+            } `}
+          >
+            {content.character ? content.character : 'No Character Name Found'}
+          </span>
+        ) : null}
+
         {content.poster_path ? (
           <img
+            onClick={hoverStateChangeTrue}
             className={`w-[200px] h-[300px] object-cover bg-gray-400 bg-opacity-35`}
             src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
               `}
             alt={`${content.title} poster`}
           />
         ) : (
-          <div className="w-[200px] h-[300px] bg-gray-400 bg-opacity-50 flex justify-center items-center text-white">
+          <div
+            onClick={hoverStateChangeTrue}
+            className="w-[200px] h-[300px] bg-gray-400 bg-opacity-50 flex justify-center items-center text-white"
+          >
             <span>No Poster Available</span>
           </div>
         )}
