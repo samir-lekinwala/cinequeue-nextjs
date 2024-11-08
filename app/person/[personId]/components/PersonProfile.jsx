@@ -108,12 +108,12 @@ function PersonProfile({ data }) {
   }, [data])
 
   return data ? (
-    <div className="p-4">
-      <div className=" sm:flex-row flex flex-col gap-2">
-        <div>
+    <div className="">
+      <div className="p-4 sm:flex-row flex flex-col gap-2">
+        <div className="">
           {' '}
           <img
-            className="rounded-xl  object-contain "
+            className="rounded-xl   object-contain "
             src={`https://image.tmdb.org/t/p/w500/${data.profile_path}`}
             alt=""
           />
