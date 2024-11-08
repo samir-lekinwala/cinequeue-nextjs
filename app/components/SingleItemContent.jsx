@@ -25,10 +25,7 @@ function SingleItemContent({ content, classes, type, actorsPage }) {
       className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
     >
       {hoverState ? (
-        <div
-          onClick={hoverStateChangeFalse}
-          className="w-[200px] h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400"
-        >
+        <div className="w-[200px] h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
           <div className="w-full">
             <Link href={`/${type}/${content.id}`}>
               <button className="animate-gradient-animation-expand rounded-lg h-[1.5rem] duration-500 bg-opacity-10 text-white right-0 left-0 top-0 hover:scale-105 hover:font-normal ease-in-out">
@@ -40,14 +37,14 @@ function SingleItemContent({ content, classes, type, actorsPage }) {
             {content.overview}
           </p>
           {/* <div className="z-80"> */}
-          <AddToLists type={type} content={content} />
+          {/* <AddToLists type={type} content={content} /> */}
           {/* </div> */}
         </div>
       ) : null}
       <div
         className={`${
           hoverState
-            ? 'opacity-10 transition-all duration-500 scale-125 ease-in-out'
+            ? 'opacity-10 transition-all duration-200 scale-x-125 ease-in-out'
             : 'transition-all duration-500 scale-100 ease-in-out'
         } `}
       >
@@ -65,7 +62,7 @@ function SingleItemContent({ content, classes, type, actorsPage }) {
         {content.poster_path ? (
           <img
             onClick={hoverStateChangeTrue}
-            className={`w-[200px] h-[300px] object-cover bg-gray-400 bg-opacity-35`}
+            className={`w-[200px] h-[300px] object-cover`}
             src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
               `}
             alt={`${content.title} poster`}
