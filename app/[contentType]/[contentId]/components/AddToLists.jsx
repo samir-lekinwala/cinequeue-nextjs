@@ -159,7 +159,7 @@ function AddToLists({ type, content, contentRuntime }) {
       {user ? (
         <>
           <div className="flex justify-between w-full items-center h-10 gap-4">
-            <div className="group hover:w-1/2 w-fit hover:p-4 p-2 transition-all duration-1000 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center">
+            <div className=" w-fit hover:shadow-[0px_0px_20px_1px_#ff7e5f] p-2 transition-all duration-1000 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center">
               {watchListed ? (
                 <button
                   className="hover:text-red-500 w-full h-full relative transition-all duration-1000 text-center flex justify-center items-center"
@@ -178,7 +178,7 @@ function AddToLists({ type, content, contentRuntime }) {
                 </button>
               )}
             </div>
-            <div className="group hover:w-1/2 w-fit hover:p-4 p-2 transition-all duration-1000 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center">
+            <div className=" w-fit hover:shadow-[0px_0px_20px_1px_#ff7e5f] ease-in-out p-2 transition-all duration-300 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center">
               {seenListed ? (
                 <button
                   className="hover:text-red-500 w-full h-full relative transition-all duration-1000 text-center flex justify-center items-center"
