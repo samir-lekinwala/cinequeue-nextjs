@@ -26,7 +26,7 @@ function getEpisodeRunTime(singleItemData, type) {
       if (runTimeArray.length > 1) {
         let totalTimeFromArray = 0
 
-        for (let i = 0; i < runTimeArray.length; index++) {
+        for (let i = 0; i < runTimeArray.length; i++) {
           totalTimeFromArray += runTimeArray[i]
         }
         averageRunTime = totalTimeFromArray / runTimeArray.length - 1
