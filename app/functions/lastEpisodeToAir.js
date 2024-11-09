@@ -1,10 +1,4 @@
 export function lastEpisodeToAir(content) {
-  //get current date
-  //get date of last episode aired
-  //get total seasons, add each seasons number of episodes together
-  //minus the unaired from latest season using current date
-
-  // console.log('lastepisode to air function', content)
   const currentDate = new Date()
 
   //number of seasons aired and un-aired
