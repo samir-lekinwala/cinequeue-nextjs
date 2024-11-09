@@ -34,7 +34,11 @@ function RuntimeBreakdown({
     <div className=" absolute  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]">
       <div className="flex flex-col items-center">
         <p>Total number of episodes: {content.number_of_episodes}</p>
-        <p>Episodes Aired: {lastEpisodeToAirData}</p>
+        {/* if the data shows number of episodes matches the nubmer of episodes aired then only total number of episodes will come up */}
+        {content.number_of_episodes == lastEpisodeToAirData ? null : (
+          <p>Episodes Aired: {lastEpisodeToAirData}</p>
+        )}
+
         <p>Seasons: {content.number_of_seasons}</p>
         <p>
           Episode average runtime:{' '}

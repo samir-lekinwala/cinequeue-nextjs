@@ -34,6 +34,10 @@ export function lastEpisodeToAir(content) {
       ) {
         totalEpisodeCount += seasons[i].episode_count
       }
+    } //checks if the last aired episode is less than the last season that's in the data. If it is then it minuses the episode count and adds the last aired to the total instead.
+    if (seasons[seasons.length - 1].episode_count > currentEpisodeNumber) {
+      totalEpisodeCount -= seasons[seasons.length - 1].episode_count
+      totalEpisodeCount += currentEpisodeNumber
     }
 
     // console.log('total episode count', totalEpisodeCount)
