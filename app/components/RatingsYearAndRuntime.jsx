@@ -67,7 +67,7 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
             className="flex gap-[2px] items-center"
           >
             <CalendarDaysIcon className="w-4 h-4" />
-            {content.first_air_date.slice(0, 4)}
+            {content.first_air_date ? content.first_air_date.slice(0, 4) : null}
           </div>
           {yearClick ? (
             <div
