@@ -99,7 +99,8 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       >
                         {/* If original language is not english 'title' in api call is used as opposed to original title */}
                         <Link href={`/${type}/${item.id}`}>{item.name}</Link>
-                        {singleContentData ? (
+                        {singleContentData &&
+                        singleContentData.id == item.id ? (
                           <div className="text-sm pb-2 text-zinc-400 mx-auto w-fit relative">
                             <RatingsYearAndRuntime
                               content={singleContentData}

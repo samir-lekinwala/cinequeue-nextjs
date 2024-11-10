@@ -111,11 +111,19 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
             className="flex items-center gap-[2px] animate-gradient-animation-text text-transparent cursor-pointer"
           >
             <ClockIcon className="text-white w-4 h-4" />
-            {runtime < 0 ? (
+            {runtime <= 0 ? (
               'No recorded runtime'
             ) : (
               <p>
-                {runtime} {type == 'tv' ? 'hours' : 'minutes'}
+                {runtime ? (
+                  type == 'tv' ? (
+                    <> {runtime} hours</>
+                  ) : (
+                    <>{runtime} minutes</>
+                  )
+                ) : (
+                  '...loading'
+                )}
               </p>
             )}
           </span>

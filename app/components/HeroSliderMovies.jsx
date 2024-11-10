@@ -17,17 +17,6 @@ function HeroSliderMovies({
   smallSize,
   currentSlide,
 }) {
-  // const [content, setContent] = useState([])
-
-  // useEffect(() => {
-  //   if (data && data.length > 0 && data[0].title) {
-  //     function heroData() {
-  //       setContent(data)
-  //     }
-  //     heroData()
-  //   }
-  // }, [data])
-
   return (
     <>
       {content[0].title == undefined ? (
@@ -98,7 +87,8 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                         <div
                           className={`${'relative text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto flex justify-between gap-4'}`}
                         >
-                          {singleContentData ? (
+                          {singleContentData &&
+                          singleContentData.id == item.id ? (
                             <RatingsYearAndRuntime
                               content={singleContentData}
                               type={type}
