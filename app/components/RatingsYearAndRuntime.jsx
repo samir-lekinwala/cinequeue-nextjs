@@ -1,9 +1,13 @@
-import { ClockIcon, StarIcon } from '@heroicons/react/16/solid'
+import {
+  CalendarDaysIcon,
+  ClockIcon,
+  StarIcon,
+} from '@heroicons/react/16/solid'
 import RuntimeBreakdown from './RuntimeBreakdown'
 
 import React, { useEffect, useRef, useState } from 'react'
 
-function RatingsAndRuntime({ content, runtime }) {
+function RatingsYearAndRuntime({ content, runtime }) {
   //useState for runtime hours clicked
   const [runtimeClick, setRuntimeClick] = useState(false)
   const [ratingClick, setRatingClick] = useState(false)
@@ -36,6 +40,11 @@ function RatingsAndRuntime({ content, runtime }) {
       {' '}
       <span className="relative">
         <div className="flex gap-2">
+          {/* release date */}
+          <div className="flex gap-[2px] items-center">
+            <CalendarDaysIcon className="w-4 h-4" />
+            {content.first_air_date.slice(0, 4)}
+          </div>
           <span
             onClick={() => setRatingClick(true)}
             ref={ratingInfoRef}
@@ -77,4 +86,4 @@ function RatingsAndRuntime({ content, runtime }) {
   )
 }
 
-export default RatingsAndRuntime
+export default RatingsYearAndRuntime

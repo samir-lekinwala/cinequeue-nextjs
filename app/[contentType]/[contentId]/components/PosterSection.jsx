@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import AddToLists from '../components/AddToLists'
 // import RuntimeBreakdown from '../../../components/RuntimeBreakdown'
-import RatingsAndRuntime from '../../../components/RatingsAndRuntime'
+import RatingsYearAndRuntime from '../../../components/RatingsYearAndRuntime'
 import { FallingLines } from 'react-loader-spinner'
 import {
   // getAverageRuntimeFromSeason1,
   getTotalEpisodesRuntime,
 } from '../../../functions/tvShowRuntime'
+import { CalendarDaysIcon } from '@heroicons/react/16/solid'
 
 function PosterSection({ content, type }) {
   const runtime = getTotalEpisodesRuntime(content, type)
@@ -19,12 +20,17 @@ function PosterSection({ content, type }) {
         </div>
       ) : (
         <div className="flex flex-col md:flex-row md:w-1/2 w-full items-center justify-center gap-6 mx-auto pb-4">
-          <img
-            className="w-[300px]"
-            alt={`${type == 'movie' ? content.title : content.name} poster`}
-            src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
+          <div className="flex justify-center flex-col">
+            <span className="text-white font-poppins mx-auto text-center w-[300px]">
+              {content.status}
+            </span>
+            <img
+              className="w-[300px]"
+              alt={`${type == 'movie' ? content.title : content.name} poster`}
+              src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
     `}
-          ></img>
+            />
+          </div>
           <div className="shrink px-2 relative flex flex-col justify-center items-center max-w-[450px] md:min-w-96 md:h-[450px]">
             <div
               className={`md:h-[368px] z-40 text-center sm:text-pretty ${
@@ -46,7 +52,7 @@ function PosterSection({ content, type }) {
                 {type == 'movie' ? (
                   <>{content.runtime} minutes</>
                 ) : (
-                  <RatingsAndRuntime content={content} runtime={runtime} />
+                  <RatingsYearAndRuntime content={content} runtime={runtime} />
                 )}
               </div>
               <div className=" text-base text-pretty text-ellipsis overflow-auto min-h-0">
