@@ -18,6 +18,7 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
   const [yearClick, setYearClick] = useState(false)
   console.log(content)
 
+  //refs for click for more detail areas
   const showEpisodeInfoRef = useRef(null)
   const ratingInfoRef = useRef(null)
   const yearClickRef = useRef(null)
@@ -74,8 +75,11 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
               onClick={() => setYearClick(false)}
               className=" absolute top-4  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
             >
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-end">
                 <p>Release date: {content.first_air_date}</p>
+                {content.last_air_date ? (
+                  <p>Last air date: {content.last_air_date}</p>
+                ) : null}
               </div>
             </div>
           ) : null}
@@ -120,6 +124,11 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
             runtimeClick={runtimeClick}
             setRuntimeClick={setRuntimeClick}
           />
+        ) : null}
+        {content.next_episode_to_air ? (
+          <div className="">
+            Next episode airing: {content.next_episode_to_air.air_date}
+          </div>
         ) : null}
       </span>
     </div>
