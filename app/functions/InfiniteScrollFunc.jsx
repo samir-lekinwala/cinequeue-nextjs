@@ -29,32 +29,30 @@ function InfiniteScrollFunc({
           scrollableTarget="scrollableDiv"
         >
           {items.map((item) => (
-            <>
-              <div
-                className="w-[100vw] flex justify-center"
-                key={item.id}
-                onClick={closeSearchBar}
-                // ref={searchItemRef}
-              >
-                <div className="w-full lg:w-2/3">
-                  {item.title ? (
-                    <SingleSearchItem
-                      data={item}
-                      type={'movie'}
-                      setSearchBarClick={setSearchBarClick}
-                      searchBarClick={searchBarClick}
-                    />
-                  ) : (
-                    <SingleSearchItem
-                      data={item}
-                      type={'tv'}
-                      setSearchBarClick={setSearchBarClick}
-                      searchBarClick={searchBarClick}
-                    />
-                  )}
-                </div>
+            <div
+              className="w-[100vw] flex justify-center"
+              key={[item.id]}
+              onClick={closeSearchBar}
+              // ref={searchItemRef}
+            >
+              <div className="w-full lg:w-2/3">
+                {item.title ? (
+                  <SingleSearchItem
+                    data={item}
+                    type={'movie'}
+                    setSearchBarClick={setSearchBarClick}
+                    searchBarClick={searchBarClick}
+                  />
+                ) : (
+                  <SingleSearchItem
+                    data={item}
+                    type={'tv'}
+                    setSearchBarClick={setSearchBarClick}
+                    searchBarClick={searchBarClick}
+                  />
+                )}
               </div>
-            </>
+            </div>
           ))}
         </InfiniteScroll>
       </div>
