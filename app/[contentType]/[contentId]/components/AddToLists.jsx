@@ -159,7 +159,11 @@ function AddToLists({ type, content, contentRuntime }) {
       {user ? (
         <>
           <div className="flex justify-between w-full items-center h-10 gap-4">
-            <div className=" w-fit hover:shadow-[0px_0px_20px_1px_#ff7e5f] p-2 transition-all duration-1000 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center">
+            <div
+              className={`group w-fit hover:shadow-[0px_0px_20px_1px] ${
+                watchListed ? ' hover:shadow-red-500' : ' hover:shadow-cyan-200'
+              } p-2 transition-all duration-1000 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center`}
+            >
               {watchListed ? (
                 <button
                   className="hover:text-red-500 w-full h-full relative transition-all duration-1000 text-center flex justify-center items-center"
@@ -178,21 +182,29 @@ function AddToLists({ type, content, contentRuntime }) {
                 </button>
               )}
             </div>
-            <div className=" w-fit hover:shadow-[0px_0px_20px_1px_#ff7e5f] ease-in-out p-2 transition-all duration-300 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center">
+            <div
+              className={` w-fit group hover:shadow-[0px_0px_20px_1px] ${
+                seenListed
+                  ? ' hover:shadow-red-500'
+                  : ' hover:shadow-light-green-300'
+              } ease-in-out p-2 transition-all duration-1000 bg-white bg-opacity-10 flex px-2 rounded-xl justify-center`}
+            >
               {seenListed ? (
                 <button
                   className="hover:text-red-500 w-full h-full relative transition-all duration-1000 text-center flex justify-center items-center"
                   onClick={removeFromSeenList}
                 >
-                  <span className="group-hover:opacity-0 group-hover:scale-90 transition-all duration-700 ease-in-out text-light-green-300">
+                  <span className="group-hover:opacity-0 group-hover:scale-90 transition-all duration-700 ease-in-out text-light-green-300 ">
                     Seen Listed
                   </span>
-                  <span className="group-hover:opacity-100 opacity-0 absolute left-0 right-0 flex justify-center items-center scale-90 group-hover:scale-100 text-red-500">
+                  <span className="group-hover:opacity-100 opacity-0 transition-all ease-in-out absolute left-0 right-0 flex justify-center items-center scale-90 group-hover:scale-100 text-red-500">
                     X
                   </span>
                 </button>
               ) : (
-                <button onClick={seenListButton}>Add to Seen List</button>
+                <button className="" onClick={seenListButton}>
+                  Add to Seen List
+                </button>
               )}
             </div>{' '}
           </div>

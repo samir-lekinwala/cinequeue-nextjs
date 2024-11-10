@@ -46,7 +46,7 @@ function ActorsSection({ actors }) {
                   ) : (
                     <img
                       alt={actor.name}
-                      className="w-40 h-40 rounded-full object-cover hover:scale-[1.03] hover:shadow-lg hover:shadow-[#ff7e5f] duration-300 transition-all ease-in-out"
+                      className="w-40 h-40 rounded-full object-cover hover:shadow-[0px_0px_15px_1px_#ff7e5f] duration-300 transition-all ease-in-out"
                       src={`https://image.tmdb.org/t/p/original/${actor.profile_path}`}
                     ></img>
                   )}
