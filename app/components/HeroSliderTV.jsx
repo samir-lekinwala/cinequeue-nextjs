@@ -5,6 +5,7 @@ import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
 import { getTotalEpisodesRuntime } from '../functions/tvShowRuntime'
 import RuntimeBreakdown from './RuntimeBreakdown'
+import RatingsYearAndRuntime from './RatingsYearAndRuntime'
 
 function HeroSliderTV({
   // item,
@@ -25,7 +26,7 @@ function HeroSliderTV({
 
   useEffect(() => {
     if (singleContentData && singleContentData.name) {
-      setRuntime(getTotalEpisodesRuntime(singleContentData, type) * 60)
+      setRuntime(getTotalEpisodesRuntime(singleContentData, type))
     }
   }, [singleContentData, type])
 
@@ -98,8 +99,17 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       >
                         {/* If original language is not english 'title' in api call is used as opposed to original title */}
                         <Link href={`/${type}/${item.id}`}>{item.name}</Link>
+                        {singleContentData ? (
+                          <div className="text-sm pb-2 text-zinc-400 mx-auto w-fit relative">
+                            <RatingsYearAndRuntime
+                              content={singleContentData}
+                              runtime={runtime}
+                              type={type}
+                            />
+                          </div>
+                        ) : null}
 
-                        <div
+                        {/* <div
                           className={`${'text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto flex justify-between gap-4'}`}
                         >
                           <div>⭐{item.vote_average}</div>
@@ -108,7 +118,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                             onClick={() => setRuntimeClick(!runtimeClick)}
                           >
                             {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
-                            {singleContentData &&
+                        {/* {singleContentData &&
                             singleContentData.id == item.id
                               ? `⌛${(runtime / 60).toFixed(2)} hours`
                               : 'Loading runtime...'}
@@ -121,7 +131,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                               setRuntimeClick={setRuntimeClick}
                             />
                           ) : null}
-                        </div>
+                        </div> */}
 
                         <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
                           {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}

@@ -31,7 +31,7 @@ function RuntimeBreakdown({
   }, [runtimeClick, showEpisodeInfoRef])
 
   return (
-    <div className=" absolute  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]">
+    <div className=" absolute top-5  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 ">
       <div className="flex flex-col items-center">
         <p>Total number of episodes: {content.number_of_episodes}</p>
         {/* if the data shows number of episodes matches the nubmer of episodes aired then only total number of episodes will come up */}
