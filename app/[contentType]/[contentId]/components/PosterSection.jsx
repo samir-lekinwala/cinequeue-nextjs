@@ -50,9 +50,17 @@ function PosterSection({ content, type }) {
               <div className="text-sm pb-2 text-zinc-400 mx-auto w-fit relative">
                 {/* If slide is in view then it displays the run time - done to reduce api calls per second */}
                 {type == 'movie' ? (
-                  <>{content.runtime} minutes</>
+                  <RatingsYearAndRuntime
+                    content={content}
+                    runtime={content.runtime}
+                    type={type}
+                  />
                 ) : (
-                  <RatingsYearAndRuntime content={content} runtime={runtime} />
+                  <RatingsYearAndRuntime
+                    content={content}
+                    runtime={runtime}
+                    type={type}
+                  />
                 )}
               </div>
               <div className=" text-base text-pretty text-ellipsis overflow-auto min-h-0">

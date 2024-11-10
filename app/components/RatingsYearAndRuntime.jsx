@@ -7,14 +7,20 @@ import RuntimeBreakdown from './RuntimeBreakdown'
 
 import React, { useEffect, useRef, useState } from 'react'
 
-function RatingsYearAndRuntime({ content, runtime }) {
+function RatingsYearAndRuntime({ content, runtime, type }) {
+  if (type == 'movie') {
+    content.first_air_date = content.release_date
+  }
+
   //useState for runtime hours clicked
   const [runtimeClick, setRuntimeClick] = useState(false)
   const [ratingClick, setRatingClick] = useState(false)
+  const [yearClick, setYearClick] = useState(false)
   console.log(content)
 
   const showEpisodeInfoRef = useRef(null)
   const ratingInfoRef = useRef(null)
+  const yearClickRef = useRef(null)
 
   useEffect(() => {
     if (ratingClick) {
@@ -33,6 +39,20 @@ function RatingsYearAndRuntime({ content, runtime }) {
     }
   }, [ratingClick, ratingInfoRef])
 
+  useEffect(() => {
+    if (yearClick) {
+      const handleOutsideClick = (e) => {
+        if (yearClickRef.current && !yearClickRef.current.contains(e.target)) {
+          setYearClick(!yearClick)
+        }
+      }
+      //add event listener
+      document.addEventListener('mousedown', handleOutsideClick)
+      //clean up event listener
+      return () => document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [yearClick, yearClickRef])
+
   //ref for runtime details
 
   return (
@@ -41,12 +61,26 @@ function RatingsYearAndRuntime({ content, runtime }) {
       <span className="relative">
         <div className="flex gap-2">
           {/* release date */}
-          <div className="flex gap-[2px] items-center">
+          <div
+            onClick={() => setYearClick(!yearClick)}
+            ref={yearClickRef}
+            className="flex gap-[2px] items-center"
+          >
             <CalendarDaysIcon className="w-4 h-4" />
             {content.first_air_date.slice(0, 4)}
           </div>
+          {yearClick ? (
+            <div
+              onClick={() => setYearClick(false)}
+              className=" absolute top-4  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
+            >
+              <div className="flex flex-col items-center">
+                <p>Release date: {content.first_air_date}</p>
+              </div>
+            </div>
+          ) : null}
           <span
-            onClick={() => setRatingClick(true)}
+            onClick={() => setRatingClick(!ratingClick)}
             ref={ratingInfoRef}
             className="flex gap-[2px] items-center relative"
           >
@@ -70,10 +104,16 @@ function RatingsYearAndRuntime({ content, runtime }) {
             className="flex items-center gap-[2px] animate-gradient-animation-text text-transparent cursor-pointer"
           >
             <ClockIcon className="text-white w-4 h-4" />
-            {runtime < 0 ? 'No recorded runtime' : <p>{runtime} hours</p>}
+            {runtime < 0 ? (
+              'No recorded runtime'
+            ) : (
+              <p>
+                {runtime} {type == 'tv' ? 'hours' : 'minutes'}
+              </p>
+            )}
           </span>
         </div>
-        {runtimeClick ? (
+        {runtimeClick && type == 'tv' ? (
           <RuntimeBreakdown
             content={content}
             showEpisodeInfoRef={showEpisodeInfoRef}
