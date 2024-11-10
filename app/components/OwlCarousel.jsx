@@ -7,35 +7,29 @@ import 'owl.carousel/dist/assets/owl.theme.default.css'
 import 'owl.carousel'
 import SingleItemContent from './SingleItemContent'
 
-function OwlCarousel({ content, type }) {
-  const data = content.data.results
+function OwlCarousel({ content, type, actorsPage }) {
+  let data = actorsPage ? content : content?.data?.results
+
+  console.log('data from owl', data)
+
   // console.log('owl carousel check for content type', content)
 
   useEffect(() => {
     const window = global.window
-    if (typeof window !== 'undefined') {
-      $(document).ready(function () {
+    if (data && typeof window !== 'undefined') {
+      setTimeout(() => {
         $('.owl-carousel').owlCarousel({
           // loop: true,
           autoWidth: true,
           margin: 10,
-          // nav: true,
           responsive: {
-            0: {
-              items: 3,
-            },
-            600: {
-              items: 4,
-            },
-            800: {
-              items: 5,
-            },
-            1000: {
-              items: 8,
-            },
+            0: { items: 3 },
+            600: { items: 4 },
+            800: { items: 5 },
+            1000: { items: 8 },
           },
         })
-      })
+      }, 100) // Adjust timeout as necessary
     }
   }, [])
 
@@ -51,7 +45,11 @@ function OwlCarousel({ content, type }) {
           data.map((item) => (
             <div className="item" key={item.id}>
               {/* <Link href={`/${content.contentType}/${item.id}#trailer`}> */}
-              <SingleItemContent content={item} type={type} />
+              <SingleItemContent
+                content={item}
+                type={type}
+                actorsPage={actorsPage}
+              />
               {/* </Link> */}
             </div>
           ))

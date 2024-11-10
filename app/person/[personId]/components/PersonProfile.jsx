@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SingleItemContent from '../../../components/SingleItemContent'
+import OwlCarousel from '../../../components/OwlCarousel'
 
 function PersonProfile({ data }) {
   const [biographyButtonClick, setBiographyButtonClick] = useState(false)
@@ -107,13 +108,17 @@ function PersonProfile({ data }) {
   }, [data])
 
   return data ? (
-    <div className="p-4">
-      <div className=" sm:flex-row flex flex-col gap-2">
-        <img
-          className="sm:w-1/2 max-h-[400px] sm:max-h-[400px] object-contain rounded-xl"
-          src={`https://image.tmdb.org/t/p/w500/${data.profile_path}`}
-          alt=""
-        />
+    <div className="">
+      <div className="p-4 sm:flex-row flex flex-col gap-2">
+        <div className="">
+          {' '}
+          <img
+            className="rounded-xl   object-contain "
+            src={`https://image.tmdb.org/t/p/w500/${data.profile_path}`}
+            alt=""
+          />
+        </div>
+
         <div className="text-white sm:w-full flex flex-col gap-2">
           <div className="text-2xl animate-gradient-animation-text text-transparent text-center">
             {data.name}
@@ -145,14 +150,26 @@ function PersonProfile({ data }) {
         </div>
       </div>
       <div className="flex flex-col gap-10">
-        <div className="text-transparent animate-gradient-animation-text text-center">
-          <span className="text-2xl flex flex-col items-center">
+        <div className="text-center relative">
+          <span className="flex justify-center items-center flex-col relative text-transparent animate-gradient-animation-text text-2xl">
             Movies
-            <span className="h-[0.5px] bottom-0 w-2/3 bg-deep-orange-500 animate-gradient-animation"></span>
+            <span className="h-[1px] bottom-0 w-2/3 bg-deep-orange-500 animate-gradient-animation"></span>
           </span>
-          <div className="flex justify-center flex-wrap gap-2 ">
-            {movieCredits?.map((movie) => (
-              <div key={movie.id} className="">
+          {/* <div className="flex justify-center flex-wrap gap-2 "> */}
+          <div className="">
+            {movieCredits ? (
+              <OwlCarousel
+                type={'movie'}
+                content={movieCredits}
+                actorsPage={true}
+              />
+            ) : null}
+          </div>
+          {/* {movieCredits?.map((movie) => (
+              <div
+                key={movie.id}
+                className="hover:scale-[1.02] transition-all duration-300"
+              >
                 <span
                   onClick={handleCharactersClick}
                   className={`text-white object-contain w-[200px] ${
@@ -169,17 +186,25 @@ function PersonProfile({ data }) {
                   classes={'rounded-xl'}
                 />
               </div>
-            ))}
-          </div>
+            ))} */}
+          {/* </div> */}
         </div>
         <div className="text-center">
           <span className="flex justify-center items-center flex-col relative text-transparent animate-gradient-animation-text text-2xl">
             TV
-            <span className="h-[0.5px] bottom-0 w-2/3 bg-deep-orange-500 animate-gradient-animation"></span>
+            <span className="h-[1px] bottom-0 w-2/3 bg-deep-orange-500 animate-gradient-animation"></span>
           </span>
-          <div className="flex justify-center flex-wrap gap-2">
+          <div className="">
+            {tvCredits ? (
+              <OwlCarousel type={'tv'} content={tvCredits} actorsPage={true} />
+            ) : null}
+          </div>
+          {/* <div className="flex justify-center flex-wrap gap-2">
             {tvCredits?.map((tv) => (
-              <div key={tv.credit_id} className="">
+              <div
+                key={tv.credit_id}
+                className="hover:scale-[1.02] transition-all duration-300"
+              >
                 <span
                   onClick={handleCharactersClick}
                   className={`text-white object-contain w-[200px] ${
@@ -195,7 +220,7 @@ function PersonProfile({ data }) {
                 />
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

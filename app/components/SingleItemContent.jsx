@@ -3,8 +3,9 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 
-function SingleItemContent({ content, classes, type }) {
+function SingleItemContent({ content, classes, type, actorsPage }) {
   const [hoverState, setHoverState] = useState(false)
+  const [charactersClick, setCharactersClick] = useState(false)
 
   function hoverStateChangeTrue() {
     setHoverState(!hoverState)
@@ -20,7 +21,6 @@ function SingleItemContent({ content, classes, type }) {
 
   return (
     <div
-      onClick={hoverStateChangeTrue}
       // oncl={hoverStateChangeFalse}
       className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
     >
@@ -33,29 +33,45 @@ function SingleItemContent({ content, classes, type }) {
               </button>
             </Link>
           </div>
-          <p className="pt-[1.5rem]">{content.overview}</p>
+          <p onClick={hoverStateChangeFalse} className="pt-[1.5rem]">
+            {content.overview}
+          </p>
           {/* <div className="z-80"> */}
-          <AddToLists type={type} content={content} />
+          {/* <AddToLists type={type} content={content} /> */}
           {/* </div> */}
         </div>
       ) : null}
       <div
         className={`${
           hoverState
-            ? 'opacity-10 transition-all duration-500 scale-125 ease-in-out'
+            ? 'opacity-10 transition-all duration-200 scale-x-125 ease-in-out'
             : 'transition-all duration-500 scale-100 ease-in-out'
         } `}
       >
-        {' '}
+        {actorsPage ? (
+          <span
+            onClick={() => setCharactersClick(!charactersClick)}
+            className={`text-white object-contain w-[200px] ${
+              charactersClick ? 'line-clamp-none' : 'line-clamp-1'
+            } `}
+          >
+            {content.character ? content.character : 'No Character Name Found'}
+          </span>
+        ) : null}
+
         {content.poster_path ? (
           <img
-            className={`w-[200px] h-[300px] object-cover bg-gray-400 bg-opacity-35`}
+            onClick={hoverStateChangeTrue}
+            className={`w-[200px] h-[300px] object-cover`}
             src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
               `}
             alt={`${content.title} poster`}
           />
         ) : (
-          <div className="w-[200px] h-[300px] bg-gray-400 bg-opacity-50 flex justify-center items-center text-white">
+          <div
+            onClick={hoverStateChangeTrue}
+            className="w-[200px] h-[300px] bg-gray-400 bg-opacity-50 flex justify-center items-center text-white"
+          >
             <span>No Poster Available</span>
           </div>
         )}
@@ -67,7 +83,7 @@ function SingleItemContent({ content, classes, type }) {
           </Link>
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
-          {type == 'movie ' ? content.release_date : content.first_air_date}
+          {type == 'movie' ? content.release_date : content.first_air_date}
         </p>
         <p className=" text-center font-poppins text-gray-400 text-sm">
           ⭐{content.vote_average}
