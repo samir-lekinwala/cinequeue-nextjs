@@ -58,7 +58,6 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
 
   return (
     <div>
-      {' '}
       <span className="relative">
         <div className="flex gap-2">
           {/* release date */}
@@ -68,12 +67,12 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
             className="flex gap-[2px] items-center"
           >
             <CalendarDaysIcon className="w-4 h-4" />
-            {content.first_air_date.slice(0, 4)}
+            {content.first_air_date ? content.first_air_date.slice(0, 4) : null}
           </div>
           {yearClick ? (
             <div
               onClick={() => setYearClick(false)}
-              className=" absolute top-4  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
+              className=" absolute top-5  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
             >
               <div className="flex flex-col items-end">
                 <p>Release date: {content.first_air_date}</p>
@@ -89,12 +88,16 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
             className="flex gap-[2px] items-center relative"
           >
             <StarIcon className="text-yellow-500 w-4 h-4" />{' '}
-            {content.vote_count < 10 ? <>No Rating</> : content.vote_average}
+            {content.vote_count < 5 ? (
+              <>Not enough ratings</>
+            ) : (
+              content.vote_average
+            )}
           </span>
           {ratingClick ? (
             <div
               onClick={() => setRatingClick(false)}
-              className=" absolute top-4  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
+              className=" absolute top-5  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
             >
               <div className="flex flex-col items-center">
                 <p>Total number of votes: {content.vote_count}</p>
@@ -108,23 +111,33 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
             className="flex items-center gap-[2px] animate-gradient-animation-text text-transparent cursor-pointer"
           >
             <ClockIcon className="text-white w-4 h-4" />
-            {runtime < 0 ? (
+            {runtime <= 0 ? (
               'No recorded runtime'
             ) : (
               <p>
-                {runtime} {type == 'tv' ? 'hours' : 'minutes'}
+                {runtime ? (
+                  type == 'tv' ? (
+                    <> {runtime} hours</>
+                  ) : (
+                    <>{runtime} minutes</>
+                  )
+                ) : (
+                  '...loading'
+                )}
               </p>
             )}
           </span>
         </div>
-        {runtimeClick && type == 'tv' ? (
-          <RuntimeBreakdown
-            content={content}
-            showEpisodeInfoRef={showEpisodeInfoRef}
-            runtimeClick={runtimeClick}
-            setRuntimeClick={setRuntimeClick}
-          />
-        ) : null}
+        <div>
+          {runtimeClick && type == 'tv' ? (
+            <RuntimeBreakdown
+              content={content}
+              showEpisodeInfoRef={showEpisodeInfoRef}
+              runtimeClick={runtimeClick}
+              setRuntimeClick={setRuntimeClick}
+            />
+          ) : null}
+        </div>
         {content.next_episode_to_air ? (
           <div className="">
             Next episode airing: {content.next_episode_to_air.air_date}
