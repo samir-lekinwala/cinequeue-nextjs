@@ -10,7 +10,7 @@ import SingleItemContent from './SingleItemContent'
 function OwlCarousel({ content, type, actorsPage }) {
   let data = actorsPage ? content : content?.data?.results
 
-  console.log('data from owl', data)
+  // console.log('data from owl', data)
 
   // console.log('owl carousel check for content type', content)
 
