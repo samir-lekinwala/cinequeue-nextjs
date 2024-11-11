@@ -40,7 +40,7 @@ function ActorsSection({ actors }) {
               <div>
                 <Link href={`/person/${actor.id}`}>
                   {actor.profile_path == null ? (
-                    <div className="w-40 h-40 border border-gray-400 rounded-full">
+                    <div className="w-40 h-40  border border-gray-400 rounded-full">
                       {' '}
                     </div>
                   ) : (
@@ -52,7 +52,7 @@ function ActorsSection({ actors }) {
                   )}
                 </Link>
               </div>
-              <p className="text-gray-400 w-[180px] h-[3rem] overflow-auto">
+              <p className="text-gray-400 w-[160px] h-[3rem] overflow-auto">
                 {actor.character}
               </p>
             </div>
