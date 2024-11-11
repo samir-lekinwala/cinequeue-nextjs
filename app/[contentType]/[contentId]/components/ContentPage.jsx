@@ -11,6 +11,7 @@ function ContentPage({ type, contentId }) {
   const [data, setData] = useState()
   const [videosKey, setVideosKey] = useState()
   const [credits, setCredits] = useState()
+  const [trailerButtonClick, setTrailerButtonClick] = useState(false)
 
   useEffect(() => {
     async function getContentData() {
@@ -68,8 +69,9 @@ function ContentPage({ type, contentId }) {
           <div className={` absolute inset-0 w-full `}>
             <div className="">
               <div className="flex justify-center">
-                <div className=" w-full md:top-4 relative">
+                <div className=" w-full md:top-4 relative hidden md:visible">
                   {/* <div className="absolute inset-0 bg-gradient-to-t from-black from-0% "></div> */}
+
                   <Trailer
                     trailerLink={videosKey}
                     classes={'h-[70vh] w-full'}
@@ -77,7 +79,20 @@ function ContentPage({ type, contentId }) {
                 </div>
               </div>
               <div className="text-white w-full relative top-10 ">
-                <PosterSection type={type} content={data} />
+                <PosterSection
+                  type={type}
+                  content={data}
+                  trailerButtonClick={trailerButtonClick}
+                  setTrailerButtonClick={setTrailerButtonClick}
+                />
+                {trailerButtonClick ? (
+                  <div id="trailer-iframe" className="my-10">
+                    <Trailer
+                      trailerLink={videosKey}
+                      classes={'aspect-video w-full'}
+                    />
+                  </div>
+                ) : null}
 
                 <ActorsSection actors={credits} />
               </div>
