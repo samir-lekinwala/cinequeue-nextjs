@@ -8,9 +8,25 @@ import {
   getTotalEpisodesRuntime,
 } from '../../../functions/tvShowRuntime'
 import { CalendarDaysIcon } from '@heroicons/react/16/solid'
+import Link from 'next/link'
 
-function PosterSection({ content, type }) {
+function PosterSection({
+  content,
+  type,
+  trailerButtonClick,
+  setTrailerButtonClick,
+}) {
   const runtime = getTotalEpisodesRuntime(content, type)
+
+  function scrollSmoothTo(elementId) {
+    setTimeout(() => {
+      const element = document.getElementById(elementId)
+      element.scrollIntoView({
+        block: 'start',
+        behavior: 'smooth',
+      })
+    }, 300)
+  }
 
   return (
     <>
@@ -74,6 +90,28 @@ function PosterSection({ content, type }) {
               content={content}
               contentRuntime={runtime * 60}
             />
+            <div>
+              <button
+                onClick={() => setTrailerButtonClick(!trailerButtonClick)}
+                className={`${
+                  trailerButtonClick
+                    ? 'animate-gradient-animation-close'
+                    : 'animate-gradient-animation'
+                } bg-opacity-70 text-white hover:shadow-[0px_0px_10px_2px_#ff7e5f] transition-all rounded-xl p-2`}
+              >
+                {/* <Link href={'#trailer-iframe'} scroll={true}> */}
+
+                {trailerButtonClick ? (
+                  'Hide Trailer'
+                ) : (
+                  <span onClick={() => scrollSmoothTo('trailer-iframe')}>
+                    Watch Trailer
+                  </span>
+                )}
+
+                {/* </Link> */}
+              </button>
+            </div>
           </div>
         </div>
       )}
