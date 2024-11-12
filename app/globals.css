@@ -91,4 +91,8 @@ body {
   animation: gradient-animation 4s ease-in-out infinite;
 }
 
-
+.animate-gradient-animation-loading {
+  background: linear-gradient(90deg, #bdbdbd, transparent, #bdbdbd);
+  background-size: 200% 200%;
+  animation: gradient-animation 1s ease-in-out infinite;
+}

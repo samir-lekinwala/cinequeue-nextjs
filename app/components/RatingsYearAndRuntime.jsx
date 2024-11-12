@@ -6,6 +6,7 @@ import {
 import RuntimeBreakdown from './RuntimeBreakdown'
 
 import React, { useEffect, useRef, useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
 
 function RatingsYearAndRuntime({ content, runtime, type }) {
   if (type == 'movie') {
@@ -16,7 +17,6 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
   const [runtimeClick, setRuntimeClick] = useState(false)
   const [ratingClick, setRatingClick] = useState(false)
   const [yearClick, setYearClick] = useState(false)
-  console.log(content)
 
   //refs for click for more detail areas
   const showEpisodeInfoRef = useRef(null)

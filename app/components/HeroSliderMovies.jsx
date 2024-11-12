@@ -94,10 +94,17 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                               type={type}
                               runtime={singleContentData.runtime}
                             />
-                          ) : null}
+                          ) : (
+                            <div className="w-full">
+                              <div className="flex flex-col justify-center items-center gap-1">
+                                <span className="w-[200px] h-[7px] mb-[13px] animate-gradient-animation-loading  rounded-full"></span>
+                                {/* <span className="w-[200px] h-[7px] my-1 animate-gradient-animation-loading rounded-full"></span> */}
+                              </div>
+                            </div>
+                          )}
                         </div>
 
-                        <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
+                        <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] transition-all text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
                           {item.overview}
                         </div>
                       </div>
