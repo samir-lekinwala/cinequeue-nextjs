@@ -17,6 +17,7 @@ function HeroSlider({ content, type }) {
   const [singleContentData, setSingleContentData] = useState(null)
   const [slideshowPause, setSlideshowPaused] = useState(false)
   const [countdown, setCountdown] = useState(19)
+  const [isLoading, setIsLoading] = useState(true)
 
   //useEffects
   useEffect(() => {
@@ -52,11 +53,16 @@ function HeroSlider({ content, type }) {
 
   //data for the current slide, used interchangably with movies and tv shows
   async function getSingleContentData(type, id) {
+    setIsLoading(true)
+    console.log('isloading', isLoading)
     const result = await getData(
       `${type}/${id}${type == 'tv' ? '?append_to_response=season%2F1' : null}`
-    )
+    ).then((returnedResult) => {
+      setSingleContentData(returnedResult)
+      setIsLoading(false)
+      console.log('isloading', isLoading)
+    })
     console.log('async function getsinglecontentdata result', type, id, result)
-    setSingleContentData(result)
   }
 
   const sliderLength = content.length - 1
@@ -90,6 +96,7 @@ function HeroSlider({ content, type }) {
                     // item={item}
                     content={content}
                     type={type}
+                    isLoading={isLoading}
                     // index={index}
                     setSlideshowPaused={setSlideshowPaused}
                     singleContentData={singleContentData}
@@ -104,6 +111,7 @@ function HeroSlider({ content, type }) {
                     // item={item}
                     type={type}
                     // index={index}
+                    isLoading={isLoading}
                     setSlideshowPaused={setSlideshowPaused}
                     singleContentData={singleContentData}
                     handleLeftClick={handleLeftClick}
