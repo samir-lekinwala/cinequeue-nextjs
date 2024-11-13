@@ -120,12 +120,25 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                             </div>
                           )}
                         </div>
-
+                        <div className="visible sm:hidden">
+                          <AddToLists
+                            type={type}
+                            content={item}
+                            contentRuntime={runtime}
+                          />
+                        </div>
                         <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
                           {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
                           {/* {reduceOverviewSize(item.overview)} */}
                           {item.overview}
                         </div>
+                        {/* <div className="hidden sm:visible">
+                          <AddToLists
+                            type={type}
+                            content={item}
+                            contentRuntime={runtime}
+                          />
+                        </div> */}
                       </div>
                       {!smallSize ? (
                         <div className=" pb-4">
@@ -139,7 +152,9 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       {singleContentData && runtime > 0 ? (
                         <div
                           className={`${
-                            !smallSize ? 'relative z-20 my-4' : 'relative z-20'
+                            !smallSize
+                              ? ' hidden'
+                              : 'visible relative z-20 my-4'
                           }`}
                         >
                           <AddToLists
