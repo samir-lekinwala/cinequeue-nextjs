@@ -41,7 +41,7 @@ function HomePage() {
   }, [])
 
   return (
-    <div>
+    <div className="">
       <SwitchContent
         handleMoviesClick={handleMoviesClick}
         handleTVShowsClick={handleTVShowsClick}
@@ -49,8 +49,10 @@ function HomePage() {
         typeBarClick={typeBarClick}
         contentType={contentType}
       />
-      <Hero type={contentType} />
-      {contentType == 'movie' ? <MoviesCarousel /> : <TVCarousel />}
+      <div className="">
+        <Hero type={contentType} />
+        {contentType == 'movie' ? <MoviesCarousel /> : <TVCarousel />}
+      </div>
     </div>
   )
 }

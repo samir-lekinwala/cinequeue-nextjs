@@ -48,7 +48,7 @@ function TVCarousel() {
 
   console.log('tv content test', tvContent)
   return (
-    <div className="text-green-500 w-full z-50">
+    <div className="text-green-500 w-full">
       {/* Checks if moviesContent exists/data has loaded */}
       {!tvContent ? (
         <p>TV Shows loading...</p>
