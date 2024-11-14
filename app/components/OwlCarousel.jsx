@@ -35,7 +35,7 @@ function OwlCarousel({ content, type, actorsPage }) {
 
   return (
     <div className="">
-      <p className="text-center text-2xl font-poppins text-gray-400 relative z-50">
+      <p className="text-center text-2xl font-poppins text-gray-400">
         {content.type}
       </p>
       <div className="owl-carousel">

@@ -87,7 +87,7 @@ function HeroSlider({ content, type }) {
             <FallingLines color="#ff7e5f" />
           </div>
         ) : (
-          <div className="w-full flex  h-[100vh] relative ">
+          <div className="w-full flex relative ">
             <div className="w-full  mb-20 sm:mb-0 object-fit">
               {/* {content.map((item, index) => ( */}
               <>

@@ -24,15 +24,15 @@ function HeroSliderMovies({
           <FallingLines color="#ff7e5f" />
         </div>
       ) : (
-        <>
+        <div className="min-h-[700px]">
           {content.map((item, index) => (
             <>
               <div
                 className={`${
                   currentSlide == index
-                    ? 'opacity-100 h-[140vh] z-0'
-                    : 'opacity-0 z-0 h-[140vh]'
-                } absolute inset-0 transition-all ease-in-out duration-[700ms]`}
+                    ? `min-h-[850px] opacity-100  `
+                    : 'opacity-0'
+                } transition-all ease-in-out duration-[700ms]`}
                 key={item.id}
                 style={{
                   zIndex: '0',
@@ -61,9 +61,9 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       <img
                         className={`${
                           currentSlide == index
-                            ? 'opacity-100 z-20 relative'
+                            ? 'opacity-100 z-20 relative '
                             : 'opacity-0'
-                        } grow h-auto w-auto transition-all duration-[700ms] ease-in-out`}
+                        } grow  w-auto transition-all duration-[700ms] ease-in-out`}
                         alt={`${item.title} poster`}
                         src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
                       ></img>
@@ -78,36 +78,61 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       <div
                         className={`${
                           item.title.length > 20
-                            ? 'text-xl sm:text-2xl'
+                            ? 'text-lg sm:text-xl'
+                            : item.title.length > 30
+                            ? 'text-base sm:text-xl'
                             : 'text-2xl sm:text-3xl md:text-4xl'
-                        } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty `}
+                        } h-[20px] sm:h-[368px] z-40 text-center sm:text-pretty mx-auto`}
                       >
                         {/* If original language is not english 'title' in api call is used as opposed to original title */}
                         <Link href={`/${type}/${item.id}`}>{item.title}</Link>
-                        <div
-                          className={`${'relative text-sm pb-10 sm:pb-10 text-zinc-400 w-fit mx-auto flex justify-between gap-4'}`}
-                        >
+                        <div className="text-sm pb-2 text-zinc-400 mx-auto w-fit relative transition-transform duration-1000 ease-in-out">
                           {singleContentData &&
-                          singleContentData.id == item.id ? (
+                          item.id == singleContentData.id ? (
                             <RatingsYearAndRuntime
                               content={singleContentData}
-                              type={type}
                               runtime={singleContentData.runtime}
+                              type={type}
+                              // isLoading={isLoading}
                             />
                           ) : (
-                            <div className="w-full">
+                            <div className="w-full h-[40px]">
                               <div className="flex flex-col justify-center items-center gap-1">
-                                <span className="w-[200px] h-[7px] mb-[13px] animate-gradient-animation-loading  rounded-full"></span>
+                                <span className="w-[200px] h-[7px] mb-5 animate-gradient-animation-loading  rounded-full"></span>
                                 {/* <span className="w-[200px] h-[7px] my-1 animate-gradient-animation-loading rounded-full"></span> */}
                               </div>
                             </div>
                           )}
                         </div>
-
-                        <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] transition-all text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
+                        <div className="visible sm:hidden">
+                          {singleContentData ? (
+                            <AddToLists
+                              type={type}
+                              content={item}
+                              contentRuntime={singleContentData.runtime}
+                            />
+                          ) : null}
+                        </div>
+                        <div
+                          className={`${
+                            currentSlide == index
+                              ? ` h-[22vh] sm:h-[260px] sm:text-base text-base text-pretty  text-ellipsis overflow-auto min-h-0 my-4 sm:my-0`
+                              : 'hidden'
+                          }`}
+                        >
+                          {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
+                          {/* {reduceOverviewSize(item.overview)} */}
                           {item.overview}
                         </div>
+                        {/* <div className="hidden sm:visible">
+                          <AddToLists
+                            type={type}
+                            content={item}
+                            contentRuntime={runtime}
+                          />
+                        </div> */}
                       </div>
+
                       {!smallSize ? (
                         <div className=" pb-4">
                           <SliderArrows
@@ -120,7 +145,9 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       {singleContentData ? (
                         <div
                           className={`${
-                            !smallSize ? 'relative z-20 my-4' : 'relative z-20'
+                            !smallSize
+                              ? ' hidden'
+                              : 'visible relative z-20 my-4'
                           }`}
                         >
                           <AddToLists
@@ -144,7 +171,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
               </div>
             </>
           ))}
-        </>
+        </div>
       )}
     </>
   )

@@ -8,6 +8,7 @@ import RuntimeBreakdown from './RuntimeBreakdown'
 import RatingsYearAndRuntime from './RatingsYearAndRuntime'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { useMediaQuery } from 'usehooks-ts'
 
 function HeroSliderTV({
   // item,
@@ -24,6 +25,9 @@ function HeroSliderTV({
 }) {
   const [runtime, setRuntime] = useState()
   const [runtimeClick, setRuntimeClick] = useState(false)
+  const widthSmall = useMediaQuery('(max-width: 350px)')
+  const mobileScreen = useMediaQuery('(min-height: 800px)')
+  console.log(widthSmall)
 
   const showEpisodeInfoRef = useRef(null)
 
@@ -40,15 +44,16 @@ function HeroSliderTV({
           <FallingLines color="#ff7e5f" />
         </div>
       ) : (
-        <>
+        <div className={`${widthSmall ? 'min-h-[700px]' : 'min-h-[700px]'} `}>
           {content.map((item, index) => (
             <>
+              {/* area of concern, need to fix!!!! */}
               <div
                 className={`${
                   currentSlide == index
-                    ? 'opacity-100 h-[140vh] z-0'
-                    : 'opacity-0 z-0 h-[140vh]'
-                } absolute inset-0 transition-all ease-in-out duration-[700ms]`}
+                    ? `min-h-[850px] opacity-100  `
+                    : 'opacity-0'
+                } transition-all ease-in-out duration-[700ms]`}
                 key={item.id}
                 style={{
                   zIndex: '0',
@@ -77,9 +82,9 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                       <img
                         className={`${
                           currentSlide == index
-                            ? 'opacity-100 z-20 relative'
+                            ? 'opacity-100 z-20 relative '
                             : 'opacity-0'
-                        } grow h-auto w-auto transition-all duration-[700ms] ease-in-out`}
+                        } grow  w-auto transition-all duration-[700ms] ease-in-out`}
                         alt={`${item.name} poster`}
                         src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
                       ></img>
@@ -127,7 +132,13 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                             contentRuntime={runtime}
                           />
                         </div>
-                        <div className=" sm:text-base text-base text-pretty h-[20vh] sm:h-[260px] text-ellipsis overflow-auto min-h-0 my-4 sm:my-0">
+                        <div
+                          className={`${
+                            currentSlide == index
+                              ? ` h-[22vh] sm:h-[260px] sm:text-base text-base text-pretty  text-ellipsis overflow-auto min-h-0 my-4 sm:my-0`
+                              : 'hidden'
+                          }`}
+                        >
                           {/* Cuts off the overview if it exceeds 40 words and adds read more onto the end */}
                           {/* {reduceOverviewSize(item.overview)} */}
                           {item.overview}
@@ -178,7 +189,7 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
               </div>
             </>
           ))}
-        </>
+        </div>
       )}
     </>
   )
