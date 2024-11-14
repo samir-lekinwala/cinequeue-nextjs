@@ -96,9 +96,9 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                               // isLoading={isLoading}
                             />
                           ) : (
-                            <div className="w-full h-[40px]">
+                            <div className="w-full h-[20px]">
                               <div className="flex flex-col justify-center items-center gap-1">
-                                <span className="w-[200px] h-[7px] mb-5 animate-gradient-animation-loading  rounded-full"></span>
+                                <span className="w-[200px] h-[7px] mt-2 animate-gradient-animation-loading  rounded-full"></span>
                                 {/* <span className="w-[200px] h-[7px] my-1 animate-gradient-animation-loading rounded-full"></span> */}
                               </div>
                             </div>
