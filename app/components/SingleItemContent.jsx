@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 
-function SingleItemContent({ content, classes, type, actorsPage }) {
+function SingleItemContent({ content, classes, type, actorsPage, carousel }) {
   const [hoverState, setHoverState] = useState(false)
   const [charactersClick, setCharactersClick] = useState(false)
 
@@ -63,7 +63,9 @@ function SingleItemContent({ content, classes, type, actorsPage }) {
           <img
             onClick={hoverStateChangeTrue}
             className={`w-[200px] h-[300px] object-cover`}
-            src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
+            src={`https://image.tmdb.org/t/p/w${carousel ? '300' : '300'}/${
+              content.poster_path
+            }
               `}
             alt={`${content.title} poster`}
           />

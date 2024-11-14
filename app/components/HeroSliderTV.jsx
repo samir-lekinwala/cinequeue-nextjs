@@ -84,9 +84,9 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                           currentSlide == index
                             ? 'opacity-100 z-20 relative '
                             : 'opacity-0'
-                        } grow  w-auto transition-all duration-[700ms] ease-in-out`}
+                        } grow  w-auto h-[450px] transition-all duration-[700ms] ease-in-out `}
                         alt={`${item.name} poster`}
-                        src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+                        src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
                       ></img>
                     </Link>
                     <div
