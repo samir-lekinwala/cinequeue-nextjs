@@ -6,12 +6,15 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../../firebaseConfig'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FallingLines } from 'react-loader-spinner'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 function WatchlistPage() {
   const [data, setData] = useState()
   const [runtimeType, setRuntimeType] = useState('minutes')
 
   const [user] = useAuthState(auth)
+
+  useDocumentTitle('Watch List - CineQueue')
 
   useEffect(() => {
     if (user) {

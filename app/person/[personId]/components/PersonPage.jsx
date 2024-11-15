@@ -3,11 +3,14 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { getData } from '../../../api/apiCalls'
 import PersonProfile from './PersonProfile'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 
 function PersonPage() {
   const [data, setData] = useState()
 
   const personId = useParams().personId
+
+  useDocumentTitle(`${!data ? 'CineQueue' : data.name + ' - CineQueue'}`)
 
   useEffect(() => {
     if (personId) {

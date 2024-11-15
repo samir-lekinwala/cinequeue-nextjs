@@ -14,7 +14,9 @@ function ContentPage({ type, contentId }) {
   const [credits, setCredits] = useState()
   const [trailerButtonClick, setTrailerButtonClick] = useState(false)
 
-  useDocumentTitle(data?.title || data?.name)
+  useDocumentTitle(
+    `${!data ? 'CineQueue' : data.title || data.name + ' - CineQueue'}`
+  )
 
   useEffect(() => {
     async function getContentData() {
