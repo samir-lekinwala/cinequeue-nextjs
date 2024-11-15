@@ -6,6 +6,7 @@ import 'owl.carousel/dist/assets/owl.carousel.css'
 import 'owl.carousel/dist/assets/owl.theme.default.css'
 import 'owl.carousel'
 import SingleItemContent from './SingleItemContent'
+import { FallingLines } from 'react-loader-spinner'
 
 function OwlCarousel({ content, type, actorsPage }) {
   let data = actorsPage ? content : content?.data?.results
@@ -40,7 +41,7 @@ function OwlCarousel({ content, type, actorsPage }) {
       </p>
       <div className="owl-carousel">
         {!data ? (
-          <p>Loading...</p>
+          <FallingLines color="#ff7e5f" />
         ) : (
           data.map((item) => (
             <div className="item" key={item.id}>
