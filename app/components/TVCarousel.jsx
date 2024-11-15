@@ -22,7 +22,7 @@ function TVCarousel() {
     )
     // setMoviesContent(inCinemas.results)
     const popular = await getData(
-      'tv?first_air_date_year=2024&include_adult=false&include_null_first_air_dates=false&page=1&sort_by=popularity.desc&vote_count.gte=40'
+      'discover/tv?first_air_date_year=2024&include_adult=false&include_null_first_air_dates=false&page=1&sort_by=popularity.desc&vote_count.gte=40'
     )
     // setMoviesContent(popular.results)
 
