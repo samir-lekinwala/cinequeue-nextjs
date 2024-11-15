@@ -10,6 +10,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useMediaQuery } from 'usehooks-ts'
 import Backdrop from './Backdrop'
+import HeroSliderPoster from './HeroSliderPoster'
 
 function HeroSliderTV({
   // item,
@@ -70,15 +71,12 @@ function HeroSliderTV({
                     className="flex flex-col items-center  sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
                   >
                     <Link href={`/${type}/${item.id}`}>
-                      <img
-                        className={`${
-                          currentSlide == index
-                            ? 'opacity-100 z-20 relative '
-                            : 'opacity-0'
-                        } grow  w-auto h-[450px] transition-all duration-[700ms] ease-in-out `}
-                        alt={`${item.name} poster`}
-                        src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-                      ></img>
+                      <HeroSliderPoster
+                        item={item}
+                        index={index}
+                        currentSlide={currentSlide}
+                        contentLength={content.length}
+                      />
                     </Link>
                     <div
                       className={` ${

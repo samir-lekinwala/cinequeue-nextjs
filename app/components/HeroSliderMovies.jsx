@@ -5,6 +5,7 @@ import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 import { FallingLines } from 'react-loader-spinner'
 import RatingsYearAndRuntime from './RatingsYearAndRuntime'
 import Backdrop from '../components/Backdrop.jsx'
+import HeroSliderPoster from './HeroSliderPoster'
 
 function HeroSliderMovies({
   item,
@@ -51,15 +52,12 @@ function HeroSliderMovies({
                     className="flex flex-col items-center  sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
                   >
                     <Link href={`/${type}/${item.id}`}>
-                      <img
-                        className={`${
-                          currentSlide == index
-                            ? 'opacity-100 z-20 relative '
-                            : 'opacity-0'
-                        } grow  w-auto h-[450px] transition-all duration-[700ms] ease-in-out`}
-                        alt={`${item.title} poster`}
-                        src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-                      ></img>
+                      <HeroSliderPoster
+                        item={item}
+                        index={index}
+                        currentSlide={currentSlide}
+                        contentLength={content.length}
+                      />
                     </Link>
                     <div
                       className={` ${
