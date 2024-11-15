@@ -49,6 +49,7 @@ function OwlCarousel({ content, type, actorsPage }) {
                 content={item}
                 type={type}
                 actorsPage={actorsPage}
+                carousel={true}
               />
               {/* </Link> */}
             </div>

@@ -9,6 +9,8 @@ import RatingsYearAndRuntime from './RatingsYearAndRuntime'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useMediaQuery } from 'usehooks-ts'
+import Backdrop from './Backdrop'
+import HeroSliderPoster from './HeroSliderPoster'
 
 function HeroSliderTV({
   // item,
@@ -48,23 +50,13 @@ function HeroSliderTV({
           {content.map((item, index) => (
             <>
               {/* area of concern, need to fix!!!! */}
-              <div
-                className={`${
-                  currentSlide == index
-                    ? `min-h-[850px] opacity-100  `
-                    : 'opacity-0'
-                } transition-all ease-in-out duration-[700ms]`}
-                key={item.id}
-                style={{
-                  zIndex: '0',
-                  backgroundImage: `
-linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                }}
-              ></div>
+              <Backdrop
+                item={item}
+                index={index}
+                currentSlide={currentSlide}
+                contentLength={content.length}
+              />
+
               <div
                 className={`${
                   currentSlide == index ? 'opacity-100 z-10' : 'opacity-0 z-0'
@@ -79,15 +71,12 @@ url("https://image.tmdb.org/t/p/original${item.backdrop_path}")`,
                     className="flex flex-col items-center  sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
                   >
                     <Link href={`/${type}/${item.id}`}>
-                      <img
-                        className={`${
-                          currentSlide == index
-                            ? 'opacity-100 z-20 relative '
-                            : 'opacity-0'
-                        } grow  w-auto transition-all duration-[700ms] ease-in-out`}
-                        alt={`${item.name} poster`}
-                        src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
-                      ></img>
+                      <HeroSliderPoster
+                        item={item}
+                        index={index}
+                        currentSlide={currentSlide}
+                        contentLength={content.length}
+                      />
                     </Link>
                     <div
                       className={` ${
