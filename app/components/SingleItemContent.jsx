@@ -22,18 +22,27 @@ function SingleItemContent({ content, classes, type, actorsPage, carousel }) {
   return (
     <div
       // oncl={hoverStateChangeFalse}
-      className={`flex flex-col w-[200px] ${classes} overflow-hidden`}
+      className={`flex flex-col ${
+        carousel ? 'w-[200px] h-auto' : 'w-[200px]'
+      } ${classes} overflow-hidden`}
     >
       {hoverState ? (
-        <div className="w-[200px] h-[300px] overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400">
+        <div
+          className={`${
+            carousel ? 'w-[200px] h-auto' : 'w-[200px] h-[300px]'
+          } overflow-y-auto overflow-x-hidden absolute opacity-100 z-10 text-gray-400`}
+        >
           <div className="w-full">
             <Link href={`/${type}/${content.id}`}>
-              <button className="animate-gradient-animation-expand rounded-lg h-[1.5rem] duration-500 bg-opacity-10 text-white right-0 left-0 top-0 hover:scale-105 hover:font-normal ease-in-out">
+              <button className="animate-gradient-animation-expand rounded-lg h-[1.5rem] absolute duration-500 bg-opacity-10 text-white right-0 left-0 top-0 hover:font-normal ease-in-out">
                 View More
               </button>
             </Link>
           </div>
-          <p onClick={hoverStateChangeFalse} className="pt-[1.5rem]">
+          <p
+            onClick={hoverStateChangeFalse}
+            className="pt-10 h-[300px] overflow-auto"
+          >
             {content.overview}
           </p>
           {/* <div className="z-80"> */}
@@ -62,7 +71,9 @@ function SingleItemContent({ content, classes, type, actorsPage, carousel }) {
         {content.poster_path ? (
           <img
             onClick={hoverStateChangeTrue}
-            className={`w-[200px] h-[300px] object-cover`}
+            className={`${
+              carousel ? 'w-[200px] h-auto' : 'w-[200px] h-[300px]'
+            }object-cover`}
             src={`https://image.tmdb.org/t/p/w${carousel ? '300' : '300'}/${
               content.poster_path
             }
