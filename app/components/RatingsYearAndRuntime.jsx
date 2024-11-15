@@ -72,7 +72,7 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
           {yearClick ? (
             <div
               onClick={() => setYearClick(false)}
-              className=" absolute top-5  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
+              className=" absolute top-5  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 "
             >
               <div className="flex flex-col items-end">
                 <p>Release date: {content.first_air_date}</p>
@@ -97,7 +97,7 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
           {ratingClick ? (
             <div
               onClick={() => setRatingClick(false)}
-              className=" absolute top-5  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4 translate-x-[-60px]"
+              className=" absolute top-5  backdrop-blur-md border bg-black bg-opacity-30 border-black shadow-2xl w-fit text-nowrap rounded-lg p-4"
             >
               <div className="flex flex-col items-center">
                 <p>Total number of votes: {content.vote_count}</p>

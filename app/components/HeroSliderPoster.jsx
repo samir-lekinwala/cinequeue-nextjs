@@ -11,7 +11,7 @@ function HeroSliderPoster({ item, index, currentSlide, contentLength }) {
         <img
           className={`${
             currentSlide == index ? 'opacity-100 z-20 relative ' : 'opacity-0'
-          } grow  w-auto h-[450px] transition-all duration-[500ms] ease-in-out `}
+          } grow  w-[300px] h-auto transition-all duration-[500ms] ease-in-out `}
           alt={`${item.name} poster`}
           src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
         ></img>
