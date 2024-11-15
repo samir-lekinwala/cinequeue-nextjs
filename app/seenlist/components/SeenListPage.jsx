@@ -7,6 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../../firebaseConfig'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FallingLines } from 'react-loader-spinner'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 function SeenListPage() {
   const [data, setData] = useState()
@@ -14,6 +15,8 @@ function SeenListPage() {
   // const [runtimeArrayIndex, setRuntimeArrayIndex] = useState(0)
 
   const [user] = useAuthState(auth)
+
+  useDocumentTitle('Seen List - CineQueue')
 
   useEffect(() => {
     if (user) {
