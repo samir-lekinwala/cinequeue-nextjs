@@ -6,12 +6,15 @@ import PosterSection from './PosterSection'
 import ActorsSection from './ActorsSection'
 import HeroSlide from '../../../components/HeroSlide'
 import { Audio, FallingLines } from 'react-loader-spinner'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 
 function ContentPage({ type, contentId }) {
   const [data, setData] = useState()
   const [videosKey, setVideosKey] = useState()
   const [credits, setCredits] = useState()
   const [trailerButtonClick, setTrailerButtonClick] = useState(false)
+
+  useDocumentTitle(data?.title || data?.name)
 
   useEffect(() => {
     async function getContentData() {
@@ -26,7 +29,6 @@ function ContentPage({ type, contentId }) {
       }
 
       // '?append_to_response=season%2F1'
-
       const videoResult = await getData(`${type}/${contentId}/videos`)
       const creditResults = await getData(`${type}/${contentId}/credits`)
 

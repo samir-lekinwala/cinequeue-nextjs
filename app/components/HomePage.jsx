@@ -3,10 +3,17 @@ import Hero from './Hero'
 import MoviesCarousel from './MoviesCarousel'
 import TVCarousel from './TVCarousel'
 import SwitchContent from './SwitchContent'
+import { useDocumentTitle } from 'usehooks-ts'
 
 function HomePage() {
   const [contentType, setContentType] = useState(null)
   const [typeBarClick, setTypeBarClick] = useState(true)
+
+  const typesFormatted = new Map([
+    ['movie', 'Movies'],
+    ['tv', 'TV Shows'],
+  ])
+  useDocumentTitle(`CineQueue - ${typesFormatted.get(contentType)}`)
 
   useEffect(() => {
     if (localStorage.getItem('type') == undefined) {
