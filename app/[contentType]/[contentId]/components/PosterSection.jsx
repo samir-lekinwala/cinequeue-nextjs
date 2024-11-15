@@ -41,9 +41,9 @@ function PosterSection({
               {content.status}
             </span>
             <img
-              className="w-[300px]"
+              className="h-[450px] w-auto"
               alt={`${type == 'movie' ? content.title : content.name} poster`}
-              src={`https://image.tmdb.org/t/p/w300/${content.poster_path}
+              src={`https://image.tmdb.org/t/p/w500/${content.poster_path}
     `}
             />
           </div>
