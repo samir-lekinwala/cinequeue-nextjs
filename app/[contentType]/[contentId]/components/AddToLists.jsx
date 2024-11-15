@@ -155,7 +155,7 @@ function AddToLists({ type, content, contentRuntime }) {
 
   // console.log('addto list component', toDatabase)
   return (
-    <div className="flex items-end text-base relative py-4">
+    <div className="flex items-end text-base py-4">
       {user ? (
         <>
           <div className="flex justify-between w-full items-center h-10 gap-4">
