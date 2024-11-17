@@ -5,8 +5,9 @@ import {
 } from '@heroicons/react/16/solid'
 import RuntimeBreakdown from './RuntimeBreakdown'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
+import { SlideshowPausedContext } from './HeroSlider'
 
 function RatingsYearAndRuntime({ content, runtime, type }) {
   if (type == 'movie') {
@@ -17,11 +18,28 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
   const [runtimeClick, setRuntimeClick] = useState(false)
   const [ratingClick, setRatingClick] = useState(false)
   const [yearClick, setYearClick] = useState(false)
+  const [ratingAreaClicked, setRatingAreaClicked] = useState(false)
 
   //refs for click for more detail areas
   const showEpisodeInfoRef = useRef(null)
   const ratingInfoRef = useRef(null)
   const yearClickRef = useRef(null)
+
+  //context for slideshow pause
+  const [slideShowPaused, setSlideshowPaused] = useContext(
+    SlideshowPausedContext
+  )
+
+  useEffect(() => {
+    if (runtimeClick || ratingClick || yearClick) {
+      setRatingAreaClicked(true)
+      setSlideshowPaused(true)
+    } else {
+      setRatingAreaClicked(false)
+      setSlideshowPaused(false)
+      // console.log('not clicked', 'context', slideShowPaused)
+    }
+  }, [runtimeClick, ratingClick, yearClick])
 
   useEffect(() => {
     if (ratingClick) {

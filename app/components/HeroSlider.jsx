@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import { useMediaQuery } from 'usehooks-ts'
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import SliderArrows from './SliderArrows'
 import HeroSliderMovies from './HeroSliderMovies'
 import HeroSliderTV from './HeroSliderTV'
@@ -9,6 +9,8 @@ import Link from 'next/link'
 import { getData } from '../api/apiCalls'
 import { FallingLines } from 'react-loader-spinner'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
+
+export const SlideshowPausedContext = createContext()
 
 function HeroSlider({ content, type }) {
   const smallSize = useMediaQuery('(min-width: 540px)')
@@ -137,7 +139,11 @@ function HeroSlider({ content, type }) {
           <FallingLines color="#ff7e5f" />
         </div>
       ) : (
-        heroSliderv1()
+        <SlideshowPausedContext.Provider
+          value={[slideshowPause, setSlideshowPaused]}
+        >
+          {heroSliderv1()}
+        </SlideshowPausedContext.Provider>
       )}
       {}
     </>
