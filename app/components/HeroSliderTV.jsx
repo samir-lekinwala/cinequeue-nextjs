@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import SliderArrows from './SliderArrows'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 import { FallingLines, ProgressBar } from 'react-loader-spinner'
@@ -11,6 +11,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { useMediaQuery } from 'usehooks-ts'
 import Backdrop from './Backdrop'
 import HeroSliderPoster from './HeroSliderPoster'
+import { useInView } from 'react-intersection-observer'
+import { SlideshowPausedContext } from './HeroSlider'
 
 function HeroSliderTV({
   // item,
@@ -18,7 +20,7 @@ function HeroSliderTV({
   type,
   // index,
   isLoading,
-  setSlideshowPaused,
+  // setSlideshowPaused,
   singleContentData,
   handleLeftClick,
   handleRightClick,
@@ -29,9 +31,22 @@ function HeroSliderTV({
   const [runtimeClick, setRuntimeClick] = useState(false)
   const widthSmall = useMediaQuery('(max-width: 350px)')
   const mobileScreen = useMediaQuery('(min-height: 800px)')
-  console.log(widthSmall)
 
   const showEpisodeInfoRef = useRef(null)
+  const heroPosterSection = useRef(null)
+
+  const [ref, inView] = useInView({ threshold: 1 })
+
+  const [slideshowPause, setSlideshowPaused] = useContext(
+    SlideshowPausedContext
+  )
+
+  useEffect(() => {
+    console.log(inView)
+    if (!inView) {
+      setSlideshowPaused(true)
+    } else setSlideshowPaused(false)
+  }, [inView])
 
   useEffect(() => {
     if (singleContentData && singleContentData.name) {
@@ -66,9 +81,10 @@ function HeroSliderTV({
                   className={`text-white absolute inset-0  flex w-[100vw] mt-10 sm:mt-0 justify-center text-4xl `}
                 >
                   <div
+                    ref={ref}
                     onMouseEnter={() => setSlideshowPaused(true)}
                     onMouseLeave={() => setSlideshowPaused(false)}
-                    className="flex flex-col items-center  sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
+                    className="flex flex-col items-center fill-transparent bg-transparent sm:my-auto sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
                   >
                     <Link href={`/${type}/${item.id}`}>
                       <HeroSliderPoster
