@@ -9,7 +9,13 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { SlideshowPausedContext } from './HeroSlider'
 
-function RatingsYearAndRuntime({ content, runtime, type }) {
+function RatingsYearAndRuntime({
+  content,
+  runtime,
+  type,
+  heroSlider,
+  setSlideshowPaused,
+}) {
   if (type == 'movie') {
     content.first_air_date = content.release_date
   }
@@ -25,19 +31,18 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
   const ratingInfoRef = useRef(null)
   const yearClickRef = useRef(null)
 
-  //context for slideshow pause
-  const [slideShowPaused, setSlideshowPaused] = useContext(
-    SlideshowPausedContext
-  )
-
   useEffect(() => {
-    if (runtimeClick || ratingClick || yearClick) {
-      setRatingAreaClicked(true)
-      setSlideshowPaused(true)
+    if (!heroSlider) {
+      return
     } else {
-      setRatingAreaClicked(false)
-      setSlideshowPaused(false)
-      // console.log('not clicked', 'context', slideShowPaused)
+      if (runtimeClick || ratingClick || yearClick) {
+        setRatingAreaClicked(true)
+        setSlideshowPaused(true)
+      } else {
+        setRatingAreaClicked(false)
+        setSlideshowPaused(false)
+        // console.log('not clicked', 'context', slideShowPaused)
+      }
     }
   }, [runtimeClick, ratingClick, yearClick])
 

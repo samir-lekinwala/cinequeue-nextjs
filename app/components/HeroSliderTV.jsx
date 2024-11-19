@@ -20,7 +20,7 @@ function HeroSliderTV({
   type,
   // index,
   isLoading,
-  // setSlideshowPaused,
+  setSlideshowPaused,
   singleContentData,
   handleLeftClick,
   handleRightClick,
@@ -36,10 +36,6 @@ function HeroSliderTV({
   const heroPosterSection = useRef(null)
 
   const [ref, inView] = useInView({ threshold: 1 })
-
-  const [slideshowPause, setSlideshowPaused] = useContext(
-    SlideshowPausedContext
-  )
 
   useEffect(() => {
     console.log(inView)
@@ -120,6 +116,8 @@ function HeroSliderTV({
                               runtime={runtime}
                               type={type}
                               isLoading={isLoading}
+                              heroSlider={true}
+                              setSlideshowPaused={setSlideshowPaused}
                             />
                           ) : (
                             <div className="w-full h-[40px]">
