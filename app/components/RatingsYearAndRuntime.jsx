@@ -5,10 +5,17 @@ import {
 } from '@heroicons/react/16/solid'
 import RuntimeBreakdown from './RuntimeBreakdown'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
+import { SlideshowPausedContext } from './HeroSlider'
 
-function RatingsYearAndRuntime({ content, runtime, type }) {
+function RatingsYearAndRuntime({
+  content,
+  runtime,
+  type,
+  heroSlider,
+  setSlideshowPaused,
+}) {
   if (type == 'movie') {
     content.first_air_date = content.release_date
   }
@@ -17,11 +24,27 @@ function RatingsYearAndRuntime({ content, runtime, type }) {
   const [runtimeClick, setRuntimeClick] = useState(false)
   const [ratingClick, setRatingClick] = useState(false)
   const [yearClick, setYearClick] = useState(false)
+  const [ratingAreaClicked, setRatingAreaClicked] = useState(false)
 
   //refs for click for more detail areas
   const showEpisodeInfoRef = useRef(null)
   const ratingInfoRef = useRef(null)
   const yearClickRef = useRef(null)
+
+  useEffect(() => {
+    if (!heroSlider) {
+      return
+    } else {
+      if (runtimeClick || ratingClick || yearClick) {
+        setRatingAreaClicked(true)
+        setSlideshowPaused(true)
+      } else {
+        setRatingAreaClicked(false)
+        setSlideshowPaused(false)
+        // console.log('not clicked', 'context', slideShowPaused)
+      }
+    }
+  }, [runtimeClick, ratingClick, yearClick])
 
   useEffect(() => {
     if (ratingClick) {

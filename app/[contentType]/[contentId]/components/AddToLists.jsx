@@ -211,10 +211,7 @@ function AddToLists({ type, content, contentRuntime }) {
         </>
       ) : (
         <div className="w-full bg-white bg-opacity-10 flex px-2 rounded-xl justify-center">
-          <button
-            onClick={signInWithGoogle}
-            className="opacity-100 text-white z-10"
-          >
+          <button onClick={signInWithGoogle} className="opacity-100 text-white">
             Sign in to add content to your Watch and Seen Lists
           </button>
         </div>

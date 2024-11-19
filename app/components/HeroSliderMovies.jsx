@@ -6,6 +6,7 @@ import { FallingLines } from 'react-loader-spinner'
 import RatingsYearAndRuntime from './RatingsYearAndRuntime'
 import Backdrop from '../components/Backdrop.jsx'
 import HeroSliderPoster from './HeroSliderPoster'
+import { useInView } from 'react-intersection-observer'
 
 function HeroSliderMovies({
   item,
@@ -19,7 +20,14 @@ function HeroSliderMovies({
   smallSize,
   currentSlide,
 }) {
-  // const BackdropLazyLoad = lazy(() => import('../components/Backdrop.jsx'))
+  const [ref, inView] = useInView({ threshold: 1 })
+
+  useEffect(() => {
+    console.log(inView)
+    if (!inView) {
+      setSlideshowPaused(true)
+    } else setSlideshowPaused(false)
+  }, [inView])
 
   return (
     <>
@@ -47,9 +55,10 @@ function HeroSliderMovies({
                   className={`text-white absolute inset-0  flex w-[100vw] mt-10 sm:mt-0 justify-center text-4xl `}
                 >
                   <div
+                    ref={ref}
                     onMouseEnter={() => setSlideshowPaused(true)}
                     onMouseLeave={() => setSlideshowPaused(false)}
-                    className="flex flex-col items-center  sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
+                    className="flex flex-col items-center fill-transparent bg-transparent sm:my-auto sm:flex-row gap-10 sm:gap-6  mx-auto sm:mx-2 "
                   >
                     <Link href={`/${type}/${item.id}`}>
                       <HeroSliderPoster
@@ -84,6 +93,8 @@ function HeroSliderMovies({
                               content={singleContentData}
                               runtime={singleContentData.runtime}
                               type={type}
+                              heroSlider={true}
+                              setSlideshowPaused={setSlideshowPaused}
                               // isLoading={isLoading}
                             />
                           ) : (
