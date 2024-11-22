@@ -251,6 +251,23 @@ function Nav() {
             </ListItem> */}
             {user ? (
               <>
+                <Link href={'/profile'} onClick={closeDrawer}>
+                  <ListItem className="text-white">
+                    <ListItemPrefix>
+                      <UserCircleIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Profile
+                    <ListItemSuffix>
+                      {/* <Chip
+                        value="14"
+                        size="sm"
+                        variant="ghost"
+                        color=""
+                        className="bg-white rounded-full"
+                      /> */}
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
                 <Link href={'/watchlist'} onClick={closeDrawer}>
                   <ListItem className="text-white">
                     <ListItemPrefix>
