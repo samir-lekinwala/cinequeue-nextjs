@@ -52,7 +52,7 @@ function HeroSliderMovies({
                 }`}
               >
                 <div
-                  className={`text-white absolute inset-0  flex w-[100vw] mt-10 sm:mt-0 justify-center text-4xl `}
+                  className={`text-white absolute inset-0  flex w-full mt-10 sm:mt-0 justify-center text-4xl `}
                 >
                   <div
                     ref={ref}
