@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import HeroSlider from './HeroSlider'
-import { getData } from '../api/apiCalls'
+import { getData } from '../lib/apiCalls'
 import { FallingLines } from 'react-loader-spinner'
 
 function Hero({ type }) {

@@ -1,6 +1,9 @@
+import { NextResponse } from 'next/server'
 import React, { useEffect, useState } from 'react'
 
 function RadarrProfilePageSetup() {
+  const [radarrData, setRadarrData] = useState()
+
   const [radarrIp, setRadarrIp] = useState('')
   const [radarrApiKey, setRadarrApiKey] = useState('')
 
@@ -8,6 +11,50 @@ function RadarrProfilePageSetup() {
     console.log('checking radarr', e.target.value)
     setRadarrIp(e.target.value)
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/radarr/diskspace', {
+          headers: {
+            Accept: 'application/json',
+            method: 'GET',
+          },
+        })
+        if (!response.ok) {
+          throw new Error('Failed to fetch data')
+        }
+        const jsonData = await response.json()
+        console.log('test44')
+        console.log(jsonData)
+        setRadarrData(NextResponse.json(jsonData))
+
+        // console.log('json data test', jsonData)
+        // setData(jsonData);
+      } catch (err) {
+        // setError(err.message);
+        console.error('error from new test', err)
+      }
+    }
+    fetchData()
+    console.log(radarrData)
+  }, [])
+
+  // async function checkRadarrApiInfo() {
+  //   const url =
+  //     'http://192.168.178.176:7878/api?apikey=438168f831174e489373f3bb1ed6fcd3'
+  //   try {
+  //     const response = await fetch(url)
+  //     console.log('response', response)
+  //     if (response) {
+  //       const json = await response.json()
+  //       console.log('Radarr API check', json)
+  //     }
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
+  // checkRadarrApiInfo()
 
   const handleRadarrApiKeyInput = (e) => {
     setRadarrApiKey(e.target.value)

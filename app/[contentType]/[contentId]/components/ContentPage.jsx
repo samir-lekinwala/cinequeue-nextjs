@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { getData } from '../../../api/apiCalls'
+import { getData } from '../../../lib/apiCalls'
 import Trailer from './Trailer'
 import PosterSection from './PosterSection'
 import ActorsSection from './ActorsSection'

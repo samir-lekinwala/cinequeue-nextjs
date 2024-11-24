@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getData } from '../api/apiCalls'
+import { getData } from '../lib/apiCalls'
 import Carousel from './Carousel'
 // import OwlCarousel from './OwlCarousel'
 import dynamic from 'next/dynamic'

@@ -6,7 +6,7 @@ import SliderArrows from './SliderArrows'
 import HeroSliderMovies from './HeroSliderMovies'
 import HeroSliderTV from './HeroSliderTV'
 import Link from 'next/link'
-import { getData } from '../api/apiCalls'
+import { getData } from '../lib/apiCalls'
 import { FallingLines } from 'react-loader-spinner'
 import AddToLists from '../[contentType]/[contentId]/components/AddToLists'
 

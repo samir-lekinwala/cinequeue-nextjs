@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import React, { useEffect, useRef, useState } from 'react'
-import { getData } from '../api/apiCalls'
+import { getData } from '../lib/apiCalls'
 import { set } from 'firebase/database'
 import SingleSearchItem from './SingleSearchItem'
 import page from '../watchlist/page'
