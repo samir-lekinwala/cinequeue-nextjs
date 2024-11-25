@@ -1,60 +1,38 @@
 import { NextResponse } from 'next/server'
 import React, { useEffect, useState } from 'react'
+import { fetchRadarrData } from '../../lib/radarrApiCalls'
 
 function RadarrProfilePageSetup() {
   const [radarrData, setRadarrData] = useState()
 
   const [radarrIp, setRadarrIp] = useState('')
   const [radarrApiKey, setRadarrApiKey] = useState('')
+  const [radarrQuery, setRadarrQuery] = useState('')
+  const [radarrConnection, setRadarrConnection] = useState()
 
   const handleRadarrIpInput = (e) => {
     console.log('checking radarr', e.target.value)
     setRadarrIp(e.target.value)
   }
 
-  useEffect(() => {
+  const fetchDataFunc = () => {
     const fetchData = async () => {
-      try {
-        const response = await fetch('/api/radarr/diskspace', {
-          headers: {
-            Accept: 'application/json',
-            method: 'GET',
-          },
-        })
-        if (!response.ok) {
-          throw new Error('Failed to fetch data')
-        }
-        const jsonData = await response.json()
-        console.log('test44')
-        console.log(jsonData)
-        setRadarrData(NextResponse.json(jsonData))
-
-        // console.log('json data test', jsonData)
-        // setData(jsonData);
-      } catch (err) {
-        // setError(err.message);
-        console.error('error from new test', err)
-      }
+      const apiCallData = await fetchRadarrData(
+        radarrIp,
+        radarrApiKey,
+        radarrQuery
+      )
+      console.log('what is this', apiCallData)
+      setRadarrData(apiCallData)
     }
     fetchData()
-    console.log(radarrData)
-  }, [])
+  }
 
-  // async function checkRadarrApiInfo() {
-  //   const url =
-  //     'http://192.168.178.176:7878/api?apikey=438168f831174e489373f3bb1ed6fcd3'
-  //   try {
-  //     const response = await fetch(url)
-  //     console.log('response', response)
-  //     if (response) {
-  //       const json = await response.json()
-  //       console.log('Radarr API check', json)
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
-  // checkRadarrApiInfo()
+  useEffect(() => {
+    if (radarrIp && radarrApiKey && radarrQuery) {
+      fetchDataFunc()
+    }
+  }, [radarrIp, radarrApiKey, radarrQuery])
 
   const handleRadarrApiKeyInput = (e) => {
     setRadarrApiKey(e.target.value)
@@ -63,12 +41,18 @@ function RadarrProfilePageSetup() {
   useEffect(() => {
     const radarrApiFromStorage = localStorage.getItem('radarr-ip')
     const radarrApiKeyFromStorage = localStorage.getItem('radarr-api-key')
+    const radarrConnectionStatus = localStorage.getItem('radarr-connection')
 
     if (radarrApiFromStorage) {
       setRadarrIp(radarrApiFromStorage)
     }
     if (radarrApiKeyFromStorage) {
       setRadarrApiKey(radarrApiKeyFromStorage)
+    }
+    if (radarrConnectionStatus) {
+      setRadarrConnection(true)
+    } else if (!radarrConnectionStatus) {
+      setRadarrConnection(false)
     }
   }, [])
 
@@ -77,6 +61,9 @@ function RadarrProfilePageSetup() {
 
     localStorage.setItem('radarr-ip', radarrIp)
     localStorage.setItem('radarr-api-key', radarrApiKey)
+    setRadarrQuery('config/host')
+    handleTestRadarrButton()
+    fetchDataFunc()
   }
   const submitClearSettings = (e) => {
     e.preventDefault()
@@ -85,6 +72,18 @@ function RadarrProfilePageSetup() {
     localStorage.removeItem('radarr-api-key')
     setRadarrIp('')
     setRadarrApiKey('')
+  }
+
+  const handleTestRadarrButton = () => {
+    setRadarrQuery('config/host')
+    fetchDataFunc()
+    if (radarrData.id) {
+      localStorage.setItem('radarr-connection', true)
+      setRadarrConnection(true)
+    } else if (!radarrData.id) {
+      localStorage.removeItem('radarr-connection')
+      setRadarrConnection(false)
+    }
   }
 
   return (
@@ -128,6 +127,22 @@ function RadarrProfilePageSetup() {
         >
           Clear
         </button>
+        <button
+          onClick={handleTestRadarrButton}
+          className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
+        >
+          {radarrConnection == true ? (
+            <span className="text-light-green-400 py-2 px-5">✓</span>
+          ) : radarrConnection == false ? (
+            <span className="text-red-600 py-2 px-5">No connection</span>
+          ) : (
+            <span>Test</span>
+          )}
+        </button>
+      </div>
+      <div>
+        Data
+        <div></div>
       </div>
     </div>
   )

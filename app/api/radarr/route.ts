@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Your Radarr API details
-const RADARR_API_URL = 'http://192.168.178.176:7878/api/v3/'
 const API_KEY = process.env.NEXT_PUBLIC_RADARRAPIKEY // Replace with your actual API key
 
 // export async function hello(req, res) {
@@ -22,13 +21,25 @@ const API_KEY = process.env.NEXT_PUBLIC_RADARRAPIKEY // Replace with your actual
 //   // return NextResponse.json({ hello: 'world' })
 // }
 
-export async function GET(req, context) {
-  const { params } = context
-  console.log(params)
+export async function GET(req: NextRequest, { params }) {
+  // const { path } = req.query
+  // console.log('path', path)
+  const reqUrl = req.url
+  const { searchParams } = new URL(reqUrl)
+  const RADARR_API_URL = searchParams.get('ip')
+  const query = searchParams.get('query')
+  const apiKey = searchParams.get('apiKey')
+  console.log('search params', searchParams)
+  // console.log('radarr ip', RADARR_API_URL, 'query', query, 'apikey', apiKey)
+
+  // console.log('req', req)
+  console.log(
+    `the call to fetch ${RADARR_API_URL}/api/v3/${query}?apikey=${apiKey}`
+  )
 
   try {
     const response = await fetch(
-      `${RADARR_API_URL}config/host?apikey=${API_KEY}`
+      `${RADARR_API_URL}/api/v3/${query}?apikey=${apiKey}`
     )
     const data = await response.json()
 
