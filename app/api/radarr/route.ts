@@ -51,3 +51,29 @@ export async function GET(req: NextRequest, { params }) {
     return Response.json({ message: 'Error fetching Radarr data' })
   }
 }
+
+export async function POST(req: NextRequest) {
+  const reqUrl = req.url
+  const { searchParams } = new URL(reqUrl)
+  const RADARR_API_URL = searchParams.get('ip')
+  const query = searchParams.get('query')
+  const apiKey = searchParams.get('apiKey')
+
+  try {
+    const data = await req.json()
+    const response = await fetch(
+      `${RADARR_API_URL}/api/v3/${query}?apikey=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+    )
+    return Response.json({ message: `${data.title} has been added.` })
+  } catch (error) {
+    console.error(error)
+  }
+}
