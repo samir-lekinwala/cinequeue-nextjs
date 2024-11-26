@@ -183,7 +183,7 @@ function AddToLists({ type, content, contentRuntime }) {
               )}
             </div>
             <div>
-              <AddToRadarrDialog />
+              <AddToRadarrDialog content={content} type={type} />
             </div>
             <div
               className={` w-fit group hover:shadow-[0px_0px_20px_1px] ${

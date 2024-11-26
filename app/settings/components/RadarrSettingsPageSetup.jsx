@@ -25,11 +25,7 @@ function RadarrSettingsPageSetup() {
 
   const checkRadarrInstance = () => {
     const fetchData = async () => {
-      const apiCallData = await fetchRadarrData(
-        radarrIp,
-        radarrApiKey,
-        radarrQuery
-      )
+      const apiCallData = await fetchRadarrData(radarrQuery)
       console.log('what is this', apiCallData)
       setRadarrData(apiCallData)
     }
@@ -37,7 +33,7 @@ function RadarrSettingsPageSetup() {
   }
 
   const data = {
-    title: 'Inception',
+    // title: 'Inception',
     qualityProfileId: 1,
     // titleSlug: 'inception',
     // images: [],
@@ -53,7 +49,7 @@ function RadarrSettingsPageSetup() {
   useEffect(() => {
     if (radarrIp && radarrApiKey) {
       // deleteRadarrMovieFunc(radarrIp, radarrApiKey, 'movie', data.tmdbId)
-      postDataFunc(radarrIp, radarrApiKey, 'movie', data)
+      // postDataFunc(radarrIp, radarrApiKey, 'movie', data)
 
       const response = async () => {
         try {

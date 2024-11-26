@@ -1,4 +1,7 @@
-export const fetchRadarrData = async (radarrIp, radarrApiKey, query) => {
+export const fetchRadarrData = async (query) => {
+  const radarrIp = localStorage.getItem('radarr-ip')
+  const radarrApiKey = localStorage.getItem('radarr-api-key')
+
   try {
     const response = await fetch(
       `/api/radarr/?ip=${radarrIp}&query=${query}&apiKey=${radarrApiKey}`,
