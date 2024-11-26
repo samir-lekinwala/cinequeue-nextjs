@@ -98,17 +98,15 @@ body {
 }
 
 
-.testing-css-skills {
-  /* background: linear-gradient(90deg, #bdbdbd, transparent, #bdbdbd); */
-  /* background-size: 200% 200%; */
-  animation: testing-css 3s infinite alternate;
+.green-box-shadow-glow {
+  animation: green-glow 3s infinite alternate;
   animation-timing-function: linear;
 }
 
 
 
 
-@keyframes testing-css {
+@keyframes green-glow {
   0% {
     box-shadow: 0 0 3px 3px rgba(200, 255, 95, 0.5);
     

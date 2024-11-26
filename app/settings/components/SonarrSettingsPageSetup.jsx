@@ -138,7 +138,7 @@ function SonarrSettingsPageSetup() {
   return (
     <div
       className={`min-h-[400px] w-full max-w-[500px] rounded-3xl bg-white bg-opacity-10 ${
-        sonarrConnection ? 'testing-css-skills' : ''
+        sonarrConnection ? 'green-box-shadow-glow' : ''
       }`}
     >
       <div className="flex justify-center h-full items-center">
