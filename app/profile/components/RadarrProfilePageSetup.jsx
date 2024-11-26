@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server'
 import React, { useEffect, useState } from 'react'
-import { fetchRadarrData, postRadarrData } from '../../lib/radarrApiCalls'
+import {
+  deleteRadarrMovie,
+  deleteRadarrMovieFunc,
+  fetchRadarrData,
+  getRadarrMovieIdFromTmdbId,
+  postDataFunc,
+  postRadarrData,
+} from '../../lib/radarrApiCalls'
 
 function RadarrProfilePageSetup() {
   const [radarrData, setRadarrData] = useState()
@@ -32,33 +39,38 @@ function RadarrProfilePageSetup() {
   const data = {
     title: 'Inception',
     qualityProfileId: 1,
-    titleSlug: 'inception',
-    images: [],
+    // titleSlug: 'inception',
+    // images: [],
     tmdbId: 27205, // TMDb ID for Inception
-    year: 2010,
+    // year: 2010,
     rootFolderPath: 'D:\\Torrents\\Movies',
     monitored: false,
-    addOptions: {
-      searchForMovie: false,
-    },
-  }
-
-  const postDataFunc = () => {
-    const fetchData = async () => {
-      const apiCallData = await postRadarrData(
-        radarrIp,
-        radarrApiKey,
-        'movie',
-        data
-      )
-      console.log('posting method lets see', apiCallData)
-      // setRadarrData(apiCallData)
-    }
-    fetchData()
+    // addOptions: {
+    //   searchForMovie: false,
+    // },
   }
 
   useEffect(() => {
-    postDataFunc()
+    if (radarrIp && radarrApiKey) {
+      // deleteRadarrMovieFunc(radarrIp, radarrApiKey, 'movie', data.tmdbId)
+      postDataFunc(radarrIp, radarrApiKey, 'movie', data)
+
+      const response = async () => {
+        try {
+          const response = await getRadarrMovieIdFromTmdbId(
+            radarrIp,
+            radarrApiKey,
+            'movie',
+            data.tmdbId
+          )
+          console.log(response)
+          // deleteRadarrMovieFunc(radarrIp, radarrApiKey, 'movie', response)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      // response()
+    }
   }, [radarrIp, radarrApiKey])
 
   useEffect(() => {

@@ -29,23 +29,33 @@ export async function GET(req: NextRequest, { params }) {
   const RADARR_API_URL = searchParams.get('ip')
   const query = searchParams.get('query')
   const apiKey = searchParams.get('apiKey')
+  const tmdbId = searchParams.get('tmdbId')
   console.log('search params', searchParams)
   // console.log('radarr ip', RADARR_API_URL, 'query', query, 'apikey', apiKey)
 
   // console.log('req', req)
-  console.log(
-    `the call to fetch ${RADARR_API_URL}/api/v3/${query}?apikey=${apiKey}`
-  )
 
   try {
-    const response = await fetch(
-      `${RADARR_API_URL}/api/v3/${query}?apikey=${apiKey}`
-    )
-    const data = await response.json()
+    if (tmdbId) {
+      const response = await fetch(
+        `${RADARR_API_URL}/api/v3/${query}?tmdbId=${tmdbId}&apikey=${apiKey}`
+      )
+      const data = await response.json()
 
-    // Return JSON response using NextResponse
-    console.log('hello', data)
-    return Response.json(data)
+      // Return JSON response using NextResponse
+      console.log('hello tmdb id detected', data)
+      return Response.json(data)
+      // http://192.168.178.176:7878/api/v3/movie?tmdbId=27205&apikey=438168f831174e489373f3bb1ed6fcd3
+    } else {
+      const response = await fetch(
+        `${RADARR_API_URL}/api/v3/${query}?apikey=${apiKey}`
+      )
+      const data = await response.json()
+
+      // Return JSON response using NextResponse
+      console.log('hello without tmdb id', data)
+      return Response.json(data)
+    }
   } catch (error) {
     console.error('Error occurred:', error)
     return Response.json({ message: 'Error fetching Radarr data' })
@@ -72,8 +82,47 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify(data),
       }
     )
-    return Response.json({ message: `${data.title} has been added.` })
+    console.log(response)
+    if (response.status != 201) {
+      return Response.json({
+        message: `Error adding ${data.title}.`,
+        error: `Code ${response.status} - ${response.statusText}`,
+      })
+    } else return Response.json({ message: `${data.title} has been added.` })
   } catch (error) {
     console.error(error)
   }
 }
+
+export async function DELETE(req: Request) {
+  const url = req.url
+
+  const { searchParams } = new URL(url)
+
+  const RADARR_API_URL = searchParams.get('ip')
+  const query = searchParams.get('query')
+  const apiKey = searchParams.get('apiKey')
+  const movieId = searchParams.get('id')
+
+  console.log('search params on delete', searchParams)
+
+  try {
+    const response = await fetch(
+      `${RADARR_API_URL}/api/v3/${query}/${movieId}?apikey=${apiKey}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    console.log('search params on delete', searchParams)
+    console.log(response.json())
+    return Response.json(response)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 27205
