@@ -355,7 +355,8 @@ function Nav() {
                   >
                     Sign in to save Movies and TV Shows to your Watch List and
                     calculate the total time watched or needed to watch through
-                    all your content.
+                    all your content and add content to your Radarr and Sonarr
+                    instances.
                   </Typography>
                   <div className="mt-4 flex gap-3">
                     <Typography
