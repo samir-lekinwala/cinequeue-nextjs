@@ -98,6 +98,7 @@ import {
   XMarkIcon,
   EyeIcon,
   QueueListIcon,
+  CogIcon,
 } from '@heroicons/react/24/outline'
 import Logo from './Logo'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -251,12 +252,12 @@ function Nav() {
             </ListItem> */}
             {user ? (
               <>
-                <Link href={'/profile'} onClick={closeDrawer}>
+                <Link href={'/settings'} onClick={closeDrawer}>
                   <ListItem className="text-white">
                     <ListItemPrefix>
-                      <UserCircleIcon className="h-5 w-5" />
+                      <CogIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    Profile
+                    Settings
                     <ListItemSuffix>
                       {/* <Chip
                         value="14"
