@@ -7,6 +7,7 @@ import RatingsYearAndRuntime from './RatingsYearAndRuntime'
 import Backdrop from '../components/Backdrop.jsx'
 import HeroSliderPoster from './HeroSliderPoster'
 import { useInView } from 'react-intersection-observer'
+import AddtoRadarrDialog from '../components/AddToRadarrDialog'
 
 function HeroSliderMovies({
   item,

@@ -13,15 +13,15 @@ import {
   serverTimestamp,
   where,
 } from 'firebase/firestore'
+import AddToRadarrDialog from '../../../components/AddToRadarrDialog'
 
 function AddToLists({ type, content, contentRuntime }) {
-  // console.log('contentruntime', contentRuntime, 'content', content)
-
   const [watchListed, setWatchListed] = useState()
   const [user, loading, error] = useAuthState(auth)
   // console.log(user)
 
   const [seenListed, setSeenListed] = useState()
+  const [currentlyInRadarr, setCurrentlyInRadarr] = useState(false)
 
   const movieOrTvShow = type
   // console.log(content)
@@ -177,10 +177,13 @@ function AddToLists({ type, content, contentRuntime }) {
                   </span>
                 </button>
               ) : (
-                <button onClick={watchListButton} className="">
+                <button onClick={watchListButton} className="font-poppins">
                   Add to Watch List
                 </button>
               )}
+            </div>
+            <div>
+              <AddToRadarrDialog />
             </div>
             <div
               className={` w-fit group hover:shadow-[0px_0px_20px_1px] ${
@@ -202,7 +205,7 @@ function AddToLists({ type, content, contentRuntime }) {
                   </span>
                 </button>
               ) : (
-                <button className="" onClick={seenListButton}>
+                <button className="font-poppins" onClick={seenListButton}>
                   Add to Seen List
                 </button>
               )}
