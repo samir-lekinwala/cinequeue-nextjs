@@ -2,12 +2,18 @@
 
 import React, { useState } from 'react'
 import RadarrSettingsPageSetup from './RadarrSettingsPageSetup'
+import SonarrSettingsPageSetup from './SonarrSettingsPageSetup'
 
 function SettingsPage() {
   return (
     <div className="flex flex-col w-full justify-center items-center gap-4">
-      <div className="w-full  min-h-[400px] rounded-lg bg-white bg-opacity-10 sm:max-w-[1000px] text-white text-center ">
-        <RadarrSettingsPageSetup />
+      <div className="w-full justify-center flex-wrap flex gap-4 rounded-lg text-white text-center ">
+        <div className="min-h-[400px] w-full max-w-[500px] rounded-3xl bg-white bg-opacity-10">
+          <RadarrSettingsPageSetup />
+        </div>
+        <div className="min-h-[400px] w-full max-w-[500px] rounded-3xl bg-white bg-opacity-10">
+          <SonarrSettingsPageSetup />
+        </div>
       </div>
     </div>
   )

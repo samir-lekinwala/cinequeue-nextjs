@@ -9,7 +9,7 @@ import {
   postRadarrData,
 } from '../../lib/radarrApiCalls'
 
-function RadarrProfilePageSetup() {
+function RadarrSettingsPageSetup() {
   const [radarrData, setRadarrData] = useState()
 
   const [radarrIp, setRadarrIp] = useState('')
@@ -136,31 +136,43 @@ function RadarrProfilePageSetup() {
   }
 
   return (
-    <div className="flex justify-center  ">
-      <div className="flex gap-4 justify-center flex-col items-center sm:flex-row p-10 max-w-[550px] transition-all duration-500 ease-in-out">
-        <div className="my-4 h-auto mx-auto">
+    <div className="flex justify-center h-full items-center object-contain">
+      <div className="flex gap-4 justify-center flex-col items-center transition-all duration-500 ease-in-out">
+        <div className="mb-4 h-auto ">
           <img src="/images/radarr-logo.png" alt="" />
         </div>
-        <div>
-          <div className="flex-col flex gap-2 w-fit justify-center mx-auto">
+        <div className="flex flex-col justify-center">
+          <div className="flex-col w-full flex gap-2 justify-center mx-auto">
             <div>Add your local Radarr instance</div>
             <div className="flex flex-col gap-2 items-end">
-              <div className="flex gap-2 whitespace-nowrap">
-                Local IP Address
+              <div className="flex gap-2 px-2">
+                <label
+                  htmlFor="radarr-ip-address-input"
+                  className="whitespace-nowrap"
+                >
+                  Local IP Address
+                </label>
                 <input
+                  id="radarr-ip-address-input"
                   required
-                  className="text-black"
+                  className="text-black w-full py-1 px-2 text-center rounded-2xl"
                   onChange={(e) => handleRadarrIpInput(e)}
                   value={radarrIp}
                   placeholder="Radarr IP address"
                 />
               </div>
               {/* api key for radarr */}
-              <div className="flex gap-2">
-                API key
+              <div className="flex gap-2 px-2">
+                <label
+                  htmlFor="radarr-api-key-input"
+                  className="whitespace-nowrap"
+                >
+                  API key
+                </label>
                 <input
+                  id="radarr-api-key-input"
                   required
-                  className="text-black"
+                  className="text-black w-full py-1 px-2 text-center rounded-2xl"
                   onChange={(e) => handleRadarrApiKeyInput(e)}
                   value={radarrApiKey}
                   placeholder="Radarr API Key"
@@ -168,7 +180,7 @@ function RadarrProfilePageSetup() {
               </div>
             </div>
           </div>
-          <div className="flex gap-4 justify-center mt-4">
+          <div className="flex gap-2 justify-center mx-auto mt-4">
             <button
               onClick={(e) => submitRadarrSettings(e)}
               className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
@@ -188,7 +200,7 @@ function RadarrProfilePageSetup() {
               {radarrConnection == true ? (
                 <span className="text-light-green-400 py-2 px-5">✓</span>
               ) : radarrConnection == false ? (
-                <span className="text-red-600 py-2 px-5">No connection</span>
+                <span className="text-red-600 py-2 px-1">No connection</span>
               ) : (
                 <span>Test</span>
               )}
@@ -203,4 +215,4 @@ function RadarrProfilePageSetup() {
   )
 }
 
-export default RadarrProfilePageSetup
+export default RadarrSettingsPageSetup
