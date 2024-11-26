@@ -23,7 +23,7 @@ function RadarrProfilePageSetup() {
     setRadarrIp(e.target.value)
   }
 
-  const fetchDataFunc = () => {
+  const checkRadarrInstance = () => {
     const fetchData = async () => {
       const apiCallData = await fetchRadarrData(
         radarrIp,
@@ -76,7 +76,7 @@ function RadarrProfilePageSetup() {
   useEffect(() => {
     if (radarrIp && radarrApiKey && radarrQuery) {
       setLoading(true)
-      fetchDataFunc()
+      checkRadarrInstance()
       setLoading(false)
     }
   }, [radarrIp, radarrApiKey, radarrQuery])
@@ -110,7 +110,7 @@ function RadarrProfilePageSetup() {
     localStorage.setItem('radarr-api-key', radarrApiKey)
     setRadarrQuery('config/host')
     handleTestRadarrButton()
-    fetchDataFunc()
+    checkRadarrInstance()
   }
   const submitClearSettings = (e) => {
     e.preventDefault()
@@ -125,7 +125,7 @@ function RadarrProfilePageSetup() {
 
   const handleTestRadarrButton = () => {
     setRadarrQuery('config/host')
-    fetchDataFunc()
+    checkRadarrInstance()
     if (radarrData.id) {
       localStorage.setItem('radarr-connection', true)
       setRadarrConnection(true)
