@@ -136,77 +136,83 @@ function RadarrSettingsPageSetup() {
   }
 
   return (
-    <div className="flex justify-center h-full items-center object-contain">
-      <div className="flex gap-4 justify-center flex-col items-center transition-all duration-500 ease-in-out">
-        <div className="mb-4 h-auto ">
-          <img src="/images/radarr-logo.png" alt="" />
-        </div>
-        <div className="flex flex-col justify-center">
-          <div className="flex-col w-full flex gap-2 justify-center mx-auto">
-            <div>Add your local Radarr instance</div>
-            <div className="flex flex-col gap-2 items-end">
-              <div className="flex gap-2 px-2">
-                <label
-                  htmlFor="radarr-ip-address-input"
-                  className="whitespace-nowrap"
-                >
-                  Local IP Address
-                </label>
-                <input
-                  id="radarr-ip-address-input"
-                  required
-                  className="text-black w-full py-1 px-2 text-center rounded-2xl"
-                  onChange={(e) => handleRadarrIpInput(e)}
-                  value={radarrIp}
-                  placeholder="Radarr IP address"
-                />
-              </div>
-              {/* api key for radarr */}
-              <div className="flex gap-2 px-2">
-                <label
-                  htmlFor="radarr-api-key-input"
-                  className="whitespace-nowrap"
-                >
-                  API key
-                </label>
-                <input
-                  id="radarr-api-key-input"
-                  required
-                  className="text-black w-full py-1 px-2 text-center rounded-2xl"
-                  onChange={(e) => handleRadarrApiKeyInput(e)}
-                  value={radarrApiKey}
-                  placeholder="Radarr API Key"
-                />
+    <div
+      className={`min-h-[400px] w-full max-w-[500px] rounded-3xl bg-white bg-opacity-10 ${
+        radarrConnection ? 'testing-css-skills' : ''
+      }`}
+    >
+      <div className="flex justify-center h-full items-center object-contain">
+        <div className="flex gap-4 justify-center flex-col items-center transition-all duration-500 ease-in-out">
+          <div className="mb-4 h-auto ">
+            <img src="/images/radarr-logo.png" alt="" />
+          </div>
+          <div className="flex flex-col justify-center">
+            <div className="flex-col w-full flex gap-2 justify-center mx-auto">
+              <div>Add your local Radarr instance</div>
+              <div className="flex flex-col gap-2 items-end">
+                <div className="flex gap-2 px-2">
+                  <label
+                    htmlFor="radarr-ip-address-input"
+                    className="whitespace-nowrap"
+                  >
+                    Local IP Address
+                  </label>
+                  <input
+                    id="radarr-ip-address-input"
+                    required
+                    className="text-black w-full py-1 px-2 text-center rounded-2xl"
+                    onChange={(e) => handleRadarrIpInput(e)}
+                    value={radarrIp}
+                    placeholder="Radarr IP address"
+                  />
+                </div>
+                {/* api key for radarr */}
+                <div className="flex gap-2 px-2">
+                  <label
+                    htmlFor="radarr-api-key-input"
+                    className="whitespace-nowrap"
+                  >
+                    API key
+                  </label>
+                  <input
+                    id="radarr-api-key-input"
+                    required
+                    className="text-black w-full py-1 px-2 text-center rounded-2xl"
+                    onChange={(e) => handleRadarrApiKeyInput(e)}
+                    value={radarrApiKey}
+                    placeholder="Radarr API Key"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex gap-2 justify-center mx-auto mt-4">
-            <button
-              onClick={(e) => submitRadarrSettings(e)}
-              className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
-            >
-              Submit
-            </button>
-            <button
-              onClick={(e) => submitClearSettings(e)}
-              className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
-            >
-              Clear
-            </button>
-            <button
-              onClick={handleTestRadarrButton}
-              className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
-            >
-              {radarrConnection == true ? (
-                <span className="text-light-green-400 py-2 px-5">✓</span>
-              ) : radarrConnection == false ? (
-                <span className="text-red-600 py-2 px-1">No connection</span>
-              ) : (
-                <span>Test</span>
-              )}
-            </button>
-            <div className="text-white">
-              {loading ? <p>Loading...</p> : null}
+            <div className="flex gap-2 justify-center mx-auto mt-4">
+              <button
+                onClick={(e) => submitRadarrSettings(e)}
+                className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
+              >
+                Submit
+              </button>
+              <button
+                onClick={(e) => submitClearSettings(e)}
+                className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
+              >
+                Clear
+              </button>
+              <button
+                onClick={handleTestRadarrButton}
+                className="bg-white bg-opacity-25 py-2 px-5 rounded-xl hover:bg-opacity-35 transition-all ease-in-out"
+              >
+                {radarrConnection == true ? (
+                  <span className="text-light-green-400 py-2 px-5">✓</span>
+                ) : radarrConnection == false ? (
+                  <span className="text-red-600 py-2 px-1">No connection</span>
+                ) : (
+                  <span>Test</span>
+                )}
+              </button>
+              <div className="text-white">
+                {loading ? <p>Loading...</p> : null}
+              </div>
             </div>
           </div>
         </div>

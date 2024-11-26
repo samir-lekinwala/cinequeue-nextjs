@@ -96,3 +96,32 @@ body {
   background-size: 200% 200%;
   animation: gradient-animation 1s ease-in-out infinite;
 }
+
+
+.testing-css-skills {
+  /* background: linear-gradient(90deg, #bdbdbd, transparent, #bdbdbd); */
+  /* background-size: 200% 200%; */
+  animation: testing-css 3s infinite alternate;
+  animation-timing-function: linear;
+}
+
+
+
+
+@keyframes testing-css {
+  0% {
+    box-shadow: 0 0 3px 3px rgba(200, 255, 95, 0.5);
+    
+                
+  }
+
+  50% {
+    box-shadow: 0 0 7px 7px rgba(200, 255, 95, 0.7);
+                
+  }
+
+  100% {
+    box-shadow: 0 0 3px 3px rgba(200, 255, 95, 0.5);
+                
+  }
+}
