@@ -97,7 +97,7 @@ function PosterSection({
                   trailerButtonClick
                     ? 'animate-gradient-animation-close'
                     : 'animate-gradient-animation'
-                } bg-opacity-70 text-white hover:shadow-[0px_0px_10px_2px_#ff7e5f] transition-all rounded-xl p-2`}
+                } bg-opacity-70 text-white hover:shadow-[0px_0px_10px_2px_#ff7e5f] transition-all rounded-xl p-2 mt-4`}
               >
                 {/* <Link href={'#trailer-iframe'} scroll={true}> */}
 
