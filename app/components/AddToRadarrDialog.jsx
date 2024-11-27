@@ -145,10 +145,10 @@ function AddToRadarrDialog({ content, type }) {
         </DialogHeader>
         <DialogBody className="text-white"></DialogBody>
         <div className="w-full flex justify-center flex-col items-center gap-4 text-white">
-          <div className="sm:flex-row flex-col flex items-center gap-2 w-full px-4 ">
+          <div className=" flex-col items-center flex gap-2 w-full px-4 ">
             <label
               htmlFor="radarr-quality-profile"
-              className="w-full text-left px-2"
+              className="w-full text-center px-2"
             >
               Quality Profile
             </label>
@@ -189,7 +189,7 @@ function AddToRadarrDialog({ content, type }) {
             {/* For root folder */}
             <label
               htmlFor="radarr-root-folder"
-              className="w-full text-left px-2 "
+              className="w-full text-center px-2 "
             >
               Root Folder
             </label>
@@ -233,7 +233,11 @@ function AddToRadarrDialog({ content, type }) {
               onChange={() => setMovieMonitored(!movieMonitored)}
               checked={movieMonitored}
               label={
-                <div className={`${movieMonitored ? 'text-white' : ''}`}>
+                <div
+                  className={`${
+                    movieMonitored ? 'text-white' : 'text-gray-400'
+                  }`}
+                >
                   {movieMonitored ? 'Monitored' : 'Not Monitored'}
                 </div>
               }
@@ -243,7 +247,9 @@ function AddToRadarrDialog({ content, type }) {
               onChange={() => setSearchNow(!searchNow)}
               checked={searchNow}
               label={
-                <div className={`${searchNow ? 'text-white' : ''}`}>
+                <div
+                  className={`${searchNow ? 'text-white' : 'text-gray-400'}`}
+                >
                   {searchNow ? 'Search Now' : 'Auto'}
                 </div>
               }
