@@ -1,7 +1,7 @@
-export const fetchRadarrData = async (query) => {
-  const radarrIp = localStorage.getItem('radarr-ip')
-  const radarrApiKey = localStorage.getItem('radarr-api-key')
+const radarrIp = localStorage.getItem('radarr-ip')
+const radarrApiKey = localStorage.getItem('radarr-api-key')
 
+export const fetchRadarrData = async (query) => {
   try {
     const response = await fetch(
       `/api/radarr/?ip=${radarrIp}&query=${query}&apiKey=${radarrApiKey}`,
@@ -25,14 +25,9 @@ export const fetchRadarrData = async (query) => {
 }
 
 //For the front end
-export const postDataFunc = (radarrIp, radarrApiKey, query, data) => {
+export const postDataFunc = (query, data) => {
   const fetchData = async () => {
-    const apiCallData = await postRadarrData(
-      radarrIp,
-      radarrApiKey,
-      query,
-      data
-    )
+    const apiCallData = await postRadarrData(query, data)
     console.log('posting method lets see', apiCallData)
     // setRadarrData(apiCallData)
   }
@@ -40,10 +35,8 @@ export const postDataFunc = (radarrIp, radarrApiKey, query, data) => {
 }
 
 //Front end to backend posting data
-export const postRadarrData = async (query, data) => {
-  const radarrIp = localStorage.getItem('radarr-ip')
-  const radarrApiKey = localStorage.getItem('radarr-api-key')
 
+export const postRadarrData = async (query, data) => {
   try {
     const response = await fetch(
       `/api/radarr/?ip=${radarrIp}&query=${query}&apiKey=${radarrApiKey}`,
@@ -82,14 +75,7 @@ export const deleteRadarrMovieFunc = (radarrIp, radarrApiKey, query, id) => {
   deleteMovie()
 }
 
-export const deleteRadarrMovie = async (
-  radarrIp,
-  radarrApiKey,
-  query,
-  movieId
-) => {
-  console.log(radarrIp, radarrApiKey, query, movieId)
-
+export const deleteRadarrMovie = async (query, movieId) => {
   try {
     const response = await fetch(
       `/api/radarr/?ip=${radarrIp}&query=${query}&id=${movieId}&apiKey=${radarrApiKey}`,
@@ -113,12 +99,7 @@ export const deleteRadarrMovie = async (
   }
 }
 
-export async function getRadarrMovieIdFromTmdbId(
-  radarrIp,
-  radarrApiKey,
-  query,
-  tmdbId
-) {
+export async function getRadarrMovieIdFromTmdbId(query, tmdbId) {
   try {
     const response = await fetch(
       `/api/radarr/?ip=${radarrIp}&query=${query}&tmdbId=${tmdbId}&apiKey=${radarrApiKey}`,

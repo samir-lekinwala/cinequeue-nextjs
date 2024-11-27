@@ -7,7 +7,11 @@ import {
   DialogFooter,
   Switch,
 } from '@material-tailwind/react'
-import { fetchRadarrData, postRadarrData } from '../lib/radarrApiCalls'
+import {
+  fetchRadarrData,
+  getRadarrMovieIdFromTmdbId,
+  postRadarrData,
+} from '../lib/radarrApiCalls'
 import Select from 'react-select'
 
 function AddToRadarrDialog({ content, type }) {
@@ -18,6 +22,7 @@ function AddToRadarrDialog({ content, type }) {
   const [selectedRootFolderOption, setSelectedRootFolderOption] = useState(null)
   const [movieMonitored, setMovieMonitored] = useState(true)
   const [searchNow, setSearchNow] = useState(false)
+  const [movieInRadarr, setMovieInRadarr] = useState(null)
 
   const qualityProfileFromStorage = JSON.parse(
     localStorage.getItem('radarr-quality-profile')
@@ -73,7 +78,6 @@ function AddToRadarrDialog({ content, type }) {
         const resultRootFolder = await fetchRadarrData('rootfolder')
         setQualityProfileOptions(createOptionsFromQualityFetch(resultQuality))
         setRootFolderOptions(createOptionsFromRootFolderFetch(resultRootFolder))
-        // console.log(resultRootFolder)
       }
       response()
     } else return
@@ -81,12 +85,9 @@ function AddToRadarrDialog({ content, type }) {
 
   const submitButtonHandler = () => {
     const dataToSendToRadarr = {
-      // title: 'Inception',
+      title: content.title,
       qualityProfileId: qualityProfileFromStorage.value,
-      // titleSlug: 'inception',
-      // images: [],
       tmdbId: content.id, // TMDb ID for Inception
-      // year: 2010,
       rootFolderPath: rootFolderFromStorage.value,
       monitored: movieMonitored,
       addOptions: {
@@ -102,6 +103,21 @@ function AddToRadarrDialog({ content, type }) {
     console.log(response())
   }
 
+  const isMovieCurrentlyInRadarr = () => {
+    const response = async () => {
+      const result = await getRadarrMovieIdFromTmdbId('movie', content.id)
+      if (result) {
+        setMovieInRadarr(result)
+      } else setMovieInRadarr(false)
+      // console.log('result for movie in radarr already', movieInRadarr)
+    }
+    response()
+  }
+
+  useEffect(() => {
+    isMovieCurrentlyInRadarr()
+  }, [submitButtonHandler])
+
   return (
     <>
       <Button
@@ -109,7 +125,7 @@ function AddToRadarrDialog({ content, type }) {
         variant="white"
         className="bg-white text-base bg-opacity-10 font-poppins font-normal normal-case rounded-xl p-2 px-2 hover:shadow-[0px_0px_20px_1px] hover:shadow-[#ff7e5f] transition ease-in-out"
       >
-        Add to Radarr
+        {movieInRadarr ? 'Remove from Radarr' : 'Add to Radarr'}
       </Button>
       <Dialog
         className="bg-gray-400 bg-opacity-20"
