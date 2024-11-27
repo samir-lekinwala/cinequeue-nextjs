@@ -1,7 +1,7 @@
 'use client'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { getData } from '../../../api/apiCalls'
+import { getData } from '../../../lib/apiCalls'
 import PersonProfile from './PersonProfile'
 import useDocumentTitle from '../../../hooks/useDocumentTitle'
 
