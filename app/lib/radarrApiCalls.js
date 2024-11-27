@@ -40,7 +40,10 @@ export const postDataFunc = (radarrIp, radarrApiKey, query, data) => {
 }
 
 //Front end to backend posting data
-export const postRadarrData = async (radarrIp, radarrApiKey, query, data) => {
+export const postRadarrData = async (query, data) => {
+  const radarrIp = localStorage.getItem('radarr-ip')
+  const radarrApiKey = localStorage.getItem('radarr-api-key')
+
   try {
     const response = await fetch(
       `/api/radarr/?ip=${radarrIp}&query=${query}&apiKey=${radarrApiKey}`,

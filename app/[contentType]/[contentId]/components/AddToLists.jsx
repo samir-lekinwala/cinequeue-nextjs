@@ -185,7 +185,7 @@ function AddToLists({ type, content, contentRuntime }) {
               )}
             </div>
             <div>
-              {radarrConnection ? (
+              {radarrConnection && type == 'movie' ? (
                 <AddToRadarrDialog content={content} type={type} />
               ) : null}
             </div>
