@@ -118,6 +118,218 @@ function AddToRadarrDialog({ content, type }) {
     isMovieCurrentlyInRadarr()
   }, [submitButtonHandler])
 
+  const theme = {
+    switch: {
+      defaultProps: {
+        color: 'blue',
+        label: '',
+        ripple: true,
+        className: '',
+        disabled: false,
+        containerProps: undefined,
+        labelProps: undefined,
+        circleProps: undefined,
+      },
+      valid: {
+        colors: [
+          'blue-gray',
+          'gray',
+          'brown',
+          'deep-orange',
+          'orange',
+          'amber',
+          'yellow',
+          'lime',
+          'light-green',
+          'green',
+          'teal',
+          'cyan',
+          'light-blue',
+          'blue',
+          'indigo',
+          'deep-purple',
+          'purple',
+          'pink',
+          'red',
+        ],
+      },
+      styles: {
+        base: {
+          root: {
+            display: 'inline-flex',
+            alignItems: 'items-center',
+          },
+          container: {
+            position: 'relative',
+            display: 'inline-block',
+            width: 'w-8',
+            height: 'h-4',
+            cursor: 'cursor-pointer',
+            borderRadius: 'rounded-full',
+          },
+          input: {
+            peer: 'peer',
+            appearance: 'appearance-none',
+            width: 'w-8',
+            height: 'h-4',
+            position: 'absolute',
+            background: 'bg-blue-gray-100',
+            borderRadius: 'rounded-full',
+            cursor: 'cursor-pointer',
+            transition: 'transition-colors duration-300',
+          },
+          circle: {
+            bg: 'bg-white',
+            width: 'w-5',
+            height: 'h-5',
+            borderWidth: 'border',
+            borderColor: 'border-blue-gray-100',
+            borderRadius: 'rounded-full',
+            boxShadow: 'shadow-md',
+            position: 'absolute',
+            top: 'top-2/4',
+            left: '-left-1',
+            transform: '-translate-y-2/4 peer-checked:translate-x-full',
+            transition: 'transition-all duration-300',
+            cursor: 'cursor-pointer',
+            before: {
+              content: "before:content['']",
+              display: 'before:block',
+              bg: 'before:bg-blue-gray-500',
+              width: 'before:w-10',
+              height: 'before:h-10',
+              borderRadius: 'before:rounded-full',
+              position: 'before:absolute',
+              top: 'before:top-2/4',
+              left: 'before:left-2/4',
+              transform: 'before:-translate-y-2/4 before:-translate-x-2/4',
+              transition: 'before:transition-opacity',
+              opacity: 'before:opacity-0 hover:before:opacity-10',
+            },
+          },
+          ripple: {
+            display: 'inline-block',
+            top: 'top-2/4',
+            left: 'left-2/4',
+            transform: '-translate-x-2/4 -translate-y-2/4',
+            p: 'p-5',
+            borderRadius: 'rounded-full',
+          },
+          label: {
+            color: 'text-gray-700',
+            fontWeight: 'font-light',
+            userSelect: 'select-none',
+            cursor: 'cursor-pointer',
+            mt: 'mt-px',
+            ml: 'ml-3',
+            mb: 'mb-0',
+          },
+          disabled: {
+            opacity: 'opacity-50',
+            pointerEvents: 'pointer-events-none',
+          },
+        },
+        colors: {
+          'blue-gray': {
+            input: 'checked:bg-blue-gray-500',
+            circle: 'peer-checked:border-blue-gray-500',
+            before: 'peer-checked:before:bg-blue-gray-500',
+          },
+          gray: {
+            input: 'checked:bg-gray-500',
+            circle: 'peer-checked:border-gray-500',
+            before: 'peer-checked:before:bg-gray-500',
+          },
+          brown: {
+            input: 'checked:bg-brown-500',
+            circle: 'peer-checked:border-brown-500',
+            before: 'peer-checked:before:bg-brown-500',
+          },
+          'deep-orange': {
+            input: 'checked:bg-deep-orange-500',
+            circle: 'peer-checked:border-deep-orange-500',
+            before: 'peer-checked:before:bg-deep-orange-500',
+          },
+          orange: {
+            input: 'checked:bg-orange-500',
+            circle: 'peer-checked:border-orange-500',
+            before: 'peer-checked:before:bg-orange-500',
+          },
+          amber: {
+            input: 'checked:bg-amber-500',
+            circle: 'peer-checked:border-amber-500',
+            before: 'peer-checked:before:bg-amber-500',
+          },
+          yellow: {
+            input: 'checked:bg-yellow-500',
+            circle: 'peer-checked:border-yellow-500',
+            before: 'peer-checked:before:bg-yellow-500',
+          },
+          lime: {
+            input: 'checked:bg-lime-500',
+            circle: 'peer-checked:border-lime-500',
+            before: 'peer-checked:before:bg-lime-500',
+          },
+          'light-green': {
+            input: 'checked:bg-light-green-500',
+            circle: 'peer-checked:border-light-green-500',
+            before: 'peer-checked:before:bg-light-green-500',
+          },
+          green: {
+            input: 'checked:bg-green-500',
+            circle: 'peer-checked:border-green-500',
+            before: 'peer-checked:before:bg-green-500',
+          },
+          teal: {
+            input: 'checked:bg-teal-500',
+            circle: 'peer-checked:border-teal-500',
+            before: 'peer-checked:before:bg-teal-500',
+          },
+          cyan: {
+            input: 'checked:bg-cyan-500',
+            circle: 'peer-checked:border-cyan-500',
+            before: 'peer-checked:before:bg-cyan-500',
+          },
+          'light-blue': {
+            input: 'checked:bg-light-blue-500',
+            circle: 'peer-checked:border-light-blue-500',
+            before: 'peer-checked:before:bg-light-blue-500',
+          },
+          blue: {
+            input: 'checked:bg-blue-500',
+            circle: 'peer-checked:border-blue-500',
+            before: 'peer-checked:before:bg-blue-500',
+          },
+          indigo: {
+            input: 'checked:bg-indigo-500',
+            circle: 'peer-checked:border-indigo-500',
+            before: 'peer-checked:before:bg-indigo-500',
+          },
+          'deep-purple': {
+            input: 'checked:bg-deep-purple-500',
+            circle: 'peer-checked:border-deep-purple-500',
+            before: 'peer-checked:before:bg-deep-purple-500',
+          },
+          purple: {
+            input: 'checked:bg-purple-500',
+            circle: 'peer-checked:border-purple-500',
+            before: 'peer-checked:before:bg-purple-500',
+          },
+          pink: {
+            input: 'checked:bg-pink-500',
+            circle: 'peer-checked:border-pink-500',
+            before: 'peer-checked:before:bg-pink-500',
+          },
+          red: {
+            input: 'checked:bg-red-500',
+            circle: 'peer-checked:border-red-500',
+            before: 'peer-checked:before:bg-red-500',
+          },
+        },
+      },
+    },
+  }
+
   return (
     <>
       <Button
@@ -136,19 +348,19 @@ function AddToRadarrDialog({ content, type }) {
           unmount: { scale: 0.9, y: -100 },
         }}
       >
-        <DialogHeader className="text-white flex flex-col justify-start items-start">
-          <p className="text-sm font-thin">Add to Radarr</p>
+        <div className="p-4 text-white flex flex-col justify-start items-start">
+          <p className="text-md font-thin">Add to Radarr</p>
 
-          <p className="font-normal">
+          <p className="text-2xl font-normal">
             {content.title} - {yearReleased}
           </p>
-        </DialogHeader>
-        <DialogBody className="text-white"></DialogBody>
+        </div>
+
         <div className="w-full flex justify-center flex-col items-center gap-4 text-white">
           <div className=" flex-col items-center flex gap-2 w-full px-4 ">
             <label
               htmlFor="radarr-quality-profile"
-              className="w-full text-center px-2"
+              className="w-full text-left sm:text-center px-2"
             >
               Quality Profile
             </label>
@@ -156,7 +368,7 @@ function AddToRadarrDialog({ content, type }) {
               id="radarr-quality-profile"
               options={qualityProfileOptions}
               onChange={setSelectedQualityOption}
-              className="sm:w-1/2 w-full"
+              className="sm:w-2/3 w-full"
               defaultValue={
                 qualityProfileFromStorage
                   ? qualityProfileFromStorage
@@ -189,7 +401,7 @@ function AddToRadarrDialog({ content, type }) {
             {/* For root folder */}
             <label
               htmlFor="radarr-root-folder"
-              className="w-full text-center px-2 "
+              className="w-full text-left sm:text-center px-2 "
             >
               Root Folder
             </label>
@@ -197,7 +409,7 @@ function AddToRadarrDialog({ content, type }) {
               id="radarr-root-folder"
               options={rootFolderOptions}
               onChange={setSelectedRootFolderOption}
-              className="sm:w-1/2 w-full"
+              className="sm:w-2/3 w-full"
               defaultValue={
                 rootFolderFromStorage
                   ? rootFolderFromStorage
@@ -242,6 +454,7 @@ function AddToRadarrDialog({ content, type }) {
                 </div>
               }
               className=""
+              color="orange"
             />
             <Switch
               onChange={() => setSearchNow(!searchNow)}
@@ -253,6 +466,7 @@ function AddToRadarrDialog({ content, type }) {
                   {searchNow ? 'Search Now' : 'Auto'}
                 </div>
               }
+              color="orange"
               className=""
             />
           </div>
