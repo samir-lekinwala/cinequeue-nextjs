@@ -5,30 +5,68 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
-  Select,
-  Option,
 } from '@material-tailwind/react'
 import { fetchRadarrData } from '../lib/radarrApiCalls'
+import Select from 'react-select'
 
 function AddToRadarrDialog({ content, type }) {
   const [open, setOpen] = useState(false)
   const [qualityProfileOptions, setQualityProfileOptions] = useState([])
+  const [selectedQualityOption, setSelectedQualityOption] = useState(null)
+
+  const qualityProfileFromStorage = JSON.parse(
+    localStorage.getItem('radarr-quality-profile')
+  )
+
+  console.log(qualityProfileFromStorage)
+
+  useEffect(() => {
+    if (selectedQualityOption) {
+      console.log('quality option selected', selectedQualityOption)
+      localStorage.setItem(
+        'radarr-quality-profile',
+        JSON.stringify(selectedQualityOption)
+      )
+    }
+  }, [selectedQualityOption])
 
   const handleOpen = () => {
     setOpen(!open)
   }
 
+  // useEffect(() => {
+  // const qualityProfileFromStorage = localStorage.getItem("radarr-quality-profile")
+
+  // if(qualityProfileFromStorage){
+
+  // setSelectedQualityOption()
+
+  // }
+
+  // },[])
+
+  const yearReleased = content.release_date.split('').splice(0, 4)
+
+  function createOptionsFromQualityFetch(data) {
+    let options = []
+    for (let i = 0; i < data.length; i++) {
+      options.push({ value: data[i].id, label: data[i].name })
+    }
+    return options
+  }
+
   // console.log(content, type, open)
   //grab the quality profile options
   useEffect(() => {
-    if (open) {
+    if (open && content) {
       const response = async () => {
         const result = await fetchRadarrData('qualityprofile')
-        setQualityProfileOptions(result)
+        setQualityProfileOptions(createOptionsFromQualityFetch(result))
+        console.log(createOptionsFromQualityFetch(result))
       }
       response()
     } else return
-  }, [open])
+  }, [open, content])
 
   const dataToSendToRadarr = {
     // title: 'Inception',
@@ -65,34 +103,45 @@ function AddToRadarrDialog({ content, type }) {
         <DialogHeader className="text-white flex flex-col justify-start items-start">
           <p className="text-sm font-thin">Add to Radarr</p>
 
-          <p className="font-normal">{content.title}</p>
+          <p className="font-normal">
+            {content.title} - {yearReleased}
+          </p>
         </DialogHeader>
-        <DialogBody className="text-white">
-          The key to more success is to have a lot of pillows. Put it this way,
-          it took me twenty five years to get these plants, twenty five years of
-          blood sweat and tears, and I&apos;m never giving up, I&apos;m just
-          getting started. I&apos;m up to something. Fan luv.
-        </DialogBody>
-        <div className="w-full flex justify-center">
-          <select
-            className="w-1/2 bg-black bg-opacity-10 text-white"
-            placeholder="1"
-            labelProps={{
-              className: 'hidden',
-            }}
-          >
-            {qualityProfileOptions && qualityProfileOptions.length > 0
-              ? qualityProfileOptions.map((quality) => (
-                  <option
-                    className="bg-black bg-opacity-10 text-white rounded-2xl"
-                    key={quality.id}
-                    value={quality.id}
-                  >
-                    {quality.name}
-                  </option>
-                ))
-              : null}
-          </select>
+        <DialogBody className="text-white"></DialogBody>
+        <div className="w-full flex justify-center text-white">
+          <Select
+            options={qualityProfileOptions}
+            onChange={setSelectedQualityOption}
+            className="w-1/2 "
+            defaultValue={
+              qualityProfileFromStorage
+                ? qualityProfileFromStorage
+                : qualityProfileOptions[0]
+            }
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                primary25: '#2a2a2a', // Highlighted option background on hover
+                primary: '#ff7e5f', // Selected option border and focus color
+                primary50: '#3a3a3a', // Highlighted option background when active
+                neutral0: '#1f1f1f', // Menu background
+                neutral5: '#2a2a2a', // Placeholder/disabled option background
+                neutral10: '#3a3a3a', // Multi-value background
+                neutral20: '#4a4a4a', // Border color
+                neutral30: '#5a5a5a', // Focused border color
+                neutral40: '#9a9a9a', // Placeholder text color
+                neutral50: '#c2c2c2', // Default text color
+                neutral80: '#e2e2e2', // Focused text color
+              },
+              spacing: {
+                baseUnit: 4,
+                controlHeight: 40,
+                menuGutter: 8,
+              },
+              borderRadius: 4,
+            })}
+          ></Select>
         </div>
         <DialogFooter>
           <Button

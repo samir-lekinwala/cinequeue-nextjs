@@ -26,6 +26,8 @@ function AddToLists({ type, content, contentRuntime }) {
   const movieOrTvShow = type
   // console.log(content)
 
+  const radarrConnection = localStorage.getItem('radarr-connection')
+
   function checkRuntime() {
     if (content.runtime == undefined) {
       return contentRuntime
@@ -183,7 +185,9 @@ function AddToLists({ type, content, contentRuntime }) {
               )}
             </div>
             <div>
-              <AddToRadarrDialog content={content} type={type} />
+              {radarrConnection ? (
+                <AddToRadarrDialog content={content} type={type} />
+              ) : null}
             </div>
             <div
               className={` w-fit group hover:shadow-[0px_0px_20px_1px] ${
