@@ -58,6 +58,7 @@ export const postRadarrData = async (query, data) => {
   } catch (err) {
     // setError(err.message);
     console.error('error', err)
+    return err
   }
 }
 

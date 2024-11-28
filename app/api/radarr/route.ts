@@ -86,11 +86,19 @@ export async function POST(req: NextRequest) {
     if (response.status != 201) {
       return Response.json({
         message: `Error adding ${data.title}.`,
-        error: `Code ${response.status} - ${response.statusText}`,
+        code: `${response.status}`,
+        statusText: `${response.statusText}`,
       })
-    } else return Response.json({ message: `${data.title} has been added.` })
+    } else
+      return Response.json({
+        message: `${data.title} has been added.`,
+        code: 201,
+      })
   } catch (error) {
-    console.error(error)
+    console.log(error)
+    return Response.json({
+      message: `Error ${error}`,
+    })
   }
 }
 

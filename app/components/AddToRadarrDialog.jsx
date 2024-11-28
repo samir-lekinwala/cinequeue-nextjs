@@ -23,6 +23,7 @@ function AddToRadarrDialog({ content, type }) {
   const [movieMonitored, setMovieMonitored] = useState(true)
   const [searchNow, setSearchNow] = useState(false)
   const [movieInRadarr, setMovieInRadarr] = useState(null)
+  const [radarrErrorCodeOnAdd, setRadarrErrorCodeOnAdd] = useState(null)
 
   const qualityProfileFromStorage = JSON.parse(
     localStorage.getItem('radarr-quality-profile')
@@ -50,6 +51,7 @@ function AddToRadarrDialog({ content, type }) {
   }, [selectedRootFolderOption])
 
   const handleOpen = () => {
+    setRadarrErrorCodeOnAdd(null)
     setOpen(!open)
   }
 
@@ -96,9 +98,24 @@ function AddToRadarrDialog({ content, type }) {
     }
 
     const response = async () => {
-      const result = await postRadarrData('movie', dataToSendToRadarr)
-      console.log('result of post for adding', result, dataToSendToRadarr)
-      return result
+      try {
+        const result = await postRadarrData('movie', dataToSendToRadarr)
+        console.log('result of post for adding', result, dataToSendToRadarr)
+        if (Number(result.code) != 201) {
+          setRadarrErrorCodeOnAdd(result)
+          console.log(
+            "this should be showing up if movie doesn't get added and has error other than 201",
+            result,
+            Number(result.code)
+          )
+        } else if (Number(result.code) == 201) {
+          setRadarrErrorCodeOnAdd(null)
+          setOpen(!open)
+          return result
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
     console.log(response())
   }
@@ -112,223 +129,12 @@ function AddToRadarrDialog({ content, type }) {
       // console.log('result for movie in radarr already', movieInRadarr)
     }
     response()
+    console.log('should be an error in here', radarrErrorCodeOnAdd)
   }
 
   useEffect(() => {
     isMovieCurrentlyInRadarr()
   }, [submitButtonHandler])
-
-  const theme = {
-    switch: {
-      defaultProps: {
-        color: 'blue',
-        label: '',
-        ripple: true,
-        className: '',
-        disabled: false,
-        containerProps: undefined,
-        labelProps: undefined,
-        circleProps: undefined,
-      },
-      valid: {
-        colors: [
-          'blue-gray',
-          'gray',
-          'brown',
-          'deep-orange',
-          'orange',
-          'amber',
-          'yellow',
-          'lime',
-          'light-green',
-          'green',
-          'teal',
-          'cyan',
-          'light-blue',
-          'blue',
-          'indigo',
-          'deep-purple',
-          'purple',
-          'pink',
-          'red',
-        ],
-      },
-      styles: {
-        base: {
-          root: {
-            display: 'inline-flex',
-            alignItems: 'items-center',
-          },
-          container: {
-            position: 'relative',
-            display: 'inline-block',
-            width: 'w-8',
-            height: 'h-4',
-            cursor: 'cursor-pointer',
-            borderRadius: 'rounded-full',
-          },
-          input: {
-            peer: 'peer',
-            appearance: 'appearance-none',
-            width: 'w-8',
-            height: 'h-4',
-            position: 'absolute',
-            background: 'bg-blue-gray-100',
-            borderRadius: 'rounded-full',
-            cursor: 'cursor-pointer',
-            transition: 'transition-colors duration-300',
-          },
-          circle: {
-            bg: 'bg-white',
-            width: 'w-5',
-            height: 'h-5',
-            borderWidth: 'border',
-            borderColor: 'border-blue-gray-100',
-            borderRadius: 'rounded-full',
-            boxShadow: 'shadow-md',
-            position: 'absolute',
-            top: 'top-2/4',
-            left: '-left-1',
-            transform: '-translate-y-2/4 peer-checked:translate-x-full',
-            transition: 'transition-all duration-300',
-            cursor: 'cursor-pointer',
-            before: {
-              content: "before:content['']",
-              display: 'before:block',
-              bg: 'before:bg-blue-gray-500',
-              width: 'before:w-10',
-              height: 'before:h-10',
-              borderRadius: 'before:rounded-full',
-              position: 'before:absolute',
-              top: 'before:top-2/4',
-              left: 'before:left-2/4',
-              transform: 'before:-translate-y-2/4 before:-translate-x-2/4',
-              transition: 'before:transition-opacity',
-              opacity: 'before:opacity-0 hover:before:opacity-10',
-            },
-          },
-          ripple: {
-            display: 'inline-block',
-            top: 'top-2/4',
-            left: 'left-2/4',
-            transform: '-translate-x-2/4 -translate-y-2/4',
-            p: 'p-5',
-            borderRadius: 'rounded-full',
-          },
-          label: {
-            color: 'text-gray-700',
-            fontWeight: 'font-light',
-            userSelect: 'select-none',
-            cursor: 'cursor-pointer',
-            mt: 'mt-px',
-            ml: 'ml-3',
-            mb: 'mb-0',
-          },
-          disabled: {
-            opacity: 'opacity-50',
-            pointerEvents: 'pointer-events-none',
-          },
-        },
-        colors: {
-          'blue-gray': {
-            input: 'checked:bg-blue-gray-500',
-            circle: 'peer-checked:border-blue-gray-500',
-            before: 'peer-checked:before:bg-blue-gray-500',
-          },
-          gray: {
-            input: 'checked:bg-gray-500',
-            circle: 'peer-checked:border-gray-500',
-            before: 'peer-checked:before:bg-gray-500',
-          },
-          brown: {
-            input: 'checked:bg-brown-500',
-            circle: 'peer-checked:border-brown-500',
-            before: 'peer-checked:before:bg-brown-500',
-          },
-          'deep-orange': {
-            input: 'checked:bg-deep-orange-500',
-            circle: 'peer-checked:border-deep-orange-500',
-            before: 'peer-checked:before:bg-deep-orange-500',
-          },
-          orange: {
-            input: 'checked:bg-orange-500',
-            circle: 'peer-checked:border-orange-500',
-            before: 'peer-checked:before:bg-orange-500',
-          },
-          amber: {
-            input: 'checked:bg-amber-500',
-            circle: 'peer-checked:border-amber-500',
-            before: 'peer-checked:before:bg-amber-500',
-          },
-          yellow: {
-            input: 'checked:bg-yellow-500',
-            circle: 'peer-checked:border-yellow-500',
-            before: 'peer-checked:before:bg-yellow-500',
-          },
-          lime: {
-            input: 'checked:bg-lime-500',
-            circle: 'peer-checked:border-lime-500',
-            before: 'peer-checked:before:bg-lime-500',
-          },
-          'light-green': {
-            input: 'checked:bg-light-green-500',
-            circle: 'peer-checked:border-light-green-500',
-            before: 'peer-checked:before:bg-light-green-500',
-          },
-          green: {
-            input: 'checked:bg-green-500',
-            circle: 'peer-checked:border-green-500',
-            before: 'peer-checked:before:bg-green-500',
-          },
-          teal: {
-            input: 'checked:bg-teal-500',
-            circle: 'peer-checked:border-teal-500',
-            before: 'peer-checked:before:bg-teal-500',
-          },
-          cyan: {
-            input: 'checked:bg-cyan-500',
-            circle: 'peer-checked:border-cyan-500',
-            before: 'peer-checked:before:bg-cyan-500',
-          },
-          'light-blue': {
-            input: 'checked:bg-light-blue-500',
-            circle: 'peer-checked:border-light-blue-500',
-            before: 'peer-checked:before:bg-light-blue-500',
-          },
-          blue: {
-            input: 'checked:bg-blue-500',
-            circle: 'peer-checked:border-blue-500',
-            before: 'peer-checked:before:bg-blue-500',
-          },
-          indigo: {
-            input: 'checked:bg-indigo-500',
-            circle: 'peer-checked:border-indigo-500',
-            before: 'peer-checked:before:bg-indigo-500',
-          },
-          'deep-purple': {
-            input: 'checked:bg-deep-purple-500',
-            circle: 'peer-checked:border-deep-purple-500',
-            before: 'peer-checked:before:bg-deep-purple-500',
-          },
-          purple: {
-            input: 'checked:bg-purple-500',
-            circle: 'peer-checked:border-purple-500',
-            before: 'peer-checked:before:bg-purple-500',
-          },
-          pink: {
-            input: 'checked:bg-pink-500',
-            circle: 'peer-checked:border-pink-500',
-            before: 'peer-checked:before:bg-pink-500',
-          },
-          red: {
-            input: 'checked:bg-red-500',
-            circle: 'peer-checked:border-red-500',
-            before: 'peer-checked:before:bg-red-500',
-          },
-        },
-      },
-    },
-  }
 
   return (
     <>
@@ -337,7 +143,7 @@ function AddToRadarrDialog({ content, type }) {
         variant="white"
         className="bg-white text-base bg-opacity-10 font-poppins font-normal normal-case rounded-xl p-2 px-2 hover:shadow-[0px_0px_20px_1px] hover:shadow-[#ff7e5f] transition ease-in-out"
       >
-        {movieInRadarr ? 'Remove from Radarr' : 'Add to Radarr'}
+        {movieInRadarr ? 'Edit On Radarr' : 'Add to Radarr'}
       </Button>
       <Dialog
         className="bg-gray-400 bg-opacity-20"
@@ -470,7 +276,11 @@ function AddToRadarrDialog({ content, type }) {
               className=""
             />
           </div>
+          {radarrErrorCodeOnAdd ? (
+            <div className="text-red-500 ">{radarrErrorCodeOnAdd.message}</div>
+          ) : null}
         </div>
+
         <DialogFooter>
           <Button
             variant="text"
@@ -480,6 +290,17 @@ function AddToRadarrDialog({ content, type }) {
           >
             <span>Cancel</span>
           </Button>
+          {movieInRadarr ? (
+            <Button
+              variant="gradient"
+              color="red"
+              // onClick={}
+              className="mx-3"
+            >
+              <span>Delete</span>
+            </Button>
+          ) : null}
+
           <Button
             variant="gradient"
             color="green"
