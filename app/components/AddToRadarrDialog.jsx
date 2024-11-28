@@ -113,7 +113,10 @@ function AddToRadarrDialog({ content, type }) {
         } else if (Number(result.code) == 201) {
           setRadarrErrorCodeOnAdd(null)
           setOpen(!open)
-          notify(`${content.title} has been added to Radarr`, { theme: 'dark' })
+          notify(`${content.title} has been added to Radarr`, {
+            theme: 'dark',
+            progressStyle: { backgroundColor: '#ff7e5f' },
+          })
           return result
         }
       } catch (error) {
@@ -141,7 +144,6 @@ function AddToRadarrDialog({ content, type }) {
 
   return (
     <div>
-      <ToastContainer />
       <Button
         onClick={handleOpen}
         variant="white"
