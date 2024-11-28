@@ -13,6 +13,8 @@ import {
   postRadarrData,
 } from '../lib/radarrApiCalls'
 import Select from 'react-select'
+import notify from '../functions/notify'
+import { ToastContainer } from 'react-toastify'
 
 function AddToRadarrDialog({ content, type }) {
   const [open, setOpen] = useState(false)
@@ -111,6 +113,7 @@ function AddToRadarrDialog({ content, type }) {
         } else if (Number(result.code) == 201) {
           setRadarrErrorCodeOnAdd(null)
           setOpen(!open)
+          notify(`${content.title} has been added to Radarr`, { theme: 'dark' })
           return result
         }
       } catch (error) {
@@ -137,7 +140,8 @@ function AddToRadarrDialog({ content, type }) {
   }, [submitButtonHandler])
 
   return (
-    <>
+    <div>
+      <ToastContainer />
       <Button
         onClick={handleOpen}
         variant="white"
@@ -310,7 +314,7 @@ function AddToRadarrDialog({ content, type }) {
           </Button>
         </DialogFooter>
       </Dialog>
-    </>
+    </div>
   )
 }
 
