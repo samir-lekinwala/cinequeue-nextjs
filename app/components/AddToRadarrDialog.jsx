@@ -8,6 +8,7 @@ import {
   Switch,
 } from '@material-tailwind/react'
 import {
+  deleteRadarrMovieFunc,
   fetchRadarrData,
   getRadarrMovieIdFromTmdbId,
   postRadarrData,
@@ -141,6 +142,16 @@ function AddToRadarrDialog({ content, type }) {
   useEffect(() => {
     isMovieCurrentlyInRadarr()
   }, [submitButtonHandler])
+
+  const deleteMovieFromRadarr = async () => {
+    const response = () => {
+      console.log('in deletemovie func', movieInRadarr)
+      const result = deleteRadarrMovieFunc('movie', movieInRadarr)
+
+      console.log('result from deleting', result)
+    }
+    response()
+  }
 
   return (
     <div>
@@ -302,6 +313,7 @@ function AddToRadarrDialog({ content, type }) {
               color="red"
               // onClick={}
               className="mx-3"
+              onClick={deleteMovieFromRadarr}
             >
               <span>Delete</span>
             </Button>
