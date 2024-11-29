@@ -1,5 +1,14 @@
-const radarrIp = localStorage.getItem('radarr-ip')
-const radarrApiKey = localStorage.getItem('radarr-api-key')
+const radarrIp = () => {
+  if (typeof window !== undefined) {
+    localStorage.getItem('radarr-ip')
+  }
+}
+
+const radarrApiKey = () => {
+  if (typeof window !== undefined) {
+    localStorage.getItem('radarr-api-key')
+  }
+}
 
 export const fetchRadarrData = async (query) => {
   try {
