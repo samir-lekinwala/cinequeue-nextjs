@@ -98,6 +98,7 @@ import {
   XMarkIcon,
   EyeIcon,
   QueueListIcon,
+  CogIcon,
 } from '@heroicons/react/24/outline'
 import Logo from './Logo'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -251,6 +252,23 @@ function Nav() {
             </ListItem> */}
             {user ? (
               <>
+                <Link href={'/settings'} onClick={closeDrawer}>
+                  <ListItem className="text-white">
+                    <ListItemPrefix>
+                      <CogIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Settings
+                    <ListItemSuffix>
+                      {/* <Chip
+                        value="14"
+                        size="sm"
+                        variant="ghost"
+                        color=""
+                        className="bg-white rounded-full"
+                      /> */}
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
                 <Link href={'/watchlist'} onClick={closeDrawer}>
                   <ListItem className="text-white">
                     <ListItemPrefix>
@@ -337,7 +355,8 @@ function Nav() {
                   >
                     Sign in to save Movies and TV Shows to your Watch List and
                     calculate the total time watched or needed to watch through
-                    all your content.
+                    all your content and add content to your Radarr and Sonarr
+                    instances.
                   </Typography>
                   <div className="mt-4 flex gap-3">
                     <Typography

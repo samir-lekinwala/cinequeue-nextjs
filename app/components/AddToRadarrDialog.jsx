@@ -1,0 +1,385 @@
+import React, { useEffect, useState } from 'react'
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Switch,
+} from '@material-tailwind/react'
+import {
+  deleteRadarrMovieFunc,
+  fetchRadarrData,
+  getRadarrMovieIdFromTmdbId,
+  postRadarrData,
+} from '../lib/radarrApiCalls'
+import DeleteRadarrOptionsDialog from './DeleteRadarrOptionsDialog'
+import Select from 'react-select'
+import notify from '../functions/notify'
+import { ToastContainer } from 'react-toastify'
+
+function AddToRadarrDialog({ content, type }) {
+  const [open, setOpen] = useState(false)
+  const [qualityProfileOptions, setQualityProfileOptions] = useState([])
+  const [selectedQualityOption, setSelectedQualityOption] = useState(null)
+  const [rootFolderOptions, setRootFolderOptions] = useState([])
+  const [selectedRootFolderOption, setSelectedRootFolderOption] = useState(null)
+  const [movieMonitored, setMovieMonitored] = useState(true)
+  const [searchNow, setSearchNow] = useState(false)
+  const [movieInRadarr, setMovieInRadarr] = useState(null)
+  const [radarrErrorCodeOnAdd, setRadarrErrorCodeOnAdd] = useState(null)
+  const [deleteButtonClicked, setDeleteButtonClicked] = useState(false)
+  const [deleteDialogClick, setDeleteDialogClick] = useState(false)
+  const [exclusionChecked, setExclusionChecked] = useState(false)
+  const [deleteMovieFolderChecked, setDeleteMovieFolderChecked] =
+    useState(false)
+  const [secondDeleteConfirmClick, setSecondDeleteConfirmClick] =
+    useState(false)
+
+  const qualityProfileFromStorage = JSON.parse(
+    localStorage.getItem('radarr-quality-profile')
+  )
+  const rootFolderFromStorage = JSON.parse(
+    localStorage.getItem('radarr-root-folder')
+  )
+
+  useEffect(() => {
+    if (selectedQualityOption) {
+      localStorage.setItem(
+        'radarr-quality-profile',
+        JSON.stringify(selectedQualityOption)
+      )
+    }
+  }, [selectedQualityOption])
+
+  useEffect(() => {
+    if (selectedRootFolderOption) {
+      localStorage.setItem(
+        'radarr-root-folder',
+        JSON.stringify(selectedRootFolderOption)
+      )
+    }
+  }, [selectedRootFolderOption])
+
+  const handleOpen = () => {
+    setRadarrErrorCodeOnAdd(null)
+    setDeleteButtonClicked(false)
+    setOpen(!open)
+  }
+
+  const yearReleased = content.release_date.split('').splice(0, 4)
+
+  function createOptionsFromQualityFetch(data) {
+    let options = []
+    for (let i = 0; i < data.length; i++) {
+      options.push({ value: data[i].id, label: data[i].name })
+    }
+    return options
+  }
+  function createOptionsFromRootFolderFetch(data) {
+    let options = []
+    for (let i = 0; i < data.length; i++) {
+      options.push({ value: data[i].path, label: data[i].path })
+    }
+    return options
+  }
+
+  //grab the quality profile options
+  useEffect(() => {
+    if (open && content) {
+      const response = async () => {
+        const resultQuality = await fetchRadarrData('qualityprofile')
+        const resultRootFolder = await fetchRadarrData('rootfolder')
+        setQualityProfileOptions(createOptionsFromQualityFetch(resultQuality))
+        setRootFolderOptions(createOptionsFromRootFolderFetch(resultRootFolder))
+      }
+      response()
+    } else return
+  }, [open, content])
+
+  function submitButtonHandler() {
+    const dataToSendToRadarr = {
+      title: content.title,
+      qualityProfileId: qualityProfileFromStorage.value,
+      tmdbId: content.id, // TMDb ID for Inception
+      rootFolderPath: rootFolderFromStorage.value,
+      monitored: movieMonitored,
+      addOptions: {
+        searchForMovie: searchNow,
+      },
+    }
+    const response = async () => {
+      try {
+        const result = await postRadarrData('movie', dataToSendToRadarr)
+        console.log('result of post for adding', result, dataToSendToRadarr)
+        if (Number(result.code) != 201) {
+          setRadarrErrorCodeOnAdd(result)
+          console.log(
+            "this should be showing up if movie doesn't get added and has error other than 201",
+            result,
+            Number(result.code)
+          )
+        } else if (Number(result.code) == 201) {
+          setRadarrErrorCodeOnAdd(null)
+          setOpen(!open)
+          notify(`${content.title} has been added to Radarr`, {
+            theme: 'dark',
+            progressStyle: { backgroundColor: '#ff7e5f' },
+          })
+          return result
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    console.log(response())
+  }
+
+  const isMovieCurrentlyInRadarr = () => {
+    const response = async () => {
+      const result = await getRadarrMovieIdFromTmdbId('movie', content.id)
+      if (result) {
+        setMovieInRadarr(result)
+      } else setMovieInRadarr(false)
+      // console.log('result for movie in radarr already', movieInRadarr)
+    }
+    response()
+  }
+
+  useEffect(() => {
+    isMovieCurrentlyInRadarr()
+  }, [open, content])
+
+  const deleteButtonHandler = () => {
+    console.log('delete button was clicked')
+    setDeleteDialogClick(true)
+    setDeleteButtonClicked(true)
+  }
+
+  async function deleteMovieFromRadarr(deleteFolder, exclusion) {
+    const response = async () => {
+      console.log('in deletemovie func', movieInRadarr, deleteFolder, exclusion)
+      const result = await deleteRadarrMovieFunc(
+        `deleteFiles=${deleteFolder}&addImportExclusion=${exclusion}`,
+        movieInRadarr
+      )
+      if (result.code == 200) {
+        setDeleteButtonClicked(false)
+        setDeleteDialogClick(false)
+        notify(`${content.title} has been removed from Radarr`, {
+          theme: 'dark',
+          progressStyle: { backgroundColor: '#ff7e5f' },
+        })
+      }
+      console.log('result from deleting', result)
+    }
+    response()
+  }
+
+  useEffect(() => {
+    if (!deleteDialogClick) {
+      setTimeout(() => setDeleteButtonClicked(false), 500)
+    }
+  }, [deleteDialogClick])
+
+  //if delete button is clicked then edit dialog shouldn't be able to be closed.
+
+  return (
+    <div>
+      <Button
+        onClick={handleOpen}
+        variant="white"
+        className={`bg-white text-base bg-opacity-10 font-poppins font-normal normal-case rounded-xl p-2 px-2 hover:shadow-[0px_0px_20px_1px] hover:shadow-[#ff7e5f] ${
+          movieInRadarr ? 'shadow-[0px_0px_20px_1px] shadow-[#ff7e5f]' : null
+        } transition ease-in-out`}
+      >
+        {movieInRadarr ? 'Edit On Radarr' : 'Add to Radarr'}
+      </Button>
+      <Dialog
+        className="bg-gray-400 bg-opacity-20 "
+        open={open}
+        handler={!deleteButtonClicked ? handleOpen : null}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+      >
+        <div className="p-4 text-white flex flex-col justify-start items-start">
+          <p className="text-md font-thin">
+            {!movieInRadarr ? 'Add to Radarr' : 'Edit'}
+          </p>
+
+          <p className="text-2xl font-normal">
+            {content.title} - {yearReleased}
+          </p>
+        </div>
+
+        <div className="w-full flex justify-center flex-col items-center gap-4 text-white">
+          <div className=" flex-col items-center flex gap-2 w-full px-4 ">
+            <label
+              htmlFor="radarr-quality-profile"
+              className="w-full text-left sm:text-center px-2"
+            >
+              Quality Profile
+            </label>
+            <Select
+              id="radarr-quality-profile"
+              options={qualityProfileOptions}
+              onChange={setSelectedQualityOption}
+              className="sm:w-2/3 w-full"
+              defaultValue={
+                qualityProfileFromStorage
+                  ? qualityProfileFromStorage
+                  : qualityProfileOptions[0]
+              }
+              theme={(theme) => ({
+                ...theme,
+                colors: {
+                  ...theme.colors,
+                  primary25: '#2a2a2a', // Highlighted option background on hover
+                  primary: '#ff7e5f', // Selected option border and focus color
+                  primary50: '#3a3a3a', // Highlighted option background when active
+                  neutral0: '#1f1f1f', // Menu background
+                  neutral5: '#2a2a2a', // Placeholder/disabled option background
+                  neutral10: '#3a3a3a', // Multi-value background
+                  neutral20: '#4a4a4a', // Border color
+                  neutral30: '#5a5a5a', // Focused border color
+                  neutral40: '#9a9a9a', // Placeholder text color
+                  neutral50: '#c2c2c2', // Default text color
+                  neutral80: '#e2e2e2', // Focused text color
+                },
+                spacing: {
+                  baseUnit: 4,
+                  controlHeight: 40,
+                  menuGutter: 8,
+                },
+                borderRadius: 4,
+              })}
+            ></Select>
+            {/* For root folder */}
+            <label
+              htmlFor="radarr-root-folder"
+              className="w-full text-left sm:text-center px-2 "
+            >
+              Root Folder
+            </label>
+            <Select
+              id="radarr-root-folder"
+              options={rootFolderOptions}
+              onChange={setSelectedRootFolderOption}
+              className="sm:w-2/3 w-full"
+              defaultValue={
+                rootFolderFromStorage
+                  ? rootFolderFromStorage
+                  : rootFolderOptions[0]
+              }
+              theme={(theme) => ({
+                ...theme,
+                colors: {
+                  ...theme.colors,
+                  primary25: '#2a2a2a', // Highlighted option background on hover
+                  primary: '#ff7e5f', // Selected option border and focus color
+                  primary50: '#3a3a3a', // Highlighted option background when active
+                  neutral0: '#1f1f1f', // Menu background
+                  neutral5: '#2a2a2a', // Placeholder/disabled option background
+                  neutral10: '#3a3a3a', // Multi-value background
+                  neutral20: '#4a4a4a', // Border color
+                  neutral30: '#5a5a5a', // Focused border color
+                  neutral40: '#9a9a9a', // Placeholder text color
+                  neutral50: '#c2c2c2', // Default text color
+                  neutral80: '#e2e2e2', // Focused text color
+                },
+                spacing: {
+                  baseUnit: 4,
+                  controlHeight: 40,
+                  menuGutter: 8,
+                },
+                borderRadius: 4,
+              })}
+            ></Select>
+          </div>
+          <div className="flex gap-3">
+            <Switch
+              onChange={() => setMovieMonitored(!movieMonitored)}
+              checked={movieMonitored}
+              label={
+                <div
+                  className={`${
+                    movieMonitored ? 'text-white' : 'text-gray-400'
+                  }`}
+                >
+                  {movieMonitored ? 'Monitored' : 'Not Monitored'}
+                </div>
+              }
+              className=""
+              color="orange"
+            />
+            <Switch
+              onChange={() => setSearchNow(!searchNow)}
+              checked={searchNow}
+              label={
+                <div
+                  className={`${searchNow ? 'text-white' : 'text-gray-400'}`}
+                >
+                  {searchNow ? 'Search Now' : 'Auto'}
+                </div>
+              }
+              color="orange"
+              className=""
+            />
+          </div>
+          {radarrErrorCodeOnAdd ? (
+            <div className="text-red-500 ">{radarrErrorCodeOnAdd.message}</div>
+          ) : null}
+        </div>
+
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          {movieInRadarr ? (
+            <Button
+              variant="gradient"
+              color="red"
+              // onClick={}
+              className="mx-3"
+              onClick={deleteButtonHandler}
+            >
+              <span>Delete</span>
+            </Button>
+          ) : null}
+          {deleteButtonClicked ? (
+            <DeleteRadarrOptionsDialog
+              exclusionChecked={exclusionChecked}
+              setExclusionChecked={setExclusionChecked}
+              deleteMovieFolderChecked={deleteMovieFolderChecked}
+              setDeleteMovieFolderChecked={setDeleteMovieFolderChecked}
+              setOpen={setDeleteDialogClick}
+              open={deleteDialogClick}
+              content={content}
+              yearReleased={yearReleased}
+              deleteMovieFromRadarr={deleteMovieFromRadarr}
+              setSecondDeleteConfirmClick={setSecondDeleteConfirmClick}
+              firstDialogBoxOpen={handleOpen}
+            />
+          ) : null}
+
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={() => submitButtonHandler()}
+          >
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+    </div>
+  )
+}
+
+export default AddToRadarrDialog
