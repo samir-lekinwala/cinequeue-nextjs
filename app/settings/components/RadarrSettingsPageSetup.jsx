@@ -1,3 +1,4 @@
+'use client'
 import { NextResponse } from 'next/server'
 import React, { useEffect, useState } from 'react'
 import {
@@ -101,9 +102,10 @@ function RadarrSettingsPageSetup() {
 
   const submitRadarrSettings = (e) => {
     e.preventDefault()
-
-    localStorage.setItem('radarr-ip', radarrIp)
-    localStorage.setItem('radarr-api-key', radarrApiKey)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('radarr-ip', radarrIp)
+      localStorage.setItem('radarr-api-key', radarrApiKey)
+    }
     setRadarrQuery('config/host')
     handleTestRadarrButton()
     checkRadarrInstance()
@@ -123,10 +125,14 @@ function RadarrSettingsPageSetup() {
     setRadarrQuery('config/host')
     checkRadarrInstance()
     if (radarrData.id) {
-      localStorage.setItem('radarr-connection', true)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('radarr-connection', true)
+      }
       setRadarrConnection(true)
     } else if (!radarrData.id || !radarrData) {
-      localStorage.removeItem('radarr-connection')
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('radarr-connection')
+      }
       setRadarrConnection(false)
     }
   }
