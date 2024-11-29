@@ -62,21 +62,19 @@ export const postRadarrData = async (query, data) => {
   }
 }
 
-export const deleteRadarrMovieFunc = (radarrIp, radarrApiKey, query, id) => {
+export const deleteRadarrMovieFunc = (query, id) => {
   const deleteMovie = async () => {
-    const apiCallData = await deleteRadarrMovie(
-      radarrIp,
-      radarrApiKey,
-      query,
-      id
-    )
-    console.log('posting method lets see', apiCallData)
+    // console.log('logging query', query)
+    const apiCallData = await deleteRadarrMovie(query, id)
+    // console.log('posting method lets see', apiCallData)
     // setRadarrData(apiCallData)
+    return apiCallData
   }
-  deleteMovie()
+  return deleteMovie()
 }
 
 export const deleteRadarrMovie = async (query, movieId) => {
+  console.log('query from api call delete func', query, 'movie id', movieId)
   try {
     const response = await fetch(
       `/api/radarr/?ip=${radarrIp}&query=${query}&id=${movieId}&apiKey=${radarrApiKey}`,
@@ -93,7 +91,7 @@ export const deleteRadarrMovie = async (query, movieId) => {
     }
     const jsonData = await response.json()
     // console.log(jsonData)
-    console.log(jsonData)
+    return jsonData
   } catch (err) {
     // setError(err.message);
     console.error('error', err)
@@ -114,7 +112,9 @@ export async function getRadarrMovieIdFromTmdbId(query, tmdbId) {
     )
     const jsonData = await response.json()
     // console.log()
-    return jsonData[0].id
+    if (jsonData[0]) {
+      return jsonData[0].id
+    }
     // return Response.json({ message: jsonData[0].id })
   } catch (error) {
     console.error(error)

@@ -13,6 +13,7 @@ import {
   getRadarrMovieIdFromTmdbId,
   postRadarrData,
 } from '../lib/radarrApiCalls'
+import DeleteRadarrOptionsDialog from './DeleteRadarrOptionsDialog'
 import Select from 'react-select'
 import notify from '../functions/notify'
 import { ToastContainer } from 'react-toastify'
@@ -27,6 +28,13 @@ function AddToRadarrDialog({ content, type }) {
   const [searchNow, setSearchNow] = useState(false)
   const [movieInRadarr, setMovieInRadarr] = useState(null)
   const [radarrErrorCodeOnAdd, setRadarrErrorCodeOnAdd] = useState(null)
+  const [deleteButtonClicked, setDeleteButtonClicked] = useState(false)
+  const [deleteDialogClick, setDeleteDialogClick] = useState(false)
+  const [exclusionChecked, setExclusionChecked] = useState(false)
+  const [deleteMovieFolderChecked, setDeleteMovieFolderChecked] =
+    useState(false)
+  const [secondDeleteConfirmClick, setSecondDeleteConfirmClick] =
+    useState(false)
 
   const qualityProfileFromStorage = JSON.parse(
     localStorage.getItem('radarr-quality-profile')
@@ -55,6 +63,7 @@ function AddToRadarrDialog({ content, type }) {
 
   const handleOpen = () => {
     setRadarrErrorCodeOnAdd(null)
+    setDeleteButtonClicked(false)
     setOpen(!open)
   }
 
@@ -88,7 +97,7 @@ function AddToRadarrDialog({ content, type }) {
     } else return
   }, [open, content])
 
-  const submitButtonHandler = () => {
+  function submitButtonHandler() {
     const dataToSendToRadarr = {
       title: content.title,
       qualityProfileId: qualityProfileFromStorage.value,
@@ -99,7 +108,6 @@ function AddToRadarrDialog({ content, type }) {
         searchForMovie: searchNow,
       },
     }
-
     const response = async () => {
       try {
         const result = await postRadarrData('movie', dataToSendToRadarr)
@@ -136,43 +144,70 @@ function AddToRadarrDialog({ content, type }) {
       // console.log('result for movie in radarr already', movieInRadarr)
     }
     response()
-    console.log('should be an error in here', radarrErrorCodeOnAdd)
   }
 
   useEffect(() => {
     isMovieCurrentlyInRadarr()
-  }, [submitButtonHandler])
+  }, [open, content])
 
-  const deleteMovieFromRadarr = async () => {
-    const response = () => {
-      console.log('in deletemovie func', movieInRadarr)
-      const result = deleteRadarrMovieFunc('movie', movieInRadarr)
+  const deleteButtonHandler = () => {
+    console.log('delete button was clicked')
+    setDeleteDialogClick(true)
+    setDeleteButtonClicked(true)
+  }
 
+  async function deleteMovieFromRadarr(deleteFolder, exclusion) {
+    const response = async () => {
+      console.log('in deletemovie func', movieInRadarr, deleteFolder, exclusion)
+      const result = await deleteRadarrMovieFunc(
+        `deleteFiles=${deleteFolder}&addImportExclusion=${exclusion}`,
+        movieInRadarr
+      )
+      if (result.code == 200) {
+        setDeleteButtonClicked(false)
+        setDeleteDialogClick(false)
+        notify(`${content.title} has been removed from Radarr`, {
+          theme: 'dark',
+          progressStyle: { backgroundColor: '#ff7e5f' },
+        })
+      }
       console.log('result from deleting', result)
     }
     response()
   }
+
+  useEffect(() => {
+    if (!deleteDialogClick) {
+      setTimeout(() => setDeleteButtonClicked(false), 500)
+    }
+  }, [deleteDialogClick])
+
+  //if delete button is clicked then edit dialog shouldn't be able to be closed.
 
   return (
     <div>
       <Button
         onClick={handleOpen}
         variant="white"
-        className="bg-white text-base bg-opacity-10 font-poppins font-normal normal-case rounded-xl p-2 px-2 hover:shadow-[0px_0px_20px_1px] hover:shadow-[#ff7e5f] transition ease-in-out"
+        className={`bg-white text-base bg-opacity-10 font-poppins font-normal normal-case rounded-xl p-2 px-2 hover:shadow-[0px_0px_20px_1px] hover:shadow-[#ff7e5f] ${
+          movieInRadarr ? 'shadow-[0px_0px_20px_1px] shadow-[#ff7e5f]' : null
+        } transition ease-in-out`}
       >
         {movieInRadarr ? 'Edit On Radarr' : 'Add to Radarr'}
       </Button>
       <Dialog
-        className="bg-gray-400 bg-opacity-20"
+        className="bg-gray-400 bg-opacity-20 "
         open={open}
-        handler={handleOpen}
+        handler={!deleteButtonClicked ? handleOpen : null}
         animate={{
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
       >
         <div className="p-4 text-white flex flex-col justify-start items-start">
-          <p className="text-md font-thin">Add to Radarr</p>
+          <p className="text-md font-thin">
+            {!movieInRadarr ? 'Add to Radarr' : 'Edit'}
+          </p>
 
           <p className="text-2xl font-normal">
             {content.title} - {yearReleased}
@@ -313,16 +348,31 @@ function AddToRadarrDialog({ content, type }) {
               color="red"
               // onClick={}
               className="mx-3"
-              onClick={deleteMovieFromRadarr}
+              onClick={deleteButtonHandler}
             >
               <span>Delete</span>
             </Button>
+          ) : null}
+          {deleteButtonClicked ? (
+            <DeleteRadarrOptionsDialog
+              exclusionChecked={exclusionChecked}
+              setExclusionChecked={setExclusionChecked}
+              deleteMovieFolderChecked={deleteMovieFolderChecked}
+              setDeleteMovieFolderChecked={setDeleteMovieFolderChecked}
+              setOpen={setDeleteDialogClick}
+              open={deleteDialogClick}
+              content={content}
+              yearReleased={yearReleased}
+              deleteMovieFromRadarr={deleteMovieFromRadarr}
+              setSecondDeleteConfirmClick={setSecondDeleteConfirmClick}
+              firstDialogBoxOpen={handleOpen}
+            />
           ) : null}
 
           <Button
             variant="gradient"
             color="green"
-            onClick={submitButtonHandler}
+            onClick={() => submitButtonHandler()}
           >
             <span>Confirm</span>
           </Button>

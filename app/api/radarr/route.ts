@@ -113,10 +113,10 @@ export async function DELETE(req: Request) {
   const movieId = searchParams.get('id')
 
   console.log('search params on delete', searchParams)
-
+  // http://192.168.178.176:7878/api/v3/movie/345?deleteFiles=true&addImportExclusion=true&apiKey=438168f831174e489373f3bb1ed6fcd3
   try {
     const response = await fetch(
-      `${RADARR_API_URL}/api/v3/${query}/${movieId}?apikey=${apiKey}`,
+      `${RADARR_API_URL}/api/v3/movie/${movieId}?${query}&apikey=${apiKey}`,
       {
         method: 'DELETE',
         headers: {
@@ -127,7 +127,10 @@ export async function DELETE(req: Request) {
     )
     console.log('search params on delete', searchParams)
     console.log(response.json())
-    return Response.json(response)
+    return Response.json({
+      message: 'Movie deleted from Radarr Successfully',
+      code: 200,
+    })
   } catch (error) {
     console.error(error)
   }
