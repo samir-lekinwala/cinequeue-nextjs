@@ -1,10 +1,19 @@
-const radarrIp = localStorage.getItem('radarr-ip')
-const radarrApiKey = localStorage.getItem('radarr-api-key')
+const radarrIp = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('radarr-ip')
+  }
+}
+
+const radarrApiKey = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('radarr-api-key')
+  }
+}
 
 export const fetchRadarrData = async (query) => {
   try {
     const response = await fetch(
-      `/api/radarr/?ip=${radarrIp}&query=${query}&apiKey=${radarrApiKey}`,
+      `/api/radarr/?ip=${radarrIp()}&query=${query}&apiKey=${radarrApiKey()}`,
       {
         headers: {
           Accept: 'application/json',
@@ -39,7 +48,7 @@ export const postDataFunc = (query, data) => {
 export const postRadarrData = async (query, data) => {
   try {
     const response = await fetch(
-      `/api/radarr/?ip=${radarrIp}&query=${query}&apiKey=${radarrApiKey}`,
+      `/api/radarr/?ip=${radarrIp()}&query=${query}&apiKey=${radarrApiKey()}`,
       {
         method: 'POST',
         headers: {
@@ -77,7 +86,7 @@ export const deleteRadarrMovie = async (query, movieId) => {
   console.log('query from api call delete func', query, 'movie id', movieId)
   try {
     const response = await fetch(
-      `/api/radarr/?ip=${radarrIp}&query=${query}&id=${movieId}&apiKey=${radarrApiKey}`,
+      `/api/radarr/?ip=${radarrIp()}&query=${query}&id=${movieId}&apiKey=${radarrApiKey()}`,
       {
         method: 'DELETE',
         headers: {
@@ -101,7 +110,7 @@ export const deleteRadarrMovie = async (query, movieId) => {
 export async function getRadarrMovieIdFromTmdbId(query, tmdbId) {
   try {
     const response = await fetch(
-      `/api/radarr/?ip=${radarrIp}&query=${query}&tmdbId=${tmdbId}&apiKey=${radarrApiKey}`,
+      `/api/radarr/?ip=${radarrIp()}&query=${query}&tmdbId=${tmdbId}&apiKey=${radarrApiKey()}`,
       {
         method: 'GET',
         headers: {

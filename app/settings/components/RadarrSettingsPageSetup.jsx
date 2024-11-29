@@ -1,3 +1,4 @@
+'use client'
 import { NextResponse } from 'next/server'
 import React, { useEffect, useState } from 'react'
 import {
@@ -81,10 +82,21 @@ function RadarrSettingsPageSetup() {
     setRadarrApiKey(e.target.value)
   }
 
+  const getLocalStorageItem = (key, defaultValue = null) => {
+    if (typeof window === 'undefined') return defaultValue
+    return localStorage.getItem(key) || defaultValue
+  }
+
+  const setLocalStorageItem = (key, value) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(key, value)
+    }
+  }
+
   useEffect(() => {
-    const radarrApiFromStorage = localStorage.getItem('radarr-ip')
-    const radarrApiKeyFromStorage = localStorage.getItem('radarr-api-key')
-    const radarrConnectionStatus = localStorage.getItem('radarr-connection')
+    const radarrApiFromStorage = getLocalStorageItem('radarr-ip')
+    const radarrApiKeyFromStorage = getLocalStorageItem('radarr-api-key')
+    const radarrConnectionStatus = getLocalStorageItem('radarr-connection')
 
     if (radarrApiFromStorage) {
       setRadarrIp(radarrApiFromStorage)
@@ -101,9 +113,11 @@ function RadarrSettingsPageSetup() {
 
   const submitRadarrSettings = (e) => {
     e.preventDefault()
+    setLocalStorageItem('radarr-ip', radarrIp)
+    setLocalStorageItem('radarr-api-key', radarrApiKey)
+    // localStorage.setItem('radarr-ip', radarrIp)
+    // localStorage.setItem('radarr-api-key', radarrApiKey)
 
-    localStorage.setItem('radarr-ip', radarrIp)
-    localStorage.setItem('radarr-api-key', radarrApiKey)
     setRadarrQuery('config/host')
     handleTestRadarrButton()
     checkRadarrInstance()
@@ -123,10 +137,12 @@ function RadarrSettingsPageSetup() {
     setRadarrQuery('config/host')
     checkRadarrInstance()
     if (radarrData.id) {
-      localStorage.setItem('radarr-connection', true)
+      setLocalStorageItem('radarr-connection', true)
       setRadarrConnection(true)
     } else if (!radarrData.id || !radarrData) {
-      localStorage.removeItem('radarr-connection')
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('radarr-connection')
+      }
       setRadarrConnection(false)
     }
   }
