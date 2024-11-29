@@ -1,4 +1,3 @@
-'use client'
 import React, { useEffect, useState } from 'react'
 import {
   Button,
@@ -37,16 +36,13 @@ function AddToRadarrDialog({ content, type }) {
   const [secondDeleteConfirmClick, setSecondDeleteConfirmClick] =
     useState(false)
 
-  const qualityProfileFromStorage = () => {
-    if (typeof window !== undefined) {
-      JSON.parse(localStorage.getItem('radarr-quality-profile'))
-    }
-  }
-  const rootFolderFromStorage = () => {
-    if (typeof window !== undefined) {
-      JSON.parse(localStorage.getItem('radarr-root-folder'))
-    }
-  }
+  const qualityProfileFromStorage = JSON.parse(
+    localStorage.getItem('radarr-quality-profile')
+  )
+  const rootFolderFromStorage = JSON.parse(
+    localStorage.getItem('radarr-root-folder')
+  )
+
   useEffect(() => {
     if (selectedQualityOption) {
       localStorage.setItem(
