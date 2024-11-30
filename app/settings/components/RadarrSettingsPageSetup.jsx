@@ -24,6 +24,25 @@ function RadarrSettingsPageSetup() {
     setRadarrIp(e.target.value)
   }
 
+  useEffect(() => {
+    const fetchRadarrData = async () => {
+      try {
+        const response = await fetch(
+          `${radarrIp}/api/v3/config/host?apikey=${radarrApiKey}`
+        )
+        const data = await response.json()
+        if (data.id) {
+          localStorage.setItem('radarr-connection', true)
+        }
+        console.log('new generated api call client side', data)
+      } catch (error) {
+        console.error('Error fetching Radarr data:', error)
+      }
+    }
+
+    fetchRadarrData()
+  }, [radarrIp, radarrApiKey])
+
   const checkRadarrInstance = () => {
     const fetchData = async () => {
       const apiCallData = await fetchRadarrData(radarrQuery)
